@@ -1,4 +1,4 @@
-package com.example.trokyy;
+package com.example.trokyy.controllers;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;

@@ -5,10 +5,22 @@
 <?import javafx.scene.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
+<?import javafx.scene.control.Label?>
+<?import javafx.geometry.Insets?>
+
 
 <AnchorPane xmlns="http://javafx.com/javafx"
             xmlns:fx="http://javafx.com/fxml"
-            fx:controller="$CONTROLLER_NAME$"
-            prefHeight="400.0" prefWidth="600.0" >
+            fx:controller="com.example.trokyy.controllers.ProfileController"
+            prefHeight="400.0" prefWidth="600.0">
+
+    <VBox spacing="10" alignment="center" xmlns="http://javafx.com/javafx">
+        <Label fx:id="nameLabel" text="Nom : "/>
+        <Label fx:id="emailLabel" text="Email : "/>
+        <Label fx:id="usernameLabel" text="Nom d'utilisateur : "/>
+        <Label fx:id="addressLabel" text="Adresse : "/>
+        <Label fx:id="telLabel" text="Téléphone : "/>
+        <Button fx:id="editButton" text="Edit" onAction="#editProfile"/>
+    </VBox>
 
 </AnchorPane>

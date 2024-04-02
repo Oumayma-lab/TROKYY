@@ -1,2 +1,4 @@
-package com.example.trokyy.services;public interface IServicePersonne {
+package com.example.trokyy.services;
+
+public interface IServicePersonne {
 }

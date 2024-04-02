@@ -1,14 +1,52 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.*?>
-<?import java.util.*?>
-<?import javafx.scene.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
 <AnchorPane xmlns="http://javafx.com/javafx"
             xmlns:fx="http://javafx.com/fxml"
-            fx:controller="$CONTROLLER_NAME$"
-            prefHeight="400.0" prefWidth="600.0" >
+            fx:controller="com.example.trokyy.controllers.EditProfileController"
+            prefHeight="400.0" prefWidth="600.0">
 
+    <VBox spacing="10" alignment="center" >
+        <Label text="Modifier le profil"/>
+
+        <VBox spacing="5" alignment="center">
+            <Label text="Nom"/>
+            <TextField fx:id="nameField" promptText="Nom"/>
+        </VBox>
+
+        <VBox spacing="5" alignment="center">
+            <Label text="Prénom"/>
+            <TextField fx:id="prenomField" promptText="Prénom"/>
+        </VBox>
+
+        <VBox spacing="5" alignment="center">
+            <Label text="Email"/>
+            <TextField fx:id="emailField" promptText="Email"/>
+        </VBox>
+
+        <VBox spacing="5" alignment="center">
+            <Label text="Nom d'utilisateur"/>
+            <TextField fx:id="usernameField" promptText="Nom d'utilisateur"/>
+        </VBox>
+
+        <VBox spacing="5" alignment="center">
+            <Label text="Adresse"/>
+            <TextField fx:id="addresseField" promptText="Adresse"/>
+        </VBox>
+
+        <VBox spacing="5" alignment="center">
+            <Label text="Mot de passe"/>
+            <TextField fx:id="passwordField" promptText="Mot de passe"/>
+        </VBox>
+
+        <VBox spacing="5" alignment="center">
+            <Label text="Téléphone"/>
+            <TextField fx:id="telField" promptText="Téléphone"/>
+        </VBox>
+
+        <Button fx:id="saveButton" text="Enregistrer" onAction="#saveChanges"/>
+        <Button fx:id="cancelButton" text="Annuler" onAction="#cancelEdit"/>
+    </VBox>
 </AnchorPane>
