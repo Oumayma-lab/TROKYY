@@ -1,0 +1,187 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.net.URL?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.Region?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.shape.Line?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+<BorderPane fx:id="borderPane" prefHeight="785.0" prefWidth="1550.0" style="-fx-background-color: #ffffff;" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.trokyy.controllers.Admin.AdminMainController">
+    <stylesheets>
+        <URL value="@Backofficeview.css" />
+    </stylesheets>
+
+
+    <left>
+        <AnchorPane prefHeight="681.0" prefWidth="250.0" styleClass="pane1">
+            <children>
+                <VBox layoutX="25.0" layoutY="87.0" prefHeight="605.0" prefWidth="202.0" spacing="10.0">
+                    <children>
+                  <Line endX="100.0" startX="-100.0" stroke="#dfe0e1" />
+                  <Text fill="#606061" strokeType="OUTSIDE" strokeWidth="0.0" text="Menu" wrappingWidth="80.0">
+                     <font>
+                        <Font name="MS Reference Sans Serif" size="12.0" />
+                     </font>
+                  </Text>
+                        <Button fx:id="Home" alignment="TOP_CENTER" onAction="#navigatetohome" prefHeight="27.0" prefWidth="205.0" styleClass="btn" text="Home" />
+                        <Button fx:id="Users" onAction="#navigatetousers" prefHeight="38.0" prefWidth="200.0" styleClass="btn" text="Users" />
+                        <Button fx:id="Offers" onAction="#navigatetooffers" prefHeight="38.0" prefWidth="200.0" styleClass="btn" text="Offers" />
+                        <Button fx:id="Blogs" onAction="#navigatetoblogs" prefHeight="38.0" prefWidth="200.0" styleClass="btn" text="Blogs" />
+                        <Button fx:id="Events" onAction="#navigatetoevents" prefHeight="38.0" prefWidth="200.0" styleClass="btn" text="Events" />
+                  <HBox>
+                     <children>
+                              <Button fx:id="Complaints" onAction="#navigatetocomplaints" prefHeight="38.0" prefWidth="200.0" styleClass="btn" text="Complaints" />
+                     </children>
+                  </HBox>
+                        <Button fx:id="Donations" onAction="#navigatetodontions" prefHeight="38.0" prefWidth="200.0" styleClass="btn" text="Donations" />
+                  <Line endX="100.0" startX="-100.0" stroke="#dfe0e1" />
+                  <Text fill="#606061" strokeType="OUTSIDE" strokeWidth="0.0" text="General" wrappingWidth="80.0">
+                     <font>
+                        <Font name="MS Reference Sans Serif" size="12.0" />
+                     </font>
+                  </Text>
+                        <Button fx:id="Logout" onAction="#logout" prefHeight="38.0" prefWidth="200.0" styleClass="btn" text="Notifications" />
+                  <Button fx:id="Logout2" onAction="#logout" prefHeight="38.0" prefWidth="200.0" styleClass="btn" text="Settings" />
+                  <Button fx:id="Logout1" onAction="#logout" prefHeight="38.0" prefWidth="200.0" styleClass="btn" text="Logout" />
+                  <Line endX="100.0" startX="-100.0" stroke="#dfe0e1" />
+                  <Text fill="#606061" strokeType="OUTSIDE" strokeWidth="0.0" text="Profile" wrappingWidth="80.0">
+                     <font>
+                        <Font name="MS Reference Sans Serif" size="12.0" />
+                     </font>
+                  </Text>
+                  <Pane prefHeight="64.0" prefWidth="202.0">
+                     <children>
+                        <HBox prefHeight="48.0" prefWidth="179.0" style="-fx-padding: 0;">
+                           <children>
+                              <ImageView fitHeight="50.0" fitWidth="50.0">
+                                 <image>
+                                    <Image url="@assets/oumayma.png" />
+                                 </image>
+                              </ImageView>
+                              <VBox prefHeight="33.0" prefWidth="124.0" style="-fx-padding: 10 0 0 0;">
+                                 <children>
+                                    <Text strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-font-family: sans-serif;" text="    Oumayma Amara" textAlignment="CENTER" wrappingWidth="123.19995045661926">
+                                       <font>
+                                          <Font name="Microsoft Sans Serif" size="13.0" />
+                                       </font>
+                                    </Text>
+                                    <Text strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-font-family: sans-serif;" text="oumayma.amara@esprit.tn" textAlignment="CENTER" wrappingWidth="170.40002346038818">
+                                       <font>
+                                          <Font name="Microsoft Sans Serif" size="13.0" />
+                                       </font>
+                                    </Text>
+                                 </children>
+                              </VBox>
+                           </children>
+                        </HBox>
+                     </children>
+                  </Pane>
+                  <Line endX="100.0" startX="-100.0" stroke="#dfe0e1" />
+                    </children>
+                </VBox>
+            <ImageView fitHeight="50.0" fitWidth="125.0" layoutX="63.0" layoutY="26.0">
+               <image>
+                  <Image url="@assets/trokyy.png" />
+               </image>
+            </ImageView>
+            <Line endX="100.0" layoutX="-20.0" layoutY="605.0" startX="100.0000228881836" startY="46.599998474121094" stroke="#dfe0e1" />
+            </children>
+        </AnchorPane>
+    </left>
+
+    <center>
+
+    </center>
+   <top>
+      <HBox prefHeight="74.0" prefWidth="1535.0" BorderPane.alignment="CENTER">
+         <children>
+            <Pane prefHeight="74.0" prefWidth="256.0">
+               <children>
+                  <ImageView fitHeight="50.0" fitWidth="125.0" layoutX="45.0" layoutY="12.0">
+                     <image>
+                        <Image url="@assets/trokyy.png" />
+                     </image>
+                  </ImageView>
+               </children></Pane>
+            <HBox prefHeight="74.0" prefWidth="936.0" style="-fx-padding: 18 0 0 0;">
+               <children>
+                  <TextField fx:id="tf_filter" prefHeight="36.5" prefWidth="562.0" promptText="Search for ..." styleClass="search">
+                     <font>
+                        <Font size="15.0" />
+                     </font>
+                  </TextField>
+               </children>
+            </HBox>
+            <HBox prefHeight="74.0" prefWidth="95.0" style="-fx-padding: 21.5 0 0 0;">
+               <children>
+                  <ImageView fitHeight="30.0" fitWidth="30.0">
+                     <image>
+                        <Image url="@assets/notification_2645897.png" />
+                     </image>
+                  </ImageView>
+                   <Region prefWidth="20" />
+
+                   <ImageView fitHeight="30.0" fitWidth="30.0">
+                     <image>
+                        <Image url="@assets/silhouette-de-messages.png" />
+                     </image>
+                  </ImageView>
+
+               </children>
+            </HBox>
+            <HBox prefHeight="74.0" prefWidth="243.0" style="-fx-padding: 10 0 0 0;">
+               <children>
+                  <ImageView fitHeight="55.0" fitWidth="55.0">
+                     <image>
+                        <Image url="@assets/oumayma.png" />
+                     </image>
+                  </ImageView>
+                  <VBox prefHeight="33.0" prefWidth="124.0" style="-fx-padding: 10 0 0 0;">
+                     <children>
+                        <Text strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-font-family: sans-serif;" text="Oumayma Amara" textAlignment="CENTER" wrappingWidth="123.19995045661926">
+                           <font>
+                              <Font name="Microsoft Sans Serif" size="13.0" />
+                           </font>
+                        </Text>
+                        <Text strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-font-family: sans-serif;" text="Troky Admin " textAlignment="CENTER" wrappingWidth="123.99999904632568">
+                           <font>
+                              <Font name="Microsoft Sans Serif" size="13.0" />
+                           </font>
+                        </Text>
+                     </children>
+                  </VBox>
+               </children>
+            </HBox>
+         </children>
+      </HBox>
+   </top>
+       <center>
+           <AnchorPane layoutX="5.0" prefHeight="712.0" prefWidth="1250.0" BorderPane.alignment="CENTER">
+               <children>
+                   <HBox layoutX="3.0" layoutY="153.0" prefHeight="570.0" prefWidth="1303.0" style="-fx-background-color: #dee8fa;" />
+                   <HBox layoutX="2.0" layoutY="30.0" prefHeight="146.0" prefWidth="1294.0">
+                       <children>
+                           <ImageView fitHeight="200.0" fitWidth="1303.0">
+                               <image>
+                                   <Image url="@assets/top-header.png" />
+                               </image>
+                           </ImageView>
+                       </children>
+                   </HBox>
+               </children>
+           </AnchorPane>
+       </center>
+
+
+
+
+</BorderPane>

@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.net.URL?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+
+<AnchorPane id="AnchorPane" minHeight="750.0" prefHeight="780.0" prefWidth="1301.0" style="-fx-background-color: #ffffff;" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.trokyy.controllers.Admin.AdminMainController">
+    <stylesheets>
+        <URL value="@tableviewbank.css" />
+    </stylesheets>
+
+        <children>
+            <AnchorPane layoutX="-3.0" layoutY="77.0" prefHeight="703.0" prefWidth="1338.0">
+                <children>
+                    <AnchorPane layoutX="261.0" layoutY="9.0" prefHeight="706.0" prefWidth="1082.0" styleClass="pane2">
+                        <children>
+                  <HBox layoutX="122.4000015258789" layoutY="40.79999923706055" AnchorPane.leftAnchor="122.0" AnchorPane.topAnchor="41.0" />
+                        </children>
+                    </AnchorPane>
+            <ImageView fitHeight="161.0" fitWidth="1110.0" layoutX="234.0" layoutY="-6.0">
+               <image>
+                  <Image url="@../../Backoffice/assets/top-header.png" />
+               </image>
+            </ImageView>
+                    <AnchorPane layoutX="-21.0" layoutY="-16.0" prefHeight="734.0" prefWidth="282.0" styleClass="pane1">
+                        <children>
+                  <Label fx:id="home" graphicTextGap="5.0" layoutX="119.0" layoutY="28.0" prefHeight="35.0" prefWidth="46.0" styleClass="homeLabel" text="Home" textAlignment="CENTER">
+                     <font>
+                        <Font size="15.0" />
+                     </font>
+                  </Label>
+                            <VBox layoutX="25.0" layoutY="106.0" prefHeight="400.0" prefWidth="219.0" spacing="10.0">
+                                <children>
+                                    <Button fx:id="Users" onAction="#handleButtonClick" onMouseClicked="#handleButtonClick" prefHeight="38.0" prefWidth="270.0" styleClass="btn" text="Users" />
+                                    <Button fx:id="Offers" onAction="#handleButtonClick" onMouseClicked="#handleButtonClick" prefHeight="38.0" prefWidth="270.0" styleClass="btn" text="Offers" />
+                                    <Button fx:id="Blogs" onAction="#handleButtonClick" onMouseClicked="#handleButtonClick" prefHeight="38.0" prefWidth="270.0" styleClass="btn" text="Blogs" />
+                                    <Button fx:id="Events" onAction="#handleButtonClick" onMouseClicked="#handleButtonClick" prefHeight="38.0" prefWidth="270.0" styleClass="btn" text="Events" />
+                                    <Button fx:id="Complaints" onAction="#handleButtonClick" onMouseClicked="#handleButtonClick" prefHeight="38.0" prefWidth="270.0" styleClass="btn" text="Complaints" />
+                                    <Button fx:id="Donations" onAction="#handleButtonClick" onMouseClicked="#handleButtonClick" prefHeight="38.0" prefWidth="270.0" styleClass="btn" text="Donations" />
+                                    <Button fx:id="Logout" onAction="#handleButtonClick" onMouseClicked="#handleButtonClick" prefHeight="38.0" prefWidth="270.0" styleClass="btn" text="Logout" />
+                                </children>
+                            </VBox>
+                        </children></AnchorPane>
+            <Label layoutX="315.0" layoutY="28.0" prefHeight="46.0" prefWidth="330.0" style="--fx-font-family: Open Sans; -fx-font-weight: bold;" styleClass="helloLabel" text="Hello Troky Admin !" textFill="WHITE" textOverrun="CENTER_WORD_ELLIPSIS">
+               <font>
+                  <Font size="30.0" />
+               </font>
+            </Label>
+                </children>
+            </AnchorPane>
+            <TextField fx:id="tf_filter" layoutX="281.0" layoutY="16.0" prefHeight="40.0" prefWidth="251.0" promptText="Search for ..." styleClass="search">
+                <font>
+                    <Font size="14.0" />
+                </font>
+            </TextField>
+            <ImageView fitHeight="30.0" fitWidth="27.0" layoutX="302.0" layoutY="24.0" pickOnBounds="true" preserveRatio="true">
+                <image>
+                </image>
+            </ImageView>
+            <Button layoutX="1174.0" layoutY="11.0"  text=" " AnchorPane.rightAnchor="-1.800000000000182" AnchorPane.topAnchor="11.0">
+                <graphic>
+                    <ImageView fitHeight="35.0" fitWidth="68.0" pickOnBounds="true" preserveRatio="true">
+
+                    </ImageView>
+                </graphic>
+            </Button>
+                  <Label alignment="CENTER" layoutX="58.0" layoutY="2.0" prefHeight="48.0" prefWidth="119.0" styleClass="icon-label" text="TROKY" textAlignment="CENTER" AnchorPane.leftAnchor="58.0">
+         <font>
+            <Font size="25.0" />
+         </font>
+      </Label>
+        </children>
+
+</AnchorPane>

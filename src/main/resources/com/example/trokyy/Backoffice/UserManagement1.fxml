@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.net.URL?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+<VBox prefHeight="520.0" prefWidth="1303.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.trokyy.controllers.Admin.UserManagementController">
+    <stylesheets>
+        <URL value="@Backofficeview.css" />
+    </stylesheets>
+
+    <children>
+        <AnchorPane layoutX="5.0" prefHeight="774.0" prefWidth="1295.0" style="-fx-padding: 50 0 0 0;" BorderPane.alignment="CENTER">
+            <children>
+                <HBox layoutX="3.0" layoutY="153.0" prefHeight="570.0" prefWidth="1296.0" style="-fx-background-color: #dee8fa;" />
+            <VBox layoutX="2.0" layoutY="14.0">
+               <children>
+                  <HBox prefHeight="15.0" prefWidth="1304.0" />
+                      <HBox prefHeight="146.0" prefWidth="1294.0">
+                          <children>
+                              <ImageView fitHeight="200.0" fitWidth="1302.0">
+                                  <image>
+                                      <Image url="@assets/top-header.png" />
+                                  </image>
+                              </ImageView>
+                          </children>
+                      </HBox>
+               </children>
+            </VBox>
+
+                      <BorderPane layoutX="26.0" layoutY="25.0" prefHeight="660.0" prefWidth="1254.0">
+               <center>
+                        <TableView fx:id="tableView" maxWidth="950.0" prefHeight="518.0" prefWidth="950.0" style="-fx-border-radius: 14 14 14 14;" styleClass="column-header-background" BorderPane.alignment="CENTER">
+                            <columns>
+                                <TableColumn fx:id="idColumn" minWidth="37.60000532865524" prefWidth="50.0" style="-fx-alignment: center;" text="ID" />
+                                <TableColumn fx:id="nameColumn" minWidth="15.0" prefWidth="150.0" style="-fx-alignment: center;" styleClass="column-header" text="Name" />
+                                <TableColumn fx:id="phoneNumberColumn" prefWidth="100.0" style="-fx-alignment: center;" styleClass="column-header" text="Phone Number" />
+                                <TableColumn fx:id="emailColumn" prefWidth="150.0" style="-fx-alignment: center;" styleClass="column-header" text="Email" />
+                                <TableColumn fx:id="addressColumn" prefWidth="125.0" style="-fx-alignment: center;" styleClass="column-header" text="Address" />
+                                <TableColumn fx:id="statusColumn" prefWidth="100.0" style="-fx-alignment: center;" styleClass="column-header" text="Status" />
+                                <TableColumn fx:id="registrationDateColumn" prefWidth="150.0" style="-fx-alignment: center;" styleClass="column-header" text="Registration Date" />
+                                <TableColumn fx:id="actionColumn" prefWidth="120.0" style="-fx-alignment: center;" styleClass="column-header" text="Actions" />
+                          </columns>
+                        </TableView>
+               </center>
+               <top>
+                  <HBox prefHeight="151.0" prefWidth="1254.0" BorderPane.alignment="CENTER">
+                     <children>
+                        <VBox prefHeight="140.0" prefWidth="422.0">
+                           <children>
+                              <Text strokeType="OUTSIDE" strokeWidth="0.0" wrappingWidth="247.19999313354492">
+                                 <font>
+                                    <Font size="36.0" />
+                                 </font>
+                              </Text>
+                              <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="helloLabel" text="       Hello Troky Admin ! " textAlignment="CENTER" wrappingWidth="421.23907470703125">
+                                 <font>
+                                    <Font name="Microsoft Sans Serif" size="12.0" />
+                                 </font>
+                              </Text>
+                           </children>
+                        </VBox>
+                     </children></HBox>
+               </top>
+               <right>
+                  <HBox prefHeight="522.0" prefWidth="209.0" BorderPane.alignment="CENTER" />
+               </right>
+               <bottom>
+                  <HBox prefHeight="0.0" prefWidth="1254.0" BorderPane.alignment="CENTER" />
+               </bottom>
+               <left>
+                  <HBox prefHeight="522.0" prefWidth="85.0" BorderPane.alignment="CENTER" />
+               </left>
+                </BorderPane>
+            </children>
+        </AnchorPane>
+
+    </children>
+</VBox>

@@ -13,7 +13,7 @@ public class MyDataBaseConnection {
     private final String PASSWORD ="";
     private static Connection connection ;
 
-    private MyDataBaseConnection(){
+    public MyDataBaseConnection(){
 
         try {
             connection = DriverManager.getConnection(URL,USERNAME,PASSWORD);

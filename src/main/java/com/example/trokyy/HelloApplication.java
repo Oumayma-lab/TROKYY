@@ -1,20 +1,26 @@
 package com.example.trokyy;
 
+import com.example.trokyy.models.Utilisateur;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.image.Image;
 import javafx.stage.Stage;
-
 import java.io.IOException;
 
 public class HelloApplication extends Application {
+
     @Override
     public void start(Stage stage) throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("SignUp.fxml"));
-        Scene scene = new Scene(fxmlLoader.load(), 500, 500);
-        stage.setTitle("Registration!");
+        //Parent root = FXMLLoader.load(getClass().getResource("FrontOffice/Reclamation/ListReclam.fxml"));
+        Parent root = FXMLLoader.load(getClass().getResource("backoffice/AdminMain.fxml"));
+        //Parent root = FXMLLoader.load(getClass().getResource("FrontOffice/user/login.fxml"));
+        Scene scene = new Scene(root);
+        stage.setTitle("Troky ");
         stage.setScene(scene);
         stage.show();
+
     }
 
     public static void main(String[] args) {

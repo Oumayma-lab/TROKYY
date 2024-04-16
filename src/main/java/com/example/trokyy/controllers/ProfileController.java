@@ -1,5 +1,5 @@
 package com.example.trokyy.controllers;
-import com.example.trokyy.models.UserDao;
+import com.example.trokyy.services.UserDao;
 import com.example.trokyy.models.Utilisateur;
 import com.example.trokyy.tools.MyDataBaseConnection;
 import javafx.fxml.FXML;
@@ -69,7 +69,7 @@ public class ProfileController {
         // Load the edit profile view
         // Assuming you have an editProfile.fxml and corresponding controller EditProfileController
         // You can replace "editProfile.fxml" with the actual path to your edit profile view
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/trokyy/editProfile.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/trokyy/FrontOffice/User/editProfile.fxml"));
         Parent root = loader.load();
         EditProfileController editProfileController = loader.getController();
         editProfileController.initialize(userId); // Pass user ID to edit profile controller

@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ChoiceBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.shape.Circle?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane prefHeight="810.0" prefWidth="1984.0" style="-fx-background-color: F2EFE5;" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.javatroky.HelloController">
+    <children>
+        <VBox alignment="BOTTOM_CENTER" layoutX="14.0" layoutY="14.0" prefHeight="200.0" prefWidth="365.0" style="-fx-background-color: #1e7b5f;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0">
+            <children>
+                <HBox alignment="BASELINE_CENTER" prefHeight="100.0" prefWidth="200.0">
+                    <children>
+                        <ImageView fitHeight="55.0" fitWidth="107.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@logo.png" />
+                     </image></ImageView>
+                    </children>
+                </HBox>
+                <Pane prefHeight="76.0" prefWidth="365.0" />
+                <HBox alignment="CENTER" prefHeight="56.0" prefWidth="365.0" spacing="20.0">
+                    <children>
+                        <Circle fill="#b4b4b8" radius="7.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" />
+                        <Label prefWidth="200.0" text="Home" textFill="#b4b4b8">
+                            <font>
+                                <Font name="Calibri" size="18.0" />
+                            </font>
+                        </Label>
+                    </children>
+                </HBox>
+                <HBox alignment="CENTER" layoutX="10.0" layoutY="254.0" prefHeight="56.0" prefWidth="365.0" spacing="20.0">
+                    <children>
+                        <Circle fill="#b4b4b800" radius="10.0" stroke="WHITE" strokeType="INSIDE" strokeWidth="3.0" />
+                        <Label prefWidth="200.0" text="Add Reclamation" textFill="WHITE">
+                            <font>
+                                <Font name="Calibri" size="20.0" />
+                            </font>
+                        </Label>
+                    </children>
+                </HBox>
+                <HBox alignment="CENTER" layoutX="10.0" layoutY="310.0" prefHeight="56.0" prefWidth="365.0" spacing="20.0">
+                    <children>
+                        <Circle fill="#b4b4b8" radius="7.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" />
+                        <Label prefWidth="200.0" text="Home" textFill="#b4b4b8">
+                            <font>
+                                <Font name="Calibri" size="18.0" />
+                            </font>
+                        </Label>
+                    </children>
+                </HBox>
+                <HBox alignment="CENTER" layoutX="10.0" layoutY="310.0" prefHeight="56.0" prefWidth="365.0" spacing="20.0">
+                    <children>
+                        <Circle fill="#b4b4b8" radius="7.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" />
+                        <Label prefWidth="200.0" text="Home" textFill="#b4b4b8">
+                            <font>
+                                <Font name="Calibri" size="18.0" />
+                            </font>
+                        </Label>
+                    </children>
+                </HBox>
+                <Pane prefHeight="148.0" prefWidth="365.0" />
+                <Pane prefHeight="200.0" prefWidth="200.0">
+                    <children>
+                        <ImageView fitHeight="150.0" fitWidth="200.0" layoutX="83.0" layoutY="36.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@reclam-removebg-preview.png" />
+                     </image></ImageView>
+                    </children>
+                </Pane>
+            </children>
+        </VBox>
+        <Label layoutX="418.0" layoutY="-24.0" prefHeight="205.0" prefWidth="1565.0" text="Concerned about sustainability? &#10;Use our reclamation interface to report any issues or suggest improvements.&#10;" textFill="#1e7b5f">
+            <font>
+                <Font name="Calibri" size="35.0" />
+            </font>
+        </Label>
+        <HBox layoutX="374.0" layoutY="210.0" prefHeight="561.0" prefWidth="1610.0">
+            <children>
+                <VBox prefHeight="561.0" prefWidth="321.0">
+                    <children>
+                        <Label text="First Name" textFill="#607274">
+                            <font>
+                                <Font name="Calibri" size="18.0" />
+                            </font>
+                        </Label>
+                        <TextField prefHeight="50.0" promptText="user name">
+                            <VBox.margin>
+                                <Insets />
+                            </VBox.margin></TextField>
+                        <Label layoutX="10.0" layoutY="10.0" text="Last Name" textFill="#607274">
+                            <font>
+                                <Font name="Calibri" size="18.0" />
+                            </font>
+                            <VBox.margin>
+                                <Insets top="30.0" />
+                            </VBox.margin>
+                        </Label>
+                        <TextField layoutX="10.0" layoutY="32.0" prefHeight="50.0" promptText="user name" />
+                    </children>
+                    <HBox.margin>
+                        <Insets left="100.0" />
+                    </HBox.margin>
+                </VBox>
+                <VBox layoutX="110.0" layoutY="10.0" prefHeight="561.0" prefWidth="321.0">
+                    <children>
+                        <ChoiceBox fx:id="myChoiseBox1" prefWidth="150.0">
+                            <VBox.margin>
+                                <Insets top="30.0" />
+                            </VBox.margin>
+                        </ChoiceBox>
+                        <TextArea prefHeight="200.0" prefWidth="200.0" promptText="Description">
+                            <VBox.margin>
+                                <Insets top="30.0" />
+                            </VBox.margin>
+                        </TextArea>
+                        <HBox alignment="CENTER_LEFT" prefHeight="60.0" prefWidth="321.0">
+                            <children>
+                                <Pane prefHeight="60.0" prefWidth="77.0">
+                                    <children>
+                                        <Circle fill="WHITE" layoutX="29.0" layoutY="30.0" radius="25.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" />
+                                        <ImageView fitHeight="31.0" fitWidth="33.0" layoutX="13.0" layoutY="15.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@reclam.png" />
+                                 </image></ImageView>
+                                    </children>
+                                </Pane>
+                                <Label prefHeight="27.0" prefWidth="152.0" text="Upload Photo" textFill="#607274">
+                                    <font>
+                                        <Font size="18.0" />
+                                    </font>
+                                    <HBox.margin>
+                                        <Insets />
+                                    </HBox.margin>
+                                </Label>
+                            </children>
+                            <VBox.margin>
+                                <Insets top="30.0" />
+                            </VBox.margin>
+                        </HBox>
+                    </children>
+                    <HBox.margin>
+                        <Insets left="30.0" right="100.0" />
+                    </HBox.margin>
+                </VBox>
+            </children>
+        </HBox>
+        <HBox alignment="CENTER" layoutX="365.0" layoutY="721.0" prefHeight="100.0" prefWidth="1621.0" spacing="300.0" style="-fx-background-color: #ffffff;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="365.0" AnchorPane.rightAnchor="0.0">
+            <children>
+                <Button mnemonicParsing="false" prefHeight="31.0" prefWidth="92.0" style="-fx-background-color: #1e7b5f; -fx-background-radius: 1000;" text="Back" textFill="WHITE" />
+                <Button layoutX="774.0" layoutY="45.0" mnemonicParsing="false" prefHeight="31.0" prefWidth="92.0" style="-fx-background-color: #ffffff; -fx-border-color: #1e7b5f; -fx-border-radius: 1000; -fx-background-radius: 1000;" text="Submit" textFill="#1e7b5f" />
+            </children>
+        </HBox>
+    </children>
+</AnchorPane>

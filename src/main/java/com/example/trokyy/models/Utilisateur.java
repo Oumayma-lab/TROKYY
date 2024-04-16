@@ -1,7 +1,9 @@
 package com.example.trokyy.models;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Objects;
+
 public class Utilisateur {
     private int id;
     private String nom;
@@ -9,7 +11,7 @@ public class Utilisateur {
     private String email;
     private String mdp; // Correspond à "mdp" dans la base de données
     private String username;
-    private Date dateInscription;
+    private LocalDateTime dateInscription;
     private String photoProfil;
     private String adresse;
     private int tel ;
@@ -17,22 +19,17 @@ public class Utilisateur {
     //private String roles;
     private boolean isActive;
 
-    public Utilisateur(int id, String nom, String prenom, String email, String username, String mdp, Date dateInscription, String photoProfil, String adresse, String tel, List<String> roles, boolean isActive) {
-        this.id = id;
+
+    public Utilisateur(String nom, String email, LocalDateTime dateInscription, String adresse, int tel, boolean isActive) {
         this.nom = nom;
-        this.prenom = prenom;
         this.email = email;
-        this.username = username;
-        this.mdp = mdp;
         this.dateInscription = dateInscription;
-        this.photoProfil = photoProfil;
         this.adresse = adresse;
-        this.tel = Integer.parseInt(tel);
-        this.roles = roles;
+        this.tel = tel;
         this.isActive = isActive;
     }
 
-    public Utilisateur(String nom, String prenom, String email, String mdp, String adresse, String tel) {
+    public Utilisateur(String nom, String email, String mdp, String adresse, String tel) {
         this.nom = nom;
         this.prenom = prenom;
         this.email = email;
@@ -40,7 +37,6 @@ public class Utilisateur {
         this.adresse = adresse;
         this.tel = Integer.parseInt(tel);
     }
-
     public Utilisateur(int id, String nom, String prenom, String email, String mdp) {
         this.id = id;
         this.nom = nom;
@@ -65,12 +61,67 @@ public class Utilisateur {
 
     }
 
-    public Utilisateur(String nom, String prenom, String email, String mdp, String username, String photoProfil, String adresse, int tel) {
+
+
+    public Utilisateur(String nom, String prenom, String email, String mdp, LocalDateTime dateInscription) {
+        this.nom = nom;
+        this.prenom = prenom;
+        this.email = email;
+        this.mdp = mdp;
+        this.dateInscription = dateInscription;
+
+
+
+    }
+
+
+    public Utilisateur(String name, int phoneNumber, String email, String address, Boolean status, String registrationDate) {
+        this.nom = name;
+        this.tel = phoneNumber;
+        this.email = email;
+        this.adresse = address;
+        this.isActive = status;
+        this.dateInscription= LocalDateTime.parse(registrationDate);
+    }
+
+    public Utilisateur(String nom, String prenom, String email, String mdp, String username, LocalDateTime dateInscription, int tel, boolean isActive) {
+    }
+
+    public Utilisateur(String nom,String prenom, int tel, String email, String adresse, boolean isActive, LocalDateTime dateInscription) {
+        this.nom=nom;
+        this.prenom=prenom;
+        this.tel=tel;
+        this.email=email;
+        this.adresse=adresse;
+        this.isActive=isActive;
+        this.dateInscription=dateInscription;
+    }
+
+    public Utilisateur(int id, String nom, String prenom, int tel, String email, String adresse, boolean isActive, LocalDateTime dateInscription) {
+        this.id=id;
+        this.nom=nom;
+        this.prenom=prenom;
+        this.tel=tel;
+        this.email=email;
+        this.adresse=adresse;
+        this.isActive=isActive;
+        this.dateInscription=dateInscription;
+    }
+
+    public Utilisateur(int id, String nom, String prenom, int tel, String email, String adresse, boolean isActive) {
+        this.id=id;
+        this.nom=nom;
+        this.prenom=prenom;
+        this.tel=tel;
+        this.email=email;
+        this.adresse=adresse;
+        this.isActive=isActive;
     }
 
     public int getId() {
         return id;
     }
+
 
     public void setId(int id) {
         this.id = id;
@@ -116,13 +167,11 @@ public class Utilisateur {
         this.mdp = mdp;
     }
 
-    public Date getDateInscription() {
+    public LocalDateTime getDateInscription() {
         return dateInscription;
     }
 
-    public void setDateInscription(Date dateInscription) {
-        this.dateInscription = dateInscription;
-    }
+
 
     public String getPhotoProfil() {
         return photoProfil;
@@ -164,5 +213,21 @@ public class Utilisateur {
         isActive = active;
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Utilisateur that = (Utilisateur) o;
+        return id == that.id;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
+    }
+
+    public boolean isAdmin() {
+        return roles.contains("ROLE_ADMIN");
+    }
 
 }

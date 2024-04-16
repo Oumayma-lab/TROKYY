@@ -1,0 +1,166 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.JFXButton?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<HBox fx:id="root" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="735.0" prefWidth="1248.0" stylesheets="@style1.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller= "com.example.trokyy.controllers.Admin.Reponse.ApplicationViewComplaintsController">
+    <children>
+        <VBox prefHeight="722.0" prefWidth="282.0">
+         <children>
+            <VBox fx:id="side1" alignment="BOTTOM_CENTER" prefHeight="735.0" prefWidth="307.0" styleClass="side" stylesheets="@AjoutReclam.css">
+               <children>
+                  <HBox alignment="BASELINE_CENTER" prefHeight="100.0" prefWidth="200.0">
+                     <children>
+                        <ImageView fitHeight="55.0" fitWidth="107.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@logo.png" />
+                           </image>
+                        </ImageView>
+                     </children>
+                  </HBox>
+                  <Pane prefHeight="76.0" prefWidth="365.0" />
+                  <HBox alignment="CENTER" prefHeight="56.0" prefWidth="365.0" spacing="20.0">
+                     <children>
+                        <JFXButton prefHeight="48.0" prefWidth="229.0" styleClass="inner_panel" stylesheets="@AjoutReclam.css" text="Home" textFill="WHITE">
+                           <graphic>
+                              <ImageView fitHeight="25.0" fitWidth="27.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@acc.png" />
+                                 </image>
+                              </ImageView>
+                           </graphic>
+                           <font>
+                              <Font name="Calibri Bold" size="18.0" />
+                           </font>
+                        </JFXButton>
+                     </children>
+                  </HBox>
+                  <HBox alignment="CENTER" layoutX="10.0" layoutY="254.0" prefHeight="56.0" prefWidth="365.0" spacing="20.0">
+                     <children>
+                        <JFXButton prefHeight="38.0" prefWidth="240.0" styleClass="btn_home" stylesheets="@AjoutReclam.css" text="Add Reclamation" textFill="WHITE">
+                           <graphic>
+                              <ImageView fitHeight="21.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@Ajouter.png" />
+                                 </image>
+                              </ImageView>
+                           </graphic>
+                           <font>
+                              <Font name="Calibri Bold" size="18.0" />
+                           </font>
+                        </JFXButton>
+                     </children>
+                  </HBox>
+                  <HBox alignment="CENTER" layoutX="10.0" layoutY="310.0" prefHeight="56.0" prefWidth="365.0" spacing="20.0">
+                     <children>
+                        <JFXButton styleClass="inner_panel" stylesheets="@AjoutReclam.css" text="Filters" textFill="#fffdfd">
+                           <graphic>
+                              <ImageView fitHeight="31.0" fitWidth="42.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@filter.png" />
+                                 </image>
+                              </ImageView>
+                           </graphic>
+                           <font>
+                              <Font name="Calibri Bold" size="18.0" />
+                           </font>
+                        </JFXButton>
+                     </children>
+                  </HBox>
+                  <HBox alignment="CENTER" layoutX="10.0" layoutY="310.0" prefHeight="56.0" prefWidth="365.0" spacing="20.0">
+                     <children>
+                        <JFXButton styleClass="inner_panel" stylesheets="@AjoutReclam.css" text="Search" textFill="WHITE">
+                           <graphic>
+                              <ImageView fitHeight="27.0" fitWidth="25.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@loupe.png" />
+                                 </image>
+                              </ImageView>
+                           </graphic>
+                           <font>
+                              <Font name="Calibri Bold" size="18.0" />
+                           </font>
+                        </JFXButton>
+                     </children>
+                  </HBox>
+                  <Pane prefHeight="148.0" prefWidth="365.0" />
+                  <Pane prefHeight="211.0" prefWidth="274.0">
+                     <children>
+                        <ImageView fitHeight="150.0" fitWidth="200.0" layoutX="28.0" layoutY="42.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@reclam-removebg-preview.png" />
+                           </image>
+                        </ImageView>
+                     </children>
+                  </Pane>
+               </children>
+            </VBox>
+         </children>
+        </VBox>
+        <Pane prefHeight="691.0" prefWidth="973.0">
+            <children>
+                <Pane layoutX="167.0" layoutY="25.0" prefHeight="63.0" prefWidth="791.0">
+                    <children>
+                        <TextField layoutX="482.0" layoutY="19.0" promptText="Search">
+                            <font>
+                                <Font name="Century Gothic" size="15.0" />
+                            </font>
+                        </TextField>
+                        <Button fx:id="btn" layoutX="703.0" layoutY="19.0" mnemonicParsing="false" prefHeight="22.0" prefWidth="44.0" styleClass="btn" stylesheets="@style1.css" />
+                        <Button fx:id="btn1" layoutX="742.0" layoutY="19.0" mnemonicParsing="false" prefHeight="22.0" prefWidth="44.0" styleClass="btn" stylesheets="@style1.css" />
+                    </children>
+                </Pane>
+
+                <Pane prefHeight="717.0" prefWidth="970.0">
+
+                    <children>
+                        <TableView fx:id="complaintsTable" layoutX="29.0" layoutY="90.0" prefHeight="621.0" prefWidth="934.0" styleClass="table-header">
+
+                            <columns>
+                                <TableColumn fx:id="idColumn" prefWidth="65.5999755859375" text="Id" />
+
+                                <TableColumn fx:id="dateColumn" prefWidth="103.20001983642578" text="Date" />
+                                <TableColumn fx:id="typeColumn" prefWidth="154.39999389648438" text="Type" />
+                                <TableColumn fx:id="descriptionColumn" prefWidth="285.5999450683594" text="Description" />
+                                <TableColumn fx:id="imageColumn" maxWidth="310.3999328613281" prefWidth="223.0" text="More information" />
+                                <TableColumn fx:id="StatusColumn" prefWidth="280.0" text="Status" />
+
+                            </columns>
+                        </TableView>
+                  <HBox layoutX="42.0" layoutY="14.0" prefHeight="63.0" prefWidth="403.0">
+                     <children>
+                        <Label prefHeight="41.0" prefWidth="325.0" text="Reclamations List" textFill="#1e7b5f">
+                           <font>
+                              <Font name="Calibri Bold" size="36.0" />
+                           </font>
+                        </Label>
+                     </children>
+                  </HBox>
+                  <HBox layoutX="43.0" layoutY="46.0" prefHeight="55.0" prefWidth="344.0" spacing="30.0">
+                     <children>
+                        <TextField fx:id="searchByDateTextField" prefHeight="25.0" prefWidth="120.0" promptText="Search by date" />
+                        <TextField fx:id="searchByTypeTextField" prefHeight="25.0" prefWidth="120.0" promptText="Search by type" />
+                     </children>
+                     <padding>
+                        <Insets top="15.0" />
+                     </padding>
+                  </HBox>
+
+                    </children>
+                </Pane>
+            </children>
+        </Pane>
+
+    </children>
+</HBox>

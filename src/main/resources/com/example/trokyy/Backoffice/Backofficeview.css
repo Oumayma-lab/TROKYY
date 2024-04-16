@@ -1,0 +1,169 @@
+
+.mainFxmlClass {
+
+}
+.pane1{
+    -fx-background-color: #ffffff;
+    -fx-background-radius : 30;
+    -fx-border-radius : 30;
+    -fx-effect: dropshadow(three-pass-box,grey, 10, 0, 4, 4);
+
+}
+.pane2{
+    -fx-background-color: #f2f2f2;
+}
+
+.search{
+    -fx-background-color: #ffffff;
+    -fx-border-color :#0131b4  ;
+    -fx-border-radius:  2em;
+    -fx-text-fill: black;
+}
+
+.overview{
+    -fx-font-family :  Open Sans;
+    -fx-font-size: 14px;
+
+}
+
+.btn{
+    -fx-background-color : white;
+    -fx-background-radius : 30;
+    -fx-text-fill: black;
+    -fx-font-family : Open Sans;
+    -fx-font-size:13px;
+    /* -fx-border-color: #0a0833;
+     -fx-border-radius:  30;*/
+}
+
+.dataView,.overview:hover{
+    -fx-font-family :  Open Sans;
+    -fx-font-size: 14px;
+    -fx-border-color:#6C63FF;;
+    -fx-border-width:0px 0px 0px 7px;
+}
+
+.myLabel{
+    -fx-font-family : "Sans Serif Collection";
+    -fx-font-size: 15px;
+    -fx-text-fill:#000000;
+    -fx-font-weight:bold;
+}
+
+
+.btn_hover{
+    -fx-background-color: #0131b4;
+    -fx-font-family :  Open Sans;
+    -fx-font-size: 14px;
+}
+
+.btn:hover{
+    -fx-background-color: #2252e5;
+    -fx-background-radius : 30;
+    -fx-text-fill: white;
+    -fx-font-family: Open Sans;
+    -fx-font-weight:bold;
+    -fx-font-size: 12px;
+}
+
+.myPane{
+    -fx-border-color:#E1E1E1;
+    -fx-border-width:2px;
+    -fx-background-color: white;
+    -fx-background-radius: 2em;
+    -fx-border-radius:  25px;
+}
+
+.fld{
+    -fx-background-color: #E1E1E1 , white , white;
+    -fx-background-insets: 0 -1 -1 -1, 0 0 0 0, 0 -1 0 -1;
+}
+
+.fld:focused {
+    -fx-background-color: #6C63FF , white , white;
+    -fx-background-insets: 0 -1 -1 -1, 0 0 0 0, 0 -1 0 -1;
+}
+
+.infoLabel{
+    -fx-font-family :  Open Sans;
+    -fx-font-size: 13px;
+    -fx-text-fill:#000000;
+}
+.helloLabel{
+    -fx-font-family: "Sans-serif";
+    -fx-font-weight: bold;
+    -fx-font-size: 30px;
+    -fx-text-fill: white;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.5), 5, 0, 0, 1);
+    -fx-padding: 10px; /* Padding around the text */
+    -fx-background-radius: 10px; /* Rounded corners */
+    -fx-border-color: #ffffff; /* Border color */
+    -fx-border-width: 2px; /* Border width */
+    -fx-border-radius: 10px; /* Border radius */
+}
+
+.top-header {
+        -fx-shape: "M 0 0 L 0 100 L 100 100 L 100 0 Q 50 0 0 0";
+        -fx-background-size: cover;
+        -fx-background-repeat: no-repeat;
+        -fx-background-position: center;
+}
+.delete-button {
+    -fx-background-image: url('assets/deleteicon.png');
+    -fx-background-size: 5 5;
+    -fx-background-repeat: no-repeat;
+    -fx-background-position: center;
+    -fx-padding: 5;
+}
+
+.table-view {
+    /*-fx-background-color: #e3eeff; 0a54bb */
+    -fx-background-color: transparent;
+    -fx-background-radius:14 14 0 0;
+    -fx-border-color: #0a54bb;
+}
+.table-view .column-header-background{
+    /*-fx-background-color: #651FFF;*/
+    /*-fx-background-color: #e3eeff;*/
+    -fx-background-color: transparent;
+    -fx-background-radius:14;
+    -fx-background-insets: 0 0 10 0;
+
+
+}
+.table-view .column-header, .table-view .filler{
+    -fx-size:50px;
+    -fx-border-width: 0 0 10 0;
+    -fx-background-color:transparent;
+
+}
+
+.table-view .column-header .label {
+    /*-fx-text-fill: #454952;*/
+    -fx-text-fill: white;
+
+}
+
+/* Update style.css */
+.root {
+    -fx-background-color: #f0f0f0; /* Set background color */
+}
+
+
+.badge {
+    -fx-font-size: .75em;
+    -fx-padding: .45em .75em;
+    -fx-border-radius: 30px; /* or any value you want */
+}
+
+.badge-success {
+    -fx-background-color: #28a745; /* green color for success */
+    -fx-text-fill: white;
+
+}
+
+.badge-danger {
+    -fx-background-color: #dc3545; /* red color for danger */
+    -fx-text-fill: white;
+    -fx-border-radius: 10px; /* or any value you want */
+}

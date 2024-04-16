@@ -1,9 +1,8 @@
 package com.example.trokyy.controllers;
 
-import com.example.trokyy.models.UserDao;
+import com.example.trokyy.services.UserDao;
 import com.example.trokyy.models.Utilisateur;
 import com.example.trokyy.tools.MyDataBaseConnection;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
