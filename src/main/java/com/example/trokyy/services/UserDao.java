@@ -4,11 +4,7 @@ import com.example.trokyy.models.Utilisateur;
 import com.example.trokyy.tools.MyDataBaseConnection;
 import org.mindrot.jbcrypt.BCrypt;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Timestamp;
+import java.sql.*;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -16,6 +12,7 @@ import java.util.List;
 
 public class UserDao {
     private static Connection connection;
+
     public UserDao() {
         connection = MyDataBaseConnection.getInstance().getConnection();
     }
@@ -27,7 +24,7 @@ public class UserDao {
             System.err.println("Connection is null. Please check database connection.");
             return;
         }
-        String query = "INSERT INTO utilisateur (nom, prenom, email, mdp, is_active,dateinscription) VALUES (?, ?, ?, ?, ?, ?)";
+        String query = "INSERT INTO utilisateur (nom, prenom, email, mdp, is_active,dateinscription, roles) VALUES (?, ?, ?, ?, ?, ?, ?)";
         try (PreparedStatement statement = connection.prepareStatement(query)) {
             statement.setString(1, user.getNom());
             statement.setString(2, user.getPrenom());
@@ -37,29 +34,56 @@ public class UserDao {
             statement.setString(4, hashedPassword);
             statement.setBoolean(5, true); // Set is_active to true by default
             statement.setTimestamp(6, Timestamp.valueOf(registrationDate));
+            statement.setString(7, "ROLE_USER");
             statement.executeUpdate();
-            assignUserRole(user.getEmail(), "ROLE_USER");
-
+            int rowsInserted = statement.executeUpdate();
+            if (rowsInserted > 0) {
+                System.out.println("A new user was inserted successfully!");
+            }
         } catch (SQLException e) {
             e.printStackTrace();
             // Handle exception
         }
     }
 
-    private static void assignUserRole(String userEmail, String role) {
-        String query = "UPDATE utilisateur SET roles = array_append(roles, ?) WHERE email = ?";
+    public static void assignRole(String userEmail, String role) {
+        String updateQuery = "UPDATE utilisateur SET roles = ? WHERE email = ?";
+        try (PreparedStatement updateStatement = connection.prepareStatement(updateQuery)) {
+            // Retrieve existing roles
+            String[] existingRoles = getRolesByEmail(userEmail);
+            List<String> updatedRoles = new ArrayList<>(Arrays.asList(existingRoles));
+            // Add the new role to the list of roles
+            updatedRoles.add(role);
+            // Convert the list back to an array
+            Array updatedRolesArray = connection.createArrayOf("VARCHAR", updatedRoles.toArray());
+            // Update the user's roles
+            updateStatement.setArray(1, updatedRolesArray);
+            updateStatement.setString(2, userEmail);
+            updateStatement.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+            // Handle exception
+        }
+    }
+
+    private static String[] getRolesByEmail(String userEmail) throws SQLException {
+        String query = "SELECT roles FROM utilisateur WHERE email = ?";
         try (PreparedStatement statement = connection.prepareStatement(query)) {
-            statement.setString(1, role);
-            statement.setString(2, userEmail);
-            statement.executeUpdate();
-        } catch (SQLException e) {
-            e.printStackTrace();
-            // Handle exception
+            statement.setString(1, userEmail);
+            try (ResultSet resultSet = statement.executeQuery()) {
+                if (resultSet.next()) {
+                    Array rolesArray = resultSet.getArray("roles");
+                    return (String[]) rolesArray.getArray();
+                } else {
+                    System.err.println("User not found with email: " + userEmail);
+                }
+            }
         }
+        return new String[0]; // Return an empty array if no roles found
     }
+
 
     public Utilisateur getUserByEmail(String email) throws SQLException {
-
         String query = "SELECT * FROM utilisateur WHERE email = ?";
         try (PreparedStatement statement = connection.prepareStatement(query)) {
             statement.setString(1, email);
@@ -71,11 +95,12 @@ public class UserDao {
                     utilisateur.setPrenom(resultSet.getString("prenom"));
                     utilisateur.setEmail(resultSet.getString("email"));
                     utilisateur.setMdp(resultSet.getString("mdp")); // Retrieve hashed password from the database
-                    // Verify password using bcrypt
-                    String rolesString = resultSet.getString("roles");
-                    // Assuming roles are stored as comma-separated values in the database
-                    rolesString = rolesString.substring(1, rolesString.length() - 1);
-                    List<String> roles = Arrays.asList(rolesString.split(","));utilisateur.setRoles(roles);
+                    // Retrieve roles as an array
+                    Array rolesArray = resultSet.getArray("roles");
+                    if (rolesArray != null) {
+                        String[] roles = (String[]) rolesArray.getArray();
+                        utilisateur.setRoles(Arrays.asList(roles));
+                    }
                     return utilisateur;
 
                 }
@@ -85,6 +110,8 @@ public class UserDao {
     }
 
 
+
+    
     public static boolean verifyPassword(String enteredPassword, String hashedPassword) {
         // Compare the entered password with the hashed password retrieved from the database
         return BCrypt.checkpw(enteredPassword, hashedPassword);
