@@ -18,6 +18,9 @@ import javafx.stage.Stage;
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import javafx.scene.text.Text;
@@ -70,7 +73,12 @@ public class LogInController {
             Utilisateur user = userDao.getUserByEmail(email);
             if (user != null) {
                 if (UserDao.verifyPassword(password, user.getPassword())) {
-                    if (user.getRoles() != null && user.getRoles().contains("ROLE_ADMIN")) {
+                    List<String> roles = new ArrayList<>();
+                    for (String nestedRoles : user.getRoles()) {
+                        roles.addAll(Collections.singleton(nestedRoles));
+                    }
+                    System.out.println("User roles: " + roles); // Debugging statement
+                    if (roles.contains("ROLE_ADMIN")) {
                         openAdminHome();
                     } else {
                         System.out.println("User is not admin."); // Debugging statement
