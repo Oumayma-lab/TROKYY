@@ -1,6 +1,8 @@
 package com.example.trokyy.models;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 
@@ -15,7 +17,7 @@ public class Utilisateur {
     private String photoProfil;
     private String adresse;
     private int tel ;
-    private List<String> roles;
+    private List<String> roles = new ArrayList<>(Collections.singletonList("ROLE_USER"));
     //private String roles;
     private boolean isActive;
 

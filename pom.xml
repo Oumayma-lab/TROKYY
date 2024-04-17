@@ -15,7 +15,7 @@
 
   <dependencies>
 
-    <!-- Oumayma dependencies  -->
+    <!-- Ouma's dependencies  -->
     <dependency>
       <groupId>mysql</groupId>
       <artifactId>mysql-connector-java</artifactId>

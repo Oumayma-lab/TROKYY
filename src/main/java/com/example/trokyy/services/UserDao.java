@@ -34,9 +34,8 @@ public class UserDao {
             statement.setString(4, hashedPassword);
             statement.setBoolean(5, true); // Set is_active to true by default
             statement.setTimestamp(6, Timestamp.valueOf(registrationDate));
-            statement.setString(7, "ROLE_USER");
-            statement.executeUpdate();
-            int rowsInserted = statement.executeUpdate();
+            String rolesString = String.join(",", user.getRoles());
+            statement.setString(7, rolesString);int rowsInserted = statement.executeUpdate();
             if (rowsInserted > 0) {
                 System.out.println("A new user was inserted successfully!");
             }
@@ -96,11 +95,9 @@ public class UserDao {
                     utilisateur.setEmail(resultSet.getString("email"));
                     utilisateur.setMdp(resultSet.getString("mdp")); // Retrieve hashed password from the database
                     // Retrieve roles as an array
-                    Array rolesArray = resultSet.getArray("roles");
-                    if (rolesArray != null) {
-                        String[] roles = (String[]) rolesArray.getArray();
-                        utilisateur.setRoles(Arrays.asList(roles));
-                    }
+                    String rolesString = resultSet.getString("roles");
+                    List<String> roles = Arrays.asList(rolesString.split(","));
+                    utilisateur.setRoles(roles);
                     return utilisateur;
 
                 }
