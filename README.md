@@ -1,6 +1,6 @@
 
 
-# TROKY - Plateforme d'échange communautaire
+# TROKY  ^-^ - Plateforme d'échange communautaire
 
 ## Description du projet
 
