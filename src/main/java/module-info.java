@@ -30,4 +30,6 @@ module com.example.trokyy {
     opens com.example.trokyy.services to javafx.fxml;
     //exports com.example.trokyy.test;
    // opens com.example.trokyy.test to javafx.fxml;
+    exports com.example.trokyy.controllers.Blog;
+    opens com.example.trokyy.controllers.Blog to javafx.fxml;
 }

@@ -1,0 +1,96 @@
+
+.table-view {
+    -fx-background-color:#1e7b5f;
+    -fx-background-radius:14 14 0 0;
+
+}
+.table-view .column-header-background{
+    /*-fx-background-color: #651FFF;*/
+    -fx-background-color: #1e7b5f;
+    -fx-background-radius:14;
+    -fx-background-insets: 0 0 10 0;
+
+
+
+}
+.table-view .column-header, .table-view .filler{
+    -fx-size:50px;
+    -fx-border-width: 0 0 10 0;
+    -fx-background-color:transparent;
+
+}
+
+.table-view .column-header .label {
+    -fx-text-fill: white ;
+}
+
+/* Update style.css */
+.root {
+    -fx-background-color: #f0f0f0; /* Set background color */
+}
+
+.btn:hover {
+    -fx-cursor: hand;
+    -fx-background-color: #1e7b5f; /* Change button hover color */
+}
+
+
+/* Styles pour la TableView */
+.table-view {
+    -fx-background-color: #f8f8f8; /* Couleur de fond */
+}
+
+/* Styles pour les en-têtes de colonnes */
+.table-column .label {
+    -fx-font-weight: bold;
+    -fx-text-fill: #333333; /* Couleur du texte */
+}
+
+/* Styles pour les boutons */
+.button {
+    -fx-background-color: #1e7b5f; /* Couleur de fond */
+    -fx-text-fill: white; /* Couleur du texte */
+    -fx-font-weight: bold;
+}
+
+.button:hover {
+    -fx-background-color: #155e4d; /* Couleur de fond au survol */
+}
+.btn:hover{
+    -fx-cursor:hand ;
+}
+.delete-icon, .edit-icon, .response-icon {
+    -fx-cursor: hand;
+    -glyph-size: 20px;
+    -fx-fill: #000000; /* Couleur par défaut */
+}
+
+.delete-icon:hover, .edit-icon:hover, .response-icon:hover {
+    -fx-fill: #ff1744; /* Couleur au survol pour l'icône de suppression */
+}
+
+.edit-icon:hover {
+    -fx-fill: #00E676; /* Couleur au survol pour l'icône d'édition */
+}
+
+.response-icon:hover {
+    -fx-fill: #2196F3; /* Couleur au survol pour l'icône de réponse */
+}
+
+.status-label {
+    -fx-background-color: transparent;
+    -fx-text-fill: black;
+    -fx-padding: 4px 8px;
+}
+
+.resolved {
+    -fx-background-color: #4CAF50; /* Vert pour les réclamations résolues */
+}
+
+.pending {
+    -fx-background-color: #FFC107; /* Jaune pour les réclamations en attente */
+}
+
+.unresolved {
+    -fx-background-color: #F44336; /* Rouge pour les réclamations non résolues */
+}

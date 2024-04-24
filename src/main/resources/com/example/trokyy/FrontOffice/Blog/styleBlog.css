@@ -1,0 +1,80 @@
+.root{
+    -fx-background-color: #EAEEF4;
+}
+
+
+.side{
+    -fx-background-color: #1e7b5f;
+    -fx-border-color: #1e7b5f;
+    -fx-border-width: 2px 2px 2px 2px 2px 2px;
+    -fx-border-radius: 20px;
+    -fx-background-radius: 20px;
+    -fx-border-style: solid;
+}
+
+.inner_panel{
+    -fx-background-color: #1e7b5f;
+    -fx-border-width: 2px 2px 2px 2px;
+    -fx-border-radius: 20px;
+    -fx-background-radius: 20px;
+    -fx-border-style: solid;
+    -fx-border-color:#1e7b5f;
+}
+
+.most_inner_panel{
+    -fx-background-color: #6780E2;
+    -fx-border-width: 2px 2px 2px 2px;
+    -fx-border-radius: 20px;
+    -fx-background-radius: 20px;
+    -fx-border-style: solid;
+    -fx-border-color: #748CF1}
+
+.btn_home{
+    -fx-background-color: #D4E7C5;
+    -fx-border-width: 2px 2px 2px 2px;
+    -fx-border-radius: 50px;
+    -fx-background-radius: 50px;
+    -fx-border-style: solid;
+    -fx-border-color: #D4E7C5;}
+
+
+.btn_j{
+    -fx-background-color: #f9bf29;
+    -fx-border-width: 2px 2px 2px 2px;
+    -fx-border-radius: 20px;
+    -fx-background-radius: 20px;
+    -fx-border-style: solid;
+    -fx-border-color:#f9bf29;
+}
+
+/* ListView */
+#BlogListView {
+    -fx-background-color: transparent; /* Couleur de fond transparente */
+}
+
+/* Styles pour les cellules de la ListView */
+.blog-cell {
+    -fx-background-color: #FFFFFF; /* Couleur de fond des cellules */
+    -fx-padding: 10px; /* Espacement intérieur des cellules */
+}
+/* Bouton Edit */
+.edit-button {
+    -fx-background-color: #4CAF50; /* Couleur de fond du bouton */
+    -fx-text-fill: white; /* Couleur du texte */
+}
+
+/* Bouton Delete */
+.delete-button {
+    -fx-background-color: #F44336; /* Couleur de fond du bouton */
+    -fx-text-fill: white; /* Couleur du texte */
+}
+
+/* Label des titres */
+.blog-title-label {
+    -fx-font-weight: bold; /* Police en gras */
+}
+
+/* Label des dates */
+.blog-date-label {
+    -fx-font-style: italic; /* Police en italique */
+}

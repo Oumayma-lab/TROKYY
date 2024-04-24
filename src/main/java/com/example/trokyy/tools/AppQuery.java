@@ -1,5 +1,6 @@
 package com.example.trokyy.tools;
 
+import com.example.trokyy.models.Blog;
 import com.example.trokyy.services.DisplayQuery;
 import com.example.trokyy.models.Reclamation;
 import com.example.trokyy.models.Reponse;
@@ -215,11 +216,6 @@ public class AppQuery {
             e.printStackTrace();
         }
     }
-
-
-
-
-
 
 
 
