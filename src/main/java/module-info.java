@@ -15,6 +15,10 @@ module com.example.trokyy {
     requires com.jfoenix;
     requires java.desktop;
     requires java.mail;
+    requires google.api.client;
+    requires com.google.api.client;
+    requires google.api.services.oauth2.v2.rev157;
+
 
     opens com.example.trokyy to javafx.fxml;
     exports com.example.trokyy;
@@ -28,6 +32,9 @@ module com.example.trokyy {
     opens com.example.trokyy.controllers.Reclamation to javafx.fxml;
     exports com.example.trokyy.services;
     opens com.example.trokyy.services to javafx.fxml;
+    exports com.example.trokyy.controllers.User;
+    opens com.example.trokyy.controllers.User to javafx.fxml;
+
     //exports com.example.trokyy.test;
    // opens com.example.trokyy.test to javafx.fxml;
 }

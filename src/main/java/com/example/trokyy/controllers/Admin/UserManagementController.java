@@ -41,6 +41,7 @@ public class UserManagementController {
     private TableColumn<Utilisateur, Integer> idColumn;
     @FXML
     private TextField searchField; // Text field for entering search query
+
     @FXML
     private ImageView banIcon;
     @FXML
@@ -180,7 +181,7 @@ public class UserManagementController {
 
 
     @FXML
-    private void handleSearch() {
+    void handleSearch() {
         String query = searchField.getText().trim();
         if (!query.isEmpty()) {
             try {
@@ -204,6 +205,37 @@ public class UserManagementController {
         }
     }
 
+
+
+
+    public void setTableView(TableView<Utilisateur> tableView) {
+        this.tableView = tableView;
+    }
+
+
+
+    public void setSearchQuery(String query) {
+        if (!query.isEmpty()) {
+            try {
+                List<Utilisateur> searchResults = userDao.searchUsers(query);
+                tableView.getItems().clear(); // Clear existing data
+                tableView.getItems().addAll(searchResults); // Display search results
+            } catch (SQLException e) {
+                e.printStackTrace();
+                // Handle database query errors
+            }
+        } else {
+            // If the search query is empty, display all users
+            try {
+                tableView.getItems().clear(); // Clear existing data
+                List<Utilisateur> userList = userDao.getAllUsers();
+                tableView.getItems().addAll(userList); // Display all users
+            } catch (SQLException e) {
+                e.printStackTrace();
+                // Handle database query errors
+            }
+        }
+    }
 
 
 

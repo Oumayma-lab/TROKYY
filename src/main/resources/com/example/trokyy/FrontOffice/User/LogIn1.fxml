@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.net.URL?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.PasswordField?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.shape.Line?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="550.0" prefWidth="350.0" style="-fx-background-color: transparent;" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.trokyy.controllers.LogInController">
+   <stylesheets>
+      <URL value="@stylesheet.css" />
+   </stylesheets>
+
+   <Pane layoutX="20.0" layoutY="194.0" prefHeight="182.0" prefWidth="302.0">
+      <children>
+            <TextField fx:id="usernameField" layoutY="14.0" prefHeight="40.0" prefWidth="302.0" promptText="Username" style="-fx-background-color: #E8F0E6;   -fx-background-radius: 20px; -fx-font-family: 'Poppins';" />
+            <PasswordField fx:id="passwordField" layoutY="69.0" prefHeight="40.0" prefWidth="302.0" promptText="Password" style="-fx-background-color: #E8F0E6; -fx-background-radius: 20px;   -fx-font-family: 'Poppins';" />
+            <Button fx:id="loginButton" layoutX="13.0" layoutY="192.0" mnemonicParsing="false" onAction="#loginUser" prefHeight="37.0" prefWidth="280.0" style="-fx-background-color: #006400;" styleClass="login-button" text="Login" textFill="WHITE">
+            </Button>
+         <Button fx:id="GoogleButton" layoutX="13.0" layoutY="252.0" mnemonicParsing="false" onAction="#loginUser" prefHeight="37.0" prefWidth="280.0" styleClass="Google-button" text="Sign in with Google" textFill="DARKGREEN" />
+      </children>
+   </Pane>
+
+      <Text fill="DARKGREEN" fontSmoothingType="LCD" layoutX="-2.0" layoutY="67.0" strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-font-family: 'Poppins';" text="Welcome Back Trockino" textAlignment="CENTER" wrappingWidth="359.199951171875">
+      <font>
+         <Font name="System Bold" size="23.0" />
+      </font>
+      </Text>
+      <Text fx:id="registerText" fill="DARKGREEN" layoutX="95.0" layoutY="531.0" onMouseClicked="#showSignUpForm" strokeType="OUTSIDE" strokeWidth="0.0" text="Sign Up " textAlignment="CENTER" wrappingWidth="280.0">
+
+      </Text>
+
+   <Text fill="#767e76" fontSmoothingType="LCD" layoutX="-5.0" layoutY="94.0"  strokeType="OUTSIDE" strokeWidth="0.0" text="Please sign in to your account" textAlignment="CENTER" wrappingWidth="359.199951171875" />
+   
+   <Pane layoutX="-5.0" layoutY="421.05078125">
+      <children>
+         <Text fill="#767e76" layoutY="20.0" onMouseClicked="#showSignUpForm" strokeType="OUTSIDE" strokeWidth="0.0" text="or " textAlignment="CENTER" wrappingWidth="359.199951171875" />
+      </children>
+   </Pane>
+   <Text fill="DARKGREEN" fontSmoothingType="LCD" layoutX="212.0" layoutY="325.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Forgot password ?" textAlignment="RIGHT" wrappingWidth="105.59991073608398">
+      <font>
+         <Font name="System Bold" size="11.0" />
+      </font>
+   </Text>
+   <Line endX="100.0" layoutX="177.0" layoutY="540.0" startX="-100.0" stroke="GREY" />
+   <Text fx:id="registerText1" fill="#404040" layoutX="18.0" layoutY="531.0" onMouseClicked="#showSignUpForm" strokeType="OUTSIDE" strokeWidth="0.0" text="Don't have an account? " textAlignment="CENTER" wrappingWidth="261.9999999999999" />
+</AnchorPane>

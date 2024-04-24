@@ -24,7 +24,7 @@ public class UserDao {
             System.err.println("Connection is null. Please check database connection.");
             return;
         }
-        String query = "INSERT INTO utilisateur (nom, prenom, email, mdp, is_active,dateinscription, roles) VALUES (?, ?, ?, ?, ?, ?, ?)";
+        String query = "INSERT INTO utilisateur (nom, prenom, email, mdp, tel, adresse, is_active, dateinscription, roles) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
         try (PreparedStatement statement = connection.prepareStatement(query)) {
             statement.setString(1, user.getNom());
             statement.setString(2, user.getPrenom());
@@ -32,10 +32,13 @@ public class UserDao {
             String salt = BCrypt.gensalt(12); // You can adjust the strength of the salt (e.g., 12)
             String hashedPassword = BCrypt.hashpw(user.getPassword(), salt);
             statement.setString(4, hashedPassword);
-            statement.setBoolean(5, true); // Set is_active to true by default
-            statement.setTimestamp(6, Timestamp.valueOf(registrationDate));
+            statement.setString(5, String.valueOf(user.getTelephone())); // Set telephone number as string
+            statement.setString(6, user.getAdresse());   // Set address
+            statement.setBoolean(7, true); // Set is_active to true by default
+            statement.setTimestamp(8, Timestamp.valueOf(registrationDate));
             String rolesString = String.join(",", user.getRoles());
-            statement.setString(7, rolesString);int rowsInserted = statement.executeUpdate();
+            statement.setString(9, rolesString);
+            int rowsInserted = statement.executeUpdate();
             if (rowsInserted > 0) {
                 System.out.println("A new user was inserted successfully!");
             }
@@ -94,10 +97,13 @@ public class UserDao {
                     utilisateur.setPrenom(resultSet.getString("prenom"));
                     utilisateur.setEmail(resultSet.getString("email"));
                     utilisateur.setMdp(resultSet.getString("mdp")); // Retrieve hashed password from the database
+                    utilisateur.setActive(resultSet.getBoolean("is_active"));
                     // Retrieve roles as an array
                     String rolesString = resultSet.getString("roles");
-                    List<String> roles = Arrays.asList(rolesString.split(","));
-                    utilisateur.setRoles(roles);
+                    if (rolesString != null) {
+                        String[] rolesArray = rolesString.split(",");
+                        utilisateur.setRoles(Arrays.asList(rolesArray));
+                    }
                     return utilisateur;
 
                 }
@@ -108,11 +114,17 @@ public class UserDao {
 
 
 
-    
+
     public static boolean verifyPassword(String enteredPassword, String hashedPassword) {
+        // Check if either enteredPassword or hashedPassword is null or empty
+        if (enteredPassword == null || enteredPassword.isEmpty() || hashedPassword == null || hashedPassword.isEmpty()) {
+            return false; // Password verification fails if either password is null or empty
+        }
+
         // Compare the entered password with the hashed password retrieved from the database
         return BCrypt.checkpw(enteredPassword, hashedPassword);
     }
+
 
 
 
@@ -133,6 +145,8 @@ public class UserDao {
                 user.setPhotoProfil(resultSet.getString("avatar"));
                 user.setAdresse(resultSet.getString("adresse"));
                 user.setTelephone(resultSet.getInt("tel"));
+                user.setActive(resultSet.getBoolean("is_active"));
+
             }
         }
         return user;
@@ -253,11 +267,13 @@ public class UserDao {
             try (ResultSet resultSet = statement.executeQuery()) {
                 if (resultSet.next()) {
                     return !resultSet.getBoolean("is_active"); // Return true if user is banned (isActive is false)
+
                 }
             }
         }
         return false; // Return false if user is not found or isActive is true
     }
+
     public List<Utilisateur> searchUsers(String query) throws SQLException {
         List<Utilisateur> searchResults = new ArrayList<>();
         String sql = "SELECT * FROM Utilisateur WHERE nom LIKE ? OR prenom LIKE ? OR email LIKE ? OR adresse LIKE ? OR id = ?";
