@@ -11,7 +11,8 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.BorderPane;
 import javafx.fxml.Initializable;
-
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import java.io.IOException;
 import java.net.URL;
 import java.sql.Connection;
@@ -57,12 +58,15 @@ public class AdminMainController implements Initializable {
     private TableView<Utilisateur> tableView;
     // Mapping between buttons and their respective FXML files
     private final Map<Button, String> buttonFXMLMap = new HashMap<>();
+    public UserManagementController userManagementController;
+
 
     // Map to store buttons and their original styles
     private Map<Button, String> buttonStyles = new HashMap<>();
 
     private Button selectedButton = null;
     private static final UserDao userDao = new UserDao();
+
 
 
     public AdminMainController() throws SQLException {
@@ -75,21 +79,19 @@ public class AdminMainController implements Initializable {
     public void initialize(URL location, ResourceBundle resources) {
         // Initialize the button to FXML file mapping
         buttonFXMLMap.put(Home, "Home.fxml");
-        buttonFXMLMap.put(Users, "UserManagement1.fxml");
+        buttonFXMLMap.put(Users, "UserManagement.fxml");
         buttonFXMLMap.put(Offers, "OffersManagement.fxml");
         buttonFXMLMap.put(Blogs, "BlogsManagement.fxml");
         buttonFXMLMap.put(Events, "EventsManagement.fxml");
         buttonFXMLMap.put(Complaints, "ComplaintsManagement.fxml");
         buttonFXMLMap.put(Donations, "DonationsManagement.fxml");
-
         // Initialize map with buttons and their styles
         initializeButtonStyles();
-
         // Add event handlers to all buttons
         addButtonEventHandlers();
-
         // Set initial content (Home page)
         loadContent("Home.fxml");
+
     }
 
     private void addButtonEventHandlers() {
@@ -136,16 +138,19 @@ public class AdminMainController implements Initializable {
         // Load the corresponding FXML file and set it as the center content
         String fxmlFile = buttonFXMLMap.get(clickedButton);
         loadContent(fxmlFile);
+
     }
 
     private void loadContent(String fxmlFile) {
         try {
-            // Load the FXML file
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/trokyy/Backoffice/" + fxmlFile));
             Parent content = loader.load();
-
-            // Set the loaded content as the center of the BorderPane
+            Object controller = loader.getController();
             borderPane.setCenter(content);
+
+            if (controller instanceof UserManagementController) {
+                userManagementController = (UserManagementController) controller;
+            }
         } catch (IOException e) {
             Logger.getLogger(AdminMainController.class.getName()).log(Level.SEVERE, "Error loading FXML file: " + fxmlFile, e);
         } catch (Exception ex) {
@@ -164,10 +169,8 @@ public class AdminMainController implements Initializable {
     }
     @FXML
     private void navigatetousers(ActionEvent event) {
-        loadContent("UserManagement1.fxml");
+        loadContent("UserManagement.fxml");
     }
-
-
 
     @FXML
     private void navigatetooffers(ActionEvent event) {
@@ -198,35 +201,22 @@ public class AdminMainController implements Initializable {
     private void logout(ActionEvent event) {
         // Handle logout action here
     }
-
-
-
-
     @FXML
     private void handleSearch() {
-        String query = searchField.getText().trim();
-        if (!query.isEmpty()) {
-            try {
-                List<Utilisateur> searchResults = userDao.searchUsers(query);
-                tableView.getItems().clear(); // Clear existing data
-                tableView.getItems().addAll(searchResults); // Display search results
-            } catch (SQLException e) {
-                e.printStackTrace();
-                // Handle database query errors
-            }
+        if (userManagementController != null) {
+            String query = searchField.getText().trim();
+            userManagementController.setSearchQuery(query);
         } else {
-            // If the search query is empty, display all users
-            try {
-                tableView.getItems().clear(); // Clear existing data
-                List<Utilisateur> userList = userDao.getAllUsers();
-                tableView.getItems().addAll(userList); // Display all users
-            } catch (SQLException e) {
-                e.printStackTrace();
-                // Handle database query errors
-            }
+            System.err.println("User management controller is not initialized.");
         }
     }
 
+
+
+
+    public void setUserManagementController(UserManagementController userManagementController) {
+        this.userManagementController = userManagementController;
+    }
 
 
 }

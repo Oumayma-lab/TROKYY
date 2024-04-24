@@ -13,6 +13,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 
 import java.io.IOException;
@@ -38,6 +39,8 @@ public class LogInController {
 
     @FXML
     private Text registerText;
+    @FXML
+    private Pane Container; // Reference to the container pane in Main.fxml
     private final UserDao userDao = new UserDao();
 
     public LogInController() {
@@ -55,8 +58,8 @@ public class LogInController {
             showBlockedMessage();
             return; // Stop login process if user is banned
         }
-        
-        
+
+
         if (!isValidEmail(email)) {
             showAlert("Error", "Please enter a valid email address.");
             usernameField.requestFocus();
@@ -90,7 +93,7 @@ public class LogInController {
             } else {
                 showAlert("Error", "User not found.");
             }
-        }  catch (SQLException e) {
+        } catch (SQLException e) {
             e.printStackTrace();
             showAlert("Error", "Failed to log in.");
         }
@@ -105,7 +108,7 @@ public class LogInController {
             stage.setTitle("Admin Home");
             stage.show();
             closeLoginStage();
-            
+
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -156,21 +159,31 @@ public class LogInController {
         alert.showAndWait();
     }
 
-    public void showRegisterStage(MouseEvent mouseEvent) {
+    // Method to switch to the sign-up form when the text is clicked
+
+    @FXML
+    private void showSignUpForm(MouseEvent mouseEvent) {
         try {
-            // Load the FXML file for the signup page
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/trokyy/FrontOffice/User/SignUp.fxml"));
-            Parent signupRoot = loader.load();
-            Stage signupStage = new Stage();
-            signupStage.setScene(new Scene(signupRoot));
-            signupStage.setTitle("Sign Up");
-            signupStage.show();
-            closeLoginStage();
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/trokyy/FrontOffice/User/signup.fxml"));
+            Parent signUpForm = loader.load();
+            if (Container != null) {
+                Container.getChildren().setAll(signUpForm);
+            } else {
+                System.err.println("Container is null. Check FXML binding.");
+            }
         } catch (IOException e) {
             e.printStackTrace();
+            System.err.println("Error loading sign-up form FXML file.");
         }
     }
 
+
+    public void setContainer(Pane container) {
+        this.Container = container;
+    }
+    @FXML
+    public void showRegisterStage(MouseEvent mouseEvent) {
+    }
 }
 
 

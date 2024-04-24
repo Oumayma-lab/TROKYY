@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.net.URL?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.shape.Rectangle?>
+
+<AnchorPane  xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.trokyy.controllers.User.MainController">
+
+       <stylesheets>
+           <URL value="@stylesheet.css" />
+       </stylesheets>
+
+    <children>
+        <!-- Background Image -->
+           <ImageView fitHeight="786.0" fitWidth="1551.0" layoutY="0.800000011920929">
+               <image>
+                   <Image url="@../assets/finalBackground.png" />
+               </image>
+           </ImageView>
+   
+              <!-- Card with Login or Signup Form -->
+           <VBox alignment="CENTER" spacing="20" />
+            <Pane  layoutX="925.0" layoutY="65.0" prefHeight="660.0" prefWidth="450.0" styleClass="blurred-pane">
+                <!-- Placeholder for login or signup form -->
+                <!-- <fx:include fx:id="loginForm" source="LogIn.fxml" /> -->
+                <Pane fx:id="FormContainer" layoutX="10.0" layoutY="61.0" prefHeight="550.0" prefWidth="430.0" styleClass="white-pane">
+            <children>
+               <Rectangle arcHeight="5.0" arcWidth="5.0" fill="WHITE" height="198.0" layoutX="230.0" stroke="WHITE" strokeType="INSIDE" width="200.0" />
+               <Rectangle arcHeight="5.0" arcWidth="5.0" fill="WHITE" height="198.0" layoutX="1.0" layoutY="351.0" stroke="WHITE" strokeType="INSIDE" width="207.0" />
+               <Pane fx:id="Container"  layoutX="40.0" layoutY="1.0" prefHeight="550.0" prefWidth="350.0" >
+                   <fx:include fx:id="loginForm" source="LogIn1.fxml" />
+               </Pane>
+            </children>
+                </Pane>
+           </Pane>
+   </children>
+</AnchorPane>

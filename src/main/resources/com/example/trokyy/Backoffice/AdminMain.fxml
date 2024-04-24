@@ -100,6 +100,7 @@
 
     <center>
 
+
     </center>
    <top>
       <HBox prefHeight="74.0" prefWidth="1535.0" BorderPane.alignment="CENTER">
@@ -114,7 +115,7 @@
                </children></Pane>
             <HBox prefHeight="74.0" prefWidth="936.0" style="-fx-padding: 18 0 0 0;">
                <children>
-                  <TextField fx:id="tf_filter" prefHeight="36.5" prefWidth="562.0" promptText="Search for ..." styleClass="search">
+                  <TextField fx:id="searchField" prefHeight="36.5" prefWidth="562.0" promptText="Search for ..." styleClass="search" onAction="#handleSearch" >
                      <font>
                         <Font size="15.0" />
                      </font>
@@ -180,8 +181,5 @@
                </children>
            </AnchorPane>
        </center>
-
-
-
 
 </BorderPane>

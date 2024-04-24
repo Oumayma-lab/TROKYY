@@ -15,4 +15,5 @@
         <!-- Add a Text node with the "Hello Offers" text -->
         <Text text="Hello Events ^_^ " />
     </children>
+
 </VBox>

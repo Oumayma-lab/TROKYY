@@ -31,10 +31,8 @@ public class UpdateReclamationController implements Initializable {
 
     @FXML
     private Label lblImagePath;
-
     @FXML
     private String image_path;
-
     @FXML
     private ChoiceBox<String> typeChoiceBox;
 

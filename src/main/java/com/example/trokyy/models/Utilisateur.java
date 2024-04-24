@@ -1,5 +1,7 @@
 package com.example.trokyy.models;
 
+import javafx.scene.control.TextField;
+
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -118,6 +120,26 @@ public class Utilisateur {
         this.email=email;
         this.adresse=adresse;
         this.isActive=isActive;
+    }
+
+    public Utilisateur(String nom, String prenom, String email, String mdp, int tel, String adresse) {
+        this.nom=nom;
+        this.prenom=prenom;
+        this.email=email;
+        this.mdp=mdp;
+        this.tel= tel;
+        this.adresse=adresse;
+    }
+
+    public Utilisateur(String nom, String prenom, String email, String mdp, TextField phoneNumber, String adresse) {
+
+        this.nom=nom;
+        this.prenom=prenom;
+        this.email=email;
+        this.mdp=mdp;
+        this.tel= tel;
+        this.adresse=adresse;
+
     }
 
     public int getId() {

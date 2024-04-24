@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.shape.Circle?>
+
+
+<VBox alignment="center" prefHeight="400.0" prefWidth="126.0" spacing="10" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1">
+    <children>
+        <Pane>
+            <children>
+                <ImageView fitHeight="228.0" fitWidth="1252.0" layoutY="-117.0">
+                    <image>
+                        <Image url="@../assets/profileBackground.png" />
+                    </image>
+                </ImageView>
+                <Pane layoutX="71.0" layoutY="1.0" prefHeight="150.0" prefWidth="1078.0" style="-fx-background-color: white; -fx-background-radius: 30 30 30 30;">
+                    <children>
+                        <Circle fill="BEIGE" layoutX="137.0" layoutY="81.0" radius="94.0" stroke="BEIGE" strokeType="INSIDE" />
+                        <Circle fill="GREEN" layoutX="141.0" layoutY="85.0" radius="75.0" stroke="BLACK" strokeType="INSIDE" />
+                    </children>
+                </Pane>
+            </children>
+        </Pane>
+        <Label fx:id="nameLabel" text="Nom : " />
+        <Label fx:id="emailLabel" text="Email : " />
+        <Label fx:id="usernameLabel" text="Nom d'utilisateur : " />
+        <Label fx:id="addressLabel" text="Adresse : " />
+        <Label fx:id="telLabel" text="Téléphone : " />
+        <Button fx:id="editButton" onAction="#editProfile" text="Edit" />
+    </children>
+</VBox>

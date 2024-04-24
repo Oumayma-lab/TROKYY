@@ -1,0 +1,47 @@
+
+    .blurred-pane {
+        -fx-background-color: rgba(255, 255, 255, 0.6); /* Semi-transparent white background */
+        -fx-background-radius: 45px; /* Rounded corners */
+        -fx-padding: 20px; /* Padding */
+        -fx-effect: blur(10px); /* Blurred effect */
+    }
+
+    .white-pane {
+        -fx-background-color: white;
+        -fx-background-radius: 100px; /* Rounded corners */
+        -fx-padding: 20px; /* Padding */
+        -fx-effect: blur(10px); /* Blurred effect */
+    }
+
+
+    .root {
+        -fx-font-family: 'Poppins';
+    }
+
+    .text-field {
+        -fx-background-color: #E8F0E6;
+        -fx-border-width: 2px;
+        -fx-background-radius: 25px;
+    }
+
+    /* Style the password field */
+    .password-field {
+        -fx-background-color: #E8F0E6;
+        -fx-border-width: 2px;
+        -fx-background-radius: 25px;
+    }
+
+    /* Style the login button */
+    .login-button {
+        -fx-background-radius: 30px;
+        -fx-text-fill: white;
+        -fx-border-radius: 30px;
+    }
+
+    .Google-button {
+        -fx-background-color: #E8F0E6;
+        -fx-background-radius: 30px;
+        -fx-border-color: #006400;
+        -fx-text-fill: black;
+        -fx-border-radius: 30px;
+    }
