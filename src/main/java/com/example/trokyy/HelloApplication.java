@@ -14,7 +14,14 @@ public class HelloApplication extends Application {
     @Override
     public void start(Stage stage) throws IOException {
         //Parent root = FXMLLoader.load(getClass().getResource("FrontOffice/Reclamation/ListReclam.fxml"));
-        Parent root = FXMLLoader.load(getClass().getResource("backoffice/AdminMain.fxml"));
+
+
+        //Eya Blog:
+        //Parent root = FXMLLoader.load(getClass().getResource("FrontOffice/Blog/AjoutBlog.fxml"));
+        Parent root = FXMLLoader.load(getClass().getResource("FrontOffice/Blog/ListBlog.fxml"));
+        //Parent root = FXMLLoader.load(getClass().getResource("FrontOffice/Blog/ListBlog.fxml"));
+
+        //Parent root = FXMLLoader.load(getClass().getResource("backoffice/AdminMain.fxml"));
         //Parent root = FXMLLoader.load(getClass().getResource("FrontOffice/user/login.fxml"));
         Scene scene = new Scene(root);
         stage.setTitle("Troky ");
