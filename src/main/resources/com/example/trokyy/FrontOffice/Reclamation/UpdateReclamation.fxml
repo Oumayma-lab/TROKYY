@@ -21,21 +21,21 @@
     <children>
         <VBox fx:id="side" alignment="BOTTOM_CENTER" layoutX="-12.0" layoutY="14.0" prefHeight="810.0" prefWidth="377.0" styleClass="side" stylesheets="@AjoutReclam.css" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0">
             <children>
-                <HBox alignment="BASELINE_CENTER" prefHeight="100.0" prefWidth="200.0">
+                <Pane>
                     <children>
-                        <ImageView fitHeight="55.0" fitWidth="107.0" pickOnBounds="true" preserveRatio="true">
+                        <ImageView fitHeight="76.0" fitWidth="136.0" layoutX="115.0" layoutY="23.0" pickOnBounds="true" preserveRatio="true">
                             <image>
                                 <Image url="@logo.png" />
                             </image>
                         </ImageView>
                     </children>
-                </HBox>
+                </Pane>
                 <Pane prefHeight="76.0" prefWidth="365.0" />
                 <HBox alignment="CENTER" prefHeight="56.0" prefWidth="365.0" spacing="20.0">
                     <children>
-                        <JFXButton prefHeight="48.0" prefWidth="229.0" styleClass="inner_panel" stylesheets="@AjoutReclam.css" text="Home" textFill="WHITE">
+                        <JFXButton prefHeight="38.0" prefWidth="115.0" styleClass="inner_panel" stylesheets="@AjoutReclam.css" text="Home" textFill="WHITE">
                             <graphic>
-                                <ImageView fitHeight="25.0" fitWidth="27.0" pickOnBounds="true" preserveRatio="true">
+                                <ImageView fitHeight="22.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
                                     <image>
                                         <Image url="@acc.png" />
                                     </image>
@@ -44,54 +44,66 @@
                             <font>
                                 <Font name="Calibri Bold" size="18.0" />
                             </font>
+                            <HBox.margin>
+                                <Insets right="110.0" />
+                            </HBox.margin>
                         </JFXButton>
                     </children>
                 </HBox>
                 <HBox alignment="CENTER" layoutX="10.0" layoutY="254.0" prefHeight="56.0" prefWidth="365.0" spacing="20.0">
                     <children>
-                        <JFXButton prefHeight="38.0" prefWidth="240.0" styleClass="btn_home" stylesheets="@AjoutReclam.css" text="Update Reclamation" textFill="WHITE">
+                        <JFXButton onAction="#switchToAnotherView3" prefHeight="38.0" prefWidth="211.0" styleClass="inner_panel" stylesheets="@AjoutReclam.css" text="Add Complaint" textFill="WHITE">
                             <graphic>
                                 <ImageView fitHeight="21.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
                                     <image>
-                                        <Image url="@Icon%20Reclamation/updated%20(1).png" />
+                                        <Image url="@Ajouter.png" />
                                     </image>
                                 </ImageView>
                             </graphic>
                             <font>
                                 <Font name="Calibri Bold" size="18.0" />
                             </font>
+                            <HBox.margin>
+                                <Insets right="40.0" />
+                            </HBox.margin>
                         </JFXButton>
                     </children>
                 </HBox>
                 <HBox alignment="CENTER" layoutX="10.0" layoutY="310.0" prefHeight="56.0" prefWidth="365.0" spacing="20.0">
                     <children>
-                        <JFXButton styleClass="inner_panel" stylesheets="@AjoutReclam.css" text="Filters" textFill="#fffdfd">
+                        <JFXButton onAction="#switchToAnotherView1" styleClass="inner_panel" stylesheets="@AjoutReclam.css" text="List Complaints" textFill="#fffdfd">
                             <graphic>
-                                <ImageView fitHeight="31.0" fitWidth="42.0" pickOnBounds="true" preserveRatio="true">
+                                <ImageView fitHeight="24.0" fitWidth="28.0" pickOnBounds="true" preserveRatio="true">
                                     <image>
-                                        <Image url="@filter.png" />
+                                        <Image url="@list.png" />
                                     </image>
                                 </ImageView>
                             </graphic>
                             <font>
                                 <Font name="Calibri Bold" size="18.0" />
                             </font>
+                            <HBox.margin>
+                                <Insets right="40.0" />
+                            </HBox.margin>
                         </JFXButton>
                     </children>
                 </HBox>
                 <HBox alignment="CENTER" layoutX="10.0" layoutY="310.0" prefHeight="56.0" prefWidth="365.0" spacing="20.0">
                     <children>
-                        <JFXButton styleClass="inner_panel" stylesheets="@AjoutReclam.css" text="Search" textFill="WHITE">
+                        <JFXButton styleClass="btn_home" stylesheets="@AjoutReclam.css" text="Update Complaint" textFill="WHITE">
                             <graphic>
                                 <ImageView fitHeight="27.0" fitWidth="25.0" pickOnBounds="true" preserveRatio="true">
                                     <image>
-                                        <Image url="@loupe.png" />
+                                        <Image url="@up.png" />
                                     </image>
                                 </ImageView>
                             </graphic>
                             <font>
                                 <Font name="Calibri Bold" size="18.0" />
                             </font>
+                            <HBox.margin>
+                                <Insets right="20.0" />
+                            </HBox.margin>
                         </JFXButton>
                     </children>
                 </HBox>
@@ -160,26 +172,26 @@
                             </VBox.margin>
                         </HBox>
                         <Pane prefHeight="4.0" prefWidth="548.0">
-                     <children>
-                              <HBox alignment="CENTER" prefHeight="57.0" prefWidth="553.0" spacing="300.0">
-                                  <children>
-                                      <Button layoutX="774.0" layoutY="45.0" mnemonicParsing="false" onAction="#clearFields" prefHeight="31.0" prefWidth="92.0" stylesheets="@AjoutReclam.css" text="Clear" textFill="WHITE">
-                                          <styleClass>
-                                              <String fx:value="btn-secondary" />
-                                              <String fx:value="btn_j" />
-                                          </styleClass>
-                                          <font>
-                                              <Font name="Calibri Bold" size="18.0" />
-                                          </font>
-                                      </Button>
-                                      <Button fx:id="updatebtn" layoutX="774.0" layoutY="45.0" mnemonicParsing="false" onAction="#updateReclamation" prefHeight="31.0" prefWidth="92.0" styleClass="inner_panel" stylesheets="@AjoutReclam.css" text="Updete" textFill="WHITE">
-                                          <font>
-                                              <Font name="Calibri Bold" size="18.0" />
-                                          </font>
-                                      </Button>
-                                  </children>
-                              </HBox>
-                     </children></Pane>
+                            <children>
+                                <HBox alignment="CENTER" prefHeight="57.0" prefWidth="553.0" spacing="300.0">
+                                    <children>
+                                        <Button layoutX="774.0" layoutY="45.0" mnemonicParsing="false" onAction="#clearFields" prefHeight="31.0" prefWidth="92.0" stylesheets="@AjoutReclam.css" text="Clear" textFill="WHITE">
+                                            <styleClass>
+                                                <String fx:value="btn-secondary" />
+                                                <String fx:value="btn_j" />
+                                            </styleClass>
+                                            <font>
+                                                <Font name="Calibri Bold" size="18.0" />
+                                            </font>
+                                        </Button>
+                                        <Button fx:id="updatebtn" layoutX="774.0" layoutY="45.0" mnemonicParsing="false" onAction="#updateReclamation" prefHeight="31.0" prefWidth="92.0" styleClass="inner_panel" stylesheets="@AjoutReclam.css" text="Updete" textFill="WHITE">
+                                            <font>
+                                                <Font name="Calibri Bold" size="18.0" />
+                                            </font>
+                                        </Button>
+                                    </children>
+                                </HBox>
+                            </children></Pane>
                     </children>
                     <HBox.margin>
                         <Insets left="30.0" right="100.0" />
@@ -222,5 +234,15 @@
                 <Font name="Calibri" size="18.0" />
             </font>
         </Label>
+        <JFXButton layoutX="1260.0" layoutY="623.0" text="*">
+            <graphic>
+                <ImageView fitHeight="57.0" fitWidth="78.0" pickOnBounds="true" preserveRatio="true">
+                    <image>
+                        <Image url="@chatbot.png" />
+                    </image>
+                </ImageView>
+            </graphic>
+        </JFXButton>
+
     </children>
 </AnchorPane>

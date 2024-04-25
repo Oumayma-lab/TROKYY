@@ -13,10 +13,11 @@ public class HelloApplication extends Application {
 
     @Override
     public void start(Stage stage) throws IOException {
-        //Parent root = FXMLLoader.load(getClass().getResource("FrontOffice/Reclamation/ListReclam.fxml"));
-        Parent root = FXMLLoader.load(getClass().getResource("backoffice/AdminMain.fxml"));
+       // Parent root = FXMLLoader.load(getClass().getResource("FrontOffice/Reclamation/ListReclam.fxml"));
+       Parent root = FXMLLoader.load(getClass().getResource("backoffice/AdminMain.fxml"));
         //Parent root = FXMLLoader.load(getClass().getResource("FrontOffice/user/login.fxml"));
-        Scene scene = new Scene(root);
+        Scene scene = new Scene(root, 123, 123);
+
         stage.setTitle("Troky ");
         stage.setScene(scene);
         stage.show();

@@ -117,7 +117,7 @@
 
 .status-label {
     -fx-text-fill: black;
-  }
+}
 
 .resolved {
 
@@ -134,4 +134,26 @@
 
 .unresolved {
     -fx-background-color: #F44336; /* Rouge pour les réclamations non résolues */
+}
+
+
+
+
+
+.badge {
+    -fx-font-size: .75em;
+    -fx-padding: .45em .75em;
+    -fx-border-radius: 30px; /* or any value you want */
+}
+
+.badge-success {
+    -fx-background-color: #28a745; /* green color for success */
+    -fx-text-fill: white;
+
+}
+
+.badge-danger {
+    -fx-background-color: #dc3545; /* red color for danger */
+    -fx-text-fill: white;
+    -fx-border-radius: 10px; /* or any value you want */
 }

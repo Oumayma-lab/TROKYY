@@ -167,3 +167,22 @@
     -fx-text-fill: white;
     -fx-border-radius: 10px; /* or any value you want */
 }
+
+
+.btn-submitRep {
+    -fx-background-color: #2252e5; /* Couleur de fond */
+    -fx-background-radius: 30; /* Rayon de bordure */
+    -fx-text-fill: white; /* Couleur du texte */
+    -fx-font-family: 'Open Sans'; /* Police */
+    -fx-font-weight: bold; /* Poids de la police */
+    -fx-font-size: 12px; /* Taille de la police */
+}
+
+.btn-clearRep {
+    -fx-background-color: #B5C0D0; /* Couleur de fond */
+    -fx-background-radius: 30; /* Rayon de bordure */
+    -fx-text-fill: white; /* Couleur du texte */
+    -fx-font-family: 'Open Sans'; /* Police */
+    -fx-font-weight: bold; /* Poids de la police */
+    -fx-font-size: 12px; /* Taille de la police */
+}

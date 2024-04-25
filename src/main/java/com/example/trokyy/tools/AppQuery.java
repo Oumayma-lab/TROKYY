@@ -16,50 +16,6 @@ import java.util.logging.Logger;
 
 public class AppQuery {
 
-   /* public void addReclamation(Reclamation reclamation) {
-
-        // Obtention de la date actuelle
-        Timestamp dateActuelle = new Timestamp(System.currentTimeMillis());
-
-        // Préparation de la requête SQL avec des paramètres de substitution
-        String requete = "INSERT INTO Reclamation (date_reclamation, description_reclamation, statut_reclamation, type,image_path, reclamateur_id) VALUES (?, ?, ?, ?,?,?)";
-
-        try (Connection connection = new MyDataBaseConnection().getConnection();
-             PreparedStatement statement = connection.prepareStatement(requete)) {
-
-            // Attribution des valeurs aux paramètres de la requête
-            statement.setTimestamp(1, dateActuelle); // Date actuelle
-            statement.setString(2, reclamation.getDescription_reclamation());
-            statement.setString(3, "In progress"); // Statut par défaut
-            statement.setString(4, reclamation.getType());
-            statement.setString(5, reclamation.getImage_path());
-            statement.setInt(6, 3);
-
-            // Exécution de la requête d'insertion
-            int rowsInserted = statement.executeUpdate();
-
-            if (rowsInserted > 0) {
-                System.out.println("Réclamation ajoutée avec succès !");
-            } else {
-                System.out.println("Échec de l'ajout de la réclamation !");
-            }
-            try (ResultSet generatedKeys = statement.getGeneratedKeys()) {
-                if (generatedKeys.next()) {
-                    int complaintId = generatedKeys.getInt(1);
-                    String userEmail = getUserEmailById(reclamation.getUserId());
-
-                    sendEmail(userEmail);
-                } else {
-                    throw new SQLException("Creating complaint failed, no ID obtained.");
-                }
-            }
-        } catch (SQLException e) {
-            System.out.println("Erreur lors de l'ajout de la réclamation : " + e.getMessage());
-        }
-
-    }
-
-    */
 
 
 

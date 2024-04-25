@@ -6,8 +6,12 @@ import com.example.trokyy.models.Reponse;
 import com.example.trokyy.tools.MyDataBaseConnection;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.geometry.Pos;
+import javafx.scene.Node;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
@@ -15,6 +19,7 @@ import javafx.util.Duration;
 import org.controlsfx.control.Notifications;
 
 import java.io.File;
+import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
@@ -93,6 +98,8 @@ public class UpdateReclamationController implements Initializable {
 
     @FXML
     private void updateReclamation(ActionEvent event) {
+        saved = true;
+
         // Vérifier si une réclamation est sélectionnée
         if (selectedReclamation == null) {
             showAlert("Veuillez sélectionner une réclamation à mettre à jour.");
@@ -131,7 +138,12 @@ public class UpdateReclamationController implements Initializable {
         // Afficher un message de succès
         showNotification("Complaint Updated successfully");
 
+
         // Vous pouvez également fermer la fenêtre de mise à jour si nécessaire
+
+
+        Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+        stage.close();
     }
     public void showNotification(String message) {
         Notifications notifications = Notifications.create();
@@ -151,5 +163,39 @@ public class UpdateReclamationController implements Initializable {
     }
 
 
+    public void switchToAnotherView1(ActionEvent actionEvent) {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("ListReclam.fxml"));
+            Parent root = loader.load();
 
+            Stage stage = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
+            stage.setScene(new Scene(root));
+            stage.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+    public void switchToAnotherView3(ActionEvent actionEvent) {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("AjoutReclam.fxml"));
+            Parent root = loader.load();
+
+            Stage stage = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
+            stage.setScene(new Scene(root));
+            stage.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+
+
+
+
+    private boolean saved = false;
+
+
+    public boolean isSaved() {
+        return saved;
+    }
 }

@@ -16,6 +16,18 @@ module com.example.trokyy {
     requires java.desktop;
     requires java.mail;
 
+    //requires deyl emnaa
+    requires kernel;
+
+    requires layout;
+    requires org.apache.httpcomponents.httpcore;
+    requires org.apache.httpcomponents.httpclient;
+    requires org.json;
+
+
+
+
+
     opens com.example.trokyy to javafx.fxml;
     exports com.example.trokyy;
     exports com.example.trokyy.controllers;
@@ -26,8 +38,12 @@ module com.example.trokyy {
     opens com.example.trokyy.controllers.Admin to javafx.fxml;
     exports com.example.trokyy.controllers.Reclamation;
     opens com.example.trokyy.controllers.Reclamation to javafx.fxml;
+    exports com.example.trokyy.controllers.Admin.Reponse;
+    opens com.example.trokyy.controllers.Admin.Reponse to javafx.fxml;
     exports com.example.trokyy.services;
     opens com.example.trokyy.services to javafx.fxml;
+    exports com.example.trokyy.tools;
+    opens com.example.trokyy.tools to javafx.fxml;
     //exports com.example.trokyy.test;
    // opens com.example.trokyy.test to javafx.fxml;
 }

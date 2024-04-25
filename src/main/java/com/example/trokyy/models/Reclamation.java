@@ -13,7 +13,7 @@ public class Reclamation {
 
     private String image_path;
 
-    private boolean vu;
+    private boolean vu = false; // Initialisation de l'attribut vu à false par défaut
 
 
 // Constructeur par défaut

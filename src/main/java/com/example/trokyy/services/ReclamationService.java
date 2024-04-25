@@ -11,17 +11,30 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.mail.*;
+import javax.mail.internet.InternetAddress;
+import javax.mail.internet.MimeBodyPart;
+import javax.mail.internet.MimeMessage;
+import javax.mail.internet.MimeMultipart;
+import java.sql.*;
+import java.util.Date;
+import java.util.List;
+import java.util.Properties;
+
+import java.util.Properties;
+
+
+
 public class ReclamationService implements IService<Reclamation> {
     Connection connection = new MyDataBaseConnection().getConnection();
-    @Override
+   /* @Override
     public void addReclamation(Reclamation reclamation) {
 
         // Obtention de la date actuelle
         Timestamp dateActuelle = new Timestamp(System.currentTimeMillis());
 
         // Préparation de la requête SQL avec des paramètres de substitution
-        String requete = "INSERT INTO Reclamation (date_reclamation, description_reclamation, " +
-                "statut_reclamation, type) VALUES (?, ?, ?, ?)";
+        String requete = "INSERT INTO Reclamation (date_reclamation, description_reclamation, statut_reclamation, type,image_path,reclamateur_id) VALUES (?, ?, ?, ?,?,?)";
 
         try (Connection connection = new MyDataBaseConnection().getConnection();
              PreparedStatement statement = connection.prepareStatement(requete)) {
@@ -29,9 +42,10 @@ public class ReclamationService implements IService<Reclamation> {
             // Attribution des valeurs aux paramètres de la requête
             statement.setTimestamp(1, dateActuelle); // Date actuelle
             statement.setString(2, reclamation.getDescription_reclamation());
-            statement.setString(3, reclamation.getStatut_reclamation());
+            statement.setString(3, "In progress"); // Statut par défaut
             statement.setString(4, reclamation.getType());
-
+            statement.setString(5, reclamation.getImage_path());
+            statement.setInt(6, 3);
             // Exécution de la requête d'insertion
             int rowsInserted = statement.executeUpdate();
 
@@ -44,29 +58,7 @@ public class ReclamationService implements IService<Reclamation> {
             System.out.println("Erreur lors de l'ajout de la réclamation : " + e.getMessage());
         }
 
-
-
-
-      /*  String requete = "INSERT INTO Reclamation ( date_reclamation, description_reclamation, " +
-                "statut_reclamation, type) VALUES ('" +
-                reclamation.getDateReclamation() + "', '" +
-                reclamation.getDescriptionReclamation() + "', '" +
-                reclamation.getStatutReclamation() + "', '" +
-                reclamation.getType() + "')";
-
-        try {
-            Statement st = new MyDataBaseConnection().getConnection().createStatement();
-            int rowsInserted = st.executeUpdate(requete);
-
-            if (rowsInserted > 0) {
-                System.out.println("Réclamation ajoutée avec succès !");
-            } else {
-                System.out.println("Échec de l'ajout de la réclamation !");
-            }
-        } catch (SQLException e) {
-            System.out.println("Erreur lors de l'ajout de la réclamation : " + e.getMessage());
-        }*/
-    }
+    }*/
 
 
     @Override
@@ -160,7 +152,21 @@ public class ReclamationService implements IService<Reclamation> {
 
     }
 
-
+    public boolean isDescriptionUnique(String description) {
+        String query = "SELECT COUNT(*) AS count FROM Reclamation WHERE description_reclamation = ?";
+        try (Connection connection = new MyDataBaseConnection().getConnection();
+             PreparedStatement statement = connection.prepareStatement(query)) {
+            statement.setString(1, description);
+            ResultSet resultSet = statement.executeQuery();
+            if (resultSet.next()) {
+                int count = resultSet.getInt("count");
+                return count == 0; // Si count est 0, la description est unique ; sinon, elle est déjà utilisée
+            }
+        } catch (SQLException e) {
+            System.out.println("Erreur lors de la vérification de l'unicité de la description : " + e.getMessage());
+        }
+        return false; // En cas d'erreur, renvoyer false par défaut
+    }
     public List<Reponse> getReponses(int id) {
         List<Reponse> reps = new ArrayList<>();
         try {
@@ -245,6 +251,167 @@ public class ReclamationService implements IService<Reclamation> {
     // Méthode pour récupérer une réclamation par ID
     public static Reclamation getReclamationById(int id) {
         return reclamationMap.get(id);
+    }
+
+
+    @Override
+    public void addReclamation(Reclamation reclamation) {     // Obtention de la date actuelle
+        Timestamp dateActuelle = new Timestamp(System.currentTimeMillis());
+
+
+        Connection connection = new MyDataBaseConnection().getConnection();
+
+        String query = "INSERT INTO Reclamation (date_reclamation, description_reclamation, statut_reclamation, type,image_path, reclamateur_id) VALUES (?, ?, ?, ?,?,?)";
+        try ( Connection conn = new MyDataBaseConnection().getConnection();
+             PreparedStatement statement = conn.prepareStatement(query, Statement.RETURN_GENERATED_KEYS)) {
+
+            // Attribution des valeurs aux paramètres de la requête
+            statement.setTimestamp(1, dateActuelle); // Date actuelle
+            statement.setString(2, reclamation.getDescription_reclamation());
+            statement.setString(3, "In progress"); // Statut par défaut
+            statement.setString(4, reclamation.getType());
+            statement.setString(5, reclamation.getImage_path());
+            statement.setInt(6, 3);
+
+            int affectedRows = statement.executeUpdate();
+            if (affectedRows == 0) {
+                throw new SQLException("Creating complaint failed, no rows affected.");
+            }
+
+            try (ResultSet generatedKeys = statement.getGeneratedKeys()) {
+                if (generatedKeys.next()) {
+                    int complaintId = generatedKeys.getInt(1);
+                    String userEmail = getUserEmailById(reclamation.getUserId());
+
+                    sendEmail(userEmail);
+                } else {
+                    throw new SQLException("Creating complaint failed, no ID obtained.");
+                }
+            }
+
+            System.out.println("Complaint added successfully!");
+            DisplayQuery displayQuery = new DisplayQuery();
+            List<Reclamation> updatedComplaints = displayQuery.getAllComplaints();
+
+        } catch (SQLException e) {
+            System.out.println("Error adding complaint: " + e.getMessage());
+        }
+    }
+
+
+
+
+    public String getUserEmailById(int id) {
+        String email = null;
+
+        // SQL query to retrieve email by user ID
+        String query = "SELECT email FROM utilisateur WHERE id = ?";
+
+        try (
+                Connection conn = new MyDataBaseConnection().getConnection();
+                PreparedStatement statement = conn.prepareStatement(query)
+        ) {
+            statement.setInt(1, id);
+
+            try (ResultSet resultSet = statement.executeQuery()) {
+                if (resultSet.next()) {
+                    email = resultSet.getString("email");
+                    System.out.println("Retrieved email: " + email);
+                } else {
+                    System.out.println("No email found for user with ID: " + id);
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return email;
+    }
+
+
+  public static void sendEmail(String recipientEmail) {
+        // Sender's email
+        String senderEmail = "batoutbata5@gmail.com";
+        if (recipientEmail == null || recipientEmail.isEmpty()) {
+            System.out.println("Recipient email is null or empty. Cannot send email.");
+            return;
+        }
+        // Sender's password
+        //  String password = "ialgvzhizvvrwozy";
+
+        String password = "bvxlqtqlkcobnczw";
+
+        // SMTP server properties
+        Properties properties = new Properties();
+        properties.put("mail.smtp.auth", "true");
+        properties.put("mail.smtp.starttls.enable", "true");
+        properties.put("mail.smtp.host", "smtp.gmail.com");
+        properties.put("mail.smtp.port", "587");
+
+        Session session = Session.getInstance(properties, new Authenticator() {
+            @Override
+            protected PasswordAuthentication getPasswordAuthentication() {
+                return new PasswordAuthentication(senderEmail, password);
+            }
+        });
+
+        try {
+            Message message = new MimeMessage(session);
+            message.setFrom(new InternetAddress(senderEmail));
+            message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(recipientEmail));
+            message.setSubject("Your Feedback Received");
+            // Create a MimeMultipart object to hold the email content
+            MimeMultipart multipart = new MimeMultipart();
+
+            // Create and add a MimeBodyPart for the text content
+            MimeBodyPart textPart = new MimeBodyPart();
+            String contactInfo =  "<html>" +
+                    "<body>" +
+                    "<p style=\"font-family: Arial, sans-serif;\"><b><font color=\"#000000\">Dear Customer,</font></b></p>" +
+                    "<p style=\"font-family: Arial, sans-serif;\"><font color=\"#000000\">Thank you for sharing your valuable feedback with us. Your insights are crucial in helping us improve our services to better serve you.</font></p>" +
+                    "<p style=\"font-family: Arial, sans-serif;\"><font color=\"#000000\">At TROKY, we're dedicated to providing top-notch service, and your feedback guides us in our ongoing efforts to exceed your expectations.</font></p>" +
+                    "<p style=\"font-family: Arial, sans-serif;\"><font color=\"#000000\">For any further assistance, feel free to contact our support team at <a href=\"mailto:troky@gmail.com\">troky@gmail.com</a> or 50 794 341. We're here to ensure your experience with us remains exceptional.</font></p>" +
+                    "<p style=\"font-family: Arial, sans-serif;\"><font color=\"#000000\">Thank you once again for choosing TROKY. We look forward to serving you again soon.</font></p>" +
+                    "<p style=\"font-family: Arial, sans-serif;\"><font color=\"#000000\">Best Regards,</font></p>" +
+                    "<p style=\"font-family: Arial, sans-serif;\"><b><font color=\"#007bff\">Complaints Management</font></b></p>" +
+                    "<p style=\"font-family: Arial, sans-serif;\"><b><font color=\"#007bff\">EMNA KHAMMASSI</font></b></p>" +
+                    "<p style=\"font-family: Arial, sans-serif;\"><b><font color=\"#007bff\">TROKY</font></b></p>" +
+                    "<p style=\"font-family: Arial, sans-serif;\"><a href=\"mailto:troky@gmail.com\">troky@gmail.com</a> |<b><font color=\"#007bff\">50 794 341</font></b></p>" +
+                    "</body>" +
+                    "</html>";
+            textPart.setContent(contactInfo, "text/html");
+            multipart.addBodyPart(textPart);
+
+            // Set the content of the message to the MimeMultipart object
+            message.setContent(multipart);
+            // Send the message
+            Transport.send(message);
+
+            System.out.println("Email sent successfully!");
+
+        } catch (MessagingException e) {
+            e.printStackTrace();
+        }
+    }
+
+
+    // Méthode pour récupérer toutes les réclamations de la base de données et les trier par date d'ajout décroissante
+    public List<Reclamation> getAllComplaintsOrderedByDate() {
+        MyDataBaseConnection connection = new MyDataBaseConnection();
+        List<Reclamation> complaints = new ArrayList<>();
+        String query = "SELECT * FROM reclamation ORDER BY date_reclamation DESC";
+        try (Connection conn = connection.getConnection();
+             PreparedStatement statement = conn.prepareStatement(query)) {
+            ResultSet resultSet = statement.executeQuery();
+            while (resultSet.next()) {
+                Reclamation complaint = new Reclamation();
+                // Initialisez la réclamation avec les données de la base de données comme vous l'avez fait précédemment
+                complaints.add(complaint);
+            }
+        } catch (SQLException e) {
+            System.out.println("Error retrieving complaints: " + e.getMessage());
+        }
+        return complaints;
     }
 
 }

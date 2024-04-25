@@ -79,7 +79,7 @@ public class AdminMainController implements Initializable {
         buttonFXMLMap.put(Offers, "OffersManagement.fxml");
         buttonFXMLMap.put(Blogs, "BlogsManagement.fxml");
         buttonFXMLMap.put(Events, "EventsManagement.fxml");
-        buttonFXMLMap.put(Complaints, "ComplaintsManagement.fxml");
+        buttonFXMLMap.put(Complaints, "ReclamManagement.fxml");
         buttonFXMLMap.put(Donations, "DonationsManagement.fxml");
 
         // Initialize map with buttons and their styles
@@ -186,7 +186,7 @@ public class AdminMainController implements Initializable {
 
     @FXML
     private void navigatetocomplaints(ActionEvent event) {
-        loadContent("ComplaintsManagement");
+        loadContent("ReclamManagement");
     }
 
     @FXML

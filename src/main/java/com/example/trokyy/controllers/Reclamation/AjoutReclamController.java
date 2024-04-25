@@ -1,11 +1,17 @@
 package com.example.trokyy.controllers.Reclamation;
 
 import com.example.trokyy.models.Reclamation;
-import com.example.trokyy.tools.AppQuery;
+import com.example.trokyy.services.ReclamationService;
+
+import com.example.trokyy.tools.Chatbot;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.geometry.Pos;
+import javafx.scene.Node;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
@@ -13,11 +19,22 @@ import javafx.util.Duration;
 import org.controlsfx.control.Notifications;
 
 import java.io.File;
+import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
 
+import javafx.scene.Node;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Label;
+import javafx.scene.control.TextInputControl;
+import javafx.scene.layout.AnchorPane;
+
+
 public class AjoutReclamController implements Initializable {
+    @FXML
+    private AnchorPane root;
+
     private boolean update;
 
     @FXML
@@ -37,13 +54,18 @@ public class AjoutReclamController implements Initializable {
     @FXML
     private TextField keywordTextField;
 
-    private Reclamation selectedReclamation; // Ajoutez cet attribut pour stocker la réclamation sélectionnée
+    private Reclamation selectedReclamation; //stocker la réclamation sélectionnée
 
-    private final AppQuery appQuery = new AppQuery();
+    private final ReclamationService reclamationService = new ReclamationService();
+
+    @FXML
+    private Button chatbot;
+
+
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-
+        chatbot.setOnAction(event -> startChatbot());
         typeChoiceBox.getItems().addAll("conflit", "arnaque", "autre");
     }
 
@@ -67,33 +89,30 @@ public class AjoutReclamController implements Initializable {
     @FXML
     public void AddReclamation(ActionEvent event) {
         String description = descriptionTextArea.getText();
-        // Liste des mots interdits
-        String[] motsInterdits = {"mot1", "mot2", "mot3"}; // Ajoutez vos mots interdits ici
-
-        // Parcourir la liste des mots interdits et remplacer chaque occurrence dans la description
-        for (String motInterdit : motsInterdits) {
-            // Utiliser une expression régulière insensible à la casse pour remplacer chaque occurrence du mot interdit
-            description = description.replaceAll("(?i)" + motInterdit, "***");
-        }
-
-
         String type = typeChoiceBox.getValue();
 
         if (description.isEmpty() || type == null || type.isEmpty()) {
-            // Display an error message if the description or type is empty
             showAlert("Please fill out both the description and type fields.");
-            return; // Exit the method early if the description or type is empty
+            return;
         }
 
-            // Sinon, ajoutez une nouvelle réclamation
-            Reclamation reclamation = new Reclamation(description, type, image_path);
-            appQuery.addReclamation(reclamation);
-            // Afficher la notification
-            showNotification("Complaint Added successfully");
+        // Filtrage des mots interdits
+        String[] motsInterdits = {"mot1", "mot2", "mot3"}; // Ajoutez vos mots interdits ici
+        for (String motInterdit : motsInterdits) {
+            description = description.replaceAll("(?i)" + motInterdit, "***");
+        }
 
-            // Réinitialiser les champs après l'ajout
-            clearFields();
+        // Vérifier si la description est unique
+        if (!reclamationService.isDescriptionUnique(description)) {
+            showAlert("The description of the complaint already exists. Please enter a different one.");
+            return;
+        }
 
+        // Si la description est unique, continuer avec l'ajout de la réclamation
+        Reclamation reclamation = new Reclamation(description, type, image_path);
+        reclamationService.addReclamation(reclamation);
+        showNotification("Complaint Added successfully.");
+        clearFields();
 
     }
 
@@ -148,13 +167,12 @@ public class AjoutReclamController implements Initializable {
 
 
 
-    @FXML
+   @FXML
     private void handleSearch(ActionEvent event) {
-        String keywords = keywordTextField.getText().trim(); // Récupérer les mots-clés saisis
-        // Ici, nous allons simplement imprimer les mots-clés pour l'exemple
-        System.out.println("Mots-clés saisis : " + keywords);
-    }
-
+       String keywords = keywordTextField.getText().trim(); // Récupérer les mots-clés saisis
+       // Ici, nous allons simplement imprimer les mots-clés pour l'exemple
+       System.out.println("Mots-clés saisis : " + keywords);
+   }
 
     @FXML
     private void clearFields() {
@@ -174,4 +192,30 @@ public class AjoutReclamController implements Initializable {
         notifications.position(Pos.BOTTOM_CENTER);
         notifications.show();
     }
+
+
+
+    private void startChatbot() {
+        Chatbot chatbot = new Chatbot();
+        Stage chatbotStage = new Stage();
+        chatbot.start(chatbotStage);
+    }
+
+
+
+
+@FXML
+    public void switchToAnotherView1(ActionEvent actionEvent) {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/trokyy/FrontOffice/Reclamation/ListReclam.fxml"));
+            Parent root = loader.load();
+
+            Stage stage = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
+            stage.setScene(new Scene(root));
+            stage.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
     }

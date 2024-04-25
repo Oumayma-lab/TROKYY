@@ -107,18 +107,7 @@ public class ReponseController implements Initializable {
     }
 
 
-    public void switchToAnotherView2(ActionEvent actionEvent) {
-        try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("ApplicationViewComplaints.fxml"));
-            Parent root = loader.load();
 
-            Stage stage = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
-            stage.setScene(new Scene(root));
-            stage.show();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
 
     private int reclam_reponse_id;
 

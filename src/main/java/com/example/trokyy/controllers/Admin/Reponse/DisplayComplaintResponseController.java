@@ -1,8 +1,11 @@
 package com.example.trokyy.controllers.Admin.Reponse;
 
+import com.example.trokyy.controllers.Admin.AdminMainController;
 import com.example.trokyy.models.Reclamation;
 import com.example.trokyy.models.Reponse;
+import com.example.trokyy.models.Utilisateur;
 import com.example.trokyy.services.DisplayQuery;
+import com.example.trokyy.services.UserDao;
 import com.example.trokyy.tools.MyDataBaseConnection;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -11,15 +14,14 @@ import javafx.fxml.Initializable;
 import javafx.geometry.Pos;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Button;
-import javafx.scene.control.ButtonType;
-import javafx.scene.control.Label;
+import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 import javafx.util.Duration;
 import org.controlsfx.control.Notifications;
 
@@ -29,8 +31,9 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.Date;
-import java.util.ResourceBundle;
+import java.util.*;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class DisplayComplaintResponseController implements Initializable {
     private DisplayQuery displayQuery;
@@ -66,6 +69,30 @@ public class DisplayComplaintResponseController implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
 
+        //backoffice
+
+        // Initialize the button to FXML file mapping
+        buttonFXMLMap.put(Home, "Home.fxml");
+        buttonFXMLMap.put(Users, "UserManagement1.fxml");
+        buttonFXMLMap.put(Offers, "OffersManagement.fxml");
+        buttonFXMLMap.put(Blogs, "BlogsManagement.fxml");
+        buttonFXMLMap.put(Events, "EventsManagement.fxml");
+        buttonFXMLMap.put(Complaints, "ReclamManagement.fxml");
+        buttonFXMLMap.put(Donations, "DonationsManagement.fxml");
+
+        // Initialize map with buttons and their styles
+        initializeButtonStyles();
+
+        // Add event handlers to all buttons
+        addButtonEventHandlers();
+
+        // Set initial content (Home page)
+        loadContent("Home.fxml");
+
+
+
+
+
         displayQuery = new DisplayQuery();
         // Initialize the UI with the complaint ID
         complaintIdLabel.setText("Complaint ID: " + complaintId);
@@ -81,7 +108,7 @@ public class DisplayComplaintResponseController implements Initializable {
         detailsreponseLabel.setText(reponseDetails);
 
         // Afficher la réponse s'il y en a une, sinon afficher un message indiquant qu'aucune réponse n'a été trouvée
-        if (complaintResponse != null) {
+       /* if (complaintResponse != null) {
             complaintResponseLabel.setText("Response: " + complaintResponse);
             // Vérifier si l'attribut "vu" est true, et rendre les boutons invisibles si c'est le cas
             if (getResponseVu(complaintId)) {
@@ -90,6 +117,24 @@ public class DisplayComplaintResponseController implements Initializable {
             }
         } else {
             complaintResponseLabel.setText("No response found for Complaint ID: " + complaintId);
+        }*/
+
+        // Afficher la réponse s'il y en a une, sinon afficher un message indiquant qu'aucune réponse n'a été trouvée
+        if (complaintResponse != null) {
+            complaintResponseLabel.setText("Response: " + complaintResponse);
+            // Vérifier si l'attribut "vu" est true, et rendre les boutons invisibles si c'est le cas
+            if (getResponseVu(complaintId)) {
+                deleteButton.setVisible(false);
+                editButton.setVisible(false);
+            }else{
+                deleteButton.setVisible(true);
+                editButton.setVisible(true);
+            }
+        } else {
+            complaintResponseLabel.setText("No response found for Complaint ID: " + complaintId);
+            // Rendre les boutons "Edit" et "Delete" invisibles si aucune réponse n'est trouvée
+            deleteButton.setVisible(false);
+            editButton.setVisible(false);
         }
     }
 
@@ -132,9 +177,16 @@ public class DisplayComplaintResponseController implements Initializable {
             if (getResponseVu(complaintId)) {
                 deleteButton.setVisible(false);
                 editButton.setVisible(false);
-            }
-        } else {
+            } else{
+            deleteButton.setVisible(true);
+            editButton.setVisible(true);
+              }
+          } else {
             complaintResponseLabel.setText("No response found for Complaint ID: " + complaintId);
+            // Rendre les boutons "Edit" et "Delete" invisibles si aucune réponse n'est trouvée
+            deleteButton.setVisible(false);
+            editButton.setVisible(false);
+
         }
 
     }
@@ -274,6 +326,7 @@ public class DisplayComplaintResponseController implements Initializable {
     }
 
 
+
     public Reponse getReponseById(int complaintId) {
         MyDataBaseConnection connection = new MyDataBaseConnection();
         Reponse reponse = null;
@@ -311,8 +364,8 @@ public class DisplayComplaintResponseController implements Initializable {
             if (response == ButtonType.OK) {
                 try {
                     // Charger la nouvelle interface depuis le fichier FXML
-                    FXMLLoader loader = new FXMLLoader(getClass().getResource("UpdateReponse.fxml"));
-                    Parent root = loader.load();
+                    FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/trokyy/Backoffice/ComplaintResponse/UpdateResponse.fxml"));
+                    Parent parent = loader.load();
 
                     // Obtenez le contrôleur de la nouvelle interface
                     UpdateReponsecontroller controller = loader.getController();
@@ -322,12 +375,12 @@ public class DisplayComplaintResponseController implements Initializable {
                     Reponse selectedReponse = getReponseById(complaintId); // Vous devez implémenter getReponseById pour récupérer la réponse associée à l'ID
                     controller.setReponseToUpdate(selectedReponse);
 
-                    // Affichez la nouvelle interface dans une nouvelle fenêtre ou dans la même fenêtre en utilisant un Stage différent
                     Stage stage = new Stage();
-                    stage.setScene(new Scene(root));
+                    stage.setScene(new Scene(parent, 800, 600)); // Taille moyenne de l'interface
+                    stage.initStyle(StageStyle.UTILITY);
                     stage.show();
-                } catch (IOException e) {
-                    e.printStackTrace();
+                } catch (IOException ex) {
+                    Logger.getLogger(AjoutReponseController.class.getName()).log(Level.SEVERE, null, ex);
                 }
             }
         });
@@ -432,25 +485,193 @@ public class DisplayComplaintResponseController implements Initializable {
 
         return vu;
     }
+
+
+    @FXML
+    private BorderPane borderPane;
+
+    @FXML
+    private Button Home;
+
+    @FXML
+    private Button Users;
+
+    @FXML
+    private Button Offers;
+
+    @FXML
+    private Button Blogs;
+
+    @FXML
+    private Button Events;
+
+    @FXML
+    private Button Complaints;
+
+    @FXML
+    private Button Donations;
+
+    @FXML
+    private Button Logout;
+    @FXML
+    private TextField searchField;
+    @FXML
+    private TableView<Utilisateur> tableView;
+    // Mapping between buttons and their respective FXML files
+    private final Map<Button, String> buttonFXMLMap = new HashMap<>();
+
+    // Map to store buttons and their original styles
+    private Map<Button, String> buttonStyles = new HashMap<>();
+
+    private Button selectedButton = null;
+    private static final UserDao userDao = new UserDao();
+
+
+    public DisplayComplaintResponseController() throws SQLException {
+        Connection connection = MyDataBaseConnection.getConnection();
+
+    }
+
+
+    private void addButtonEventHandlers() {
+        Home.setOnAction(this::handleButtonClick);
+        Users.setOnAction(this::handleButtonClick);
+        Offers.setOnAction(this::handleButtonClick);
+        Blogs.setOnAction(this::handleButtonClick);
+        Events.setOnAction(this::handleButtonClick);
+        Complaints.setOnAction(this::handleButtonClick);
+        Donations.setOnAction(this::handleButtonClick);
+        Logout.setOnAction(this::handleButtonClick);
+    }
+
+
+    private void initializeButtonStyles() {
+        buttonStyles.put(Home, Home.getStyle());
+        buttonStyles.put(Users, Users.getStyle());
+        buttonStyles.put(Offers, Offers.getStyle());
+        buttonStyles.put(Blogs, Blogs.getStyle());
+        buttonStyles.put(Events, Events.getStyle());
+        buttonStyles.put(Complaints, Complaints.getStyle());
+        buttonStyles.put(Donations, Donations.getStyle());
+        buttonStyles.put(Logout, Logout.getStyle());
+    }
+
+
+    @FXML
+    private void handleButtonClick(ActionEvent event) {
+        // Get the button that triggered the event
+        Button clickedButton = (Button) event.getSource();
+        // If a button is already selected, revert its style to the original
+        if (selectedButton != null) {
+            selectedButton.setStyle(buttonStyles.get(selectedButton));
+        }
+        // Update selectedButton and apply new style to the clicked button
+        selectedButton = clickedButton;
+        selectedButton.setStyle("-fx-background-color: #2252e5; " +
+                "-fx-background-radius: 30; " +
+                "-fx-text-fill: white; " +
+                "-fx-font-family: 'Open Sans'; " +
+                "-fx-font-weight: bold; " +
+                "-fx-font-size: 12px;");
+
+        // Load the corresponding FXML file and set it as the center content
+        String fxmlFile = buttonFXMLMap.get(clickedButton);
+        loadContent(fxmlFile);
+    }
+
+    private void loadContent(String fxmlFile) {
+        try {
+            // Load the FXML file
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/trokyy/Backoffice/" + fxmlFile));
+            Parent content = loader.load();
+
+            // Set the loaded content as the center of the BorderPane
+            borderPane.setCenter(content);
+        } catch (IOException e) {
+            Logger.getLogger(AdminMainController.class.getName()).log(Level.SEVERE, "Error loading FXML file: " + fxmlFile, e);
+        } catch (Exception ex) {
+            Logger.getLogger(AdminMainController.class.getName()).log(Level.SEVERE, "Unexpected error loading FXML file: " + fxmlFile, ex);
+        }
+    }
+
+
+
+
+    @FXML
+
+    public void navigatetohome(ActionEvent actionEvent) {
+        loadContent("Home.fxml");
+
+    }
+    @FXML
+    private void navigatetousers(ActionEvent event) {
+        loadContent("UserManagement1.fxml");
+    }
+
+
+
+    @FXML
+    private void navigatetooffers(ActionEvent event) {
+        loadContent("OffersManagement");
+    }
+
+    @FXML
+    private void navigatetoblogs(ActionEvent event) {
+        loadContent("BlogsManagement");
+    }
+
+    @FXML
+    private void navigatetoevents(ActionEvent event) {
+        loadContent("EventsManagament");
+    }
+
+    @FXML
+    private void navigatetocomplaints(ActionEvent event) {
+        loadContent("ReclamManagement");
+    }
+
+    @FXML
+    private void navigatetodontions(ActionEvent event) {
+        loadContent("DonationsManagement");
+    }
+
+    @FXML
+    private void logout(ActionEvent event) {
+        // Handle logout action here
+    }
+
+
+
+
+    @FXML
+    private void handleSearch() {
+        String query = searchField.getText().trim();
+        if (!query.isEmpty()) {
+            try {
+                List<Utilisateur> searchResults = userDao.searchUsers(query);
+                tableView.getItems().clear(); // Clear existing data
+                tableView.getItems().addAll(searchResults); // Display search results
+            } catch (SQLException e) {
+                e.printStackTrace();
+                // Handle database query errors
+            }
+        } else {
+            // If the search query is empty, display all users
+            try {
+                tableView.getItems().clear(); // Clear existing data
+                List<Utilisateur> userList = userDao.getAllUsers();
+                tableView.getItems().addAll(userList); // Display all users
+            } catch (SQLException e) {
+                e.printStackTrace();
+                // Handle database query errors
+            }
+        }
+    }
+
+
+
+
+
+
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 

@@ -14,17 +14,17 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<HBox fx:id="root" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="735.0" prefWidth="1248.0" stylesheets="@style1.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller= "com.example.trokyy.controllers.Admin.Reponse.ApplicationViewComplaintsController">
+<HBox fx:id="root" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="735.0" prefWidth="1248.0" stylesheets="@../../FrontOffice/Reclamation/style1.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller= "com.example.trokyy.controllers.Admin.Reponse.ApplicationViewComplaintsController">
     <children>
         <VBox prefHeight="722.0" prefWidth="282.0">
          <children>
-            <VBox fx:id="side1" alignment="BOTTOM_CENTER" prefHeight="735.0" prefWidth="307.0" styleClass="side" stylesheets="@AjoutReclam.css">
+            <VBox fx:id="side1" alignment="BOTTOM_CENTER" prefHeight="735.0" prefWidth="307.0" styleClass="side" stylesheets="@../../FrontOffice/Reclamation/AjoutReclam.css">
                <children>
                   <HBox alignment="BASELINE_CENTER" prefHeight="100.0" prefWidth="200.0">
                      <children>
                         <ImageView fitHeight="55.0" fitWidth="107.0" pickOnBounds="true" preserveRatio="true">
                            <image>
-                              <Image url="@logo.png" />
+                              <Image url="@../../FrontOffice/Reclamation/logo.png" />
                            </image>
                         </ImageView>
                      </children>
@@ -32,11 +32,11 @@
                   <Pane prefHeight="76.0" prefWidth="365.0" />
                   <HBox alignment="CENTER" prefHeight="56.0" prefWidth="365.0" spacing="20.0">
                      <children>
-                        <JFXButton prefHeight="48.0" prefWidth="229.0" styleClass="inner_panel" stylesheets="@AjoutReclam.css" text="Home" textFill="WHITE">
+                        <JFXButton prefHeight="48.0" prefWidth="229.0" styleClass="inner_panel" stylesheets="@../../FrontOffice/Reclamation/AjoutReclam.css" text="Home" textFill="WHITE">
                            <graphic>
                               <ImageView fitHeight="25.0" fitWidth="27.0" pickOnBounds="true" preserveRatio="true">
                                  <image>
-                                    <Image url="@acc.png" />
+                                    <Image url="@../../FrontOffice/Reclamation/acc.png" />
                                  </image>
                               </ImageView>
                            </graphic>
@@ -48,11 +48,11 @@
                   </HBox>
                   <HBox alignment="CENTER" layoutX="10.0" layoutY="254.0" prefHeight="56.0" prefWidth="365.0" spacing="20.0">
                      <children>
-                        <JFXButton prefHeight="38.0" prefWidth="240.0" styleClass="btn_home" stylesheets="@AjoutReclam.css" text="Add Reclamation" textFill="WHITE">
+                        <JFXButton prefHeight="38.0" prefWidth="240.0" styleClass="btn_home" stylesheets="@../../FrontOffice/Reclamation/AjoutReclam.css" text="Add Reclamation" textFill="WHITE">
                            <graphic>
                               <ImageView fitHeight="21.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
                                  <image>
-                                    <Image url="@Ajouter.png" />
+                                    <Image url="@../../FrontOffice/Reclamation/Ajouter.png" />
                                  </image>
                               </ImageView>
                            </graphic>
@@ -64,11 +64,11 @@
                   </HBox>
                   <HBox alignment="CENTER" layoutX="10.0" layoutY="310.0" prefHeight="56.0" prefWidth="365.0" spacing="20.0">
                      <children>
-                        <JFXButton styleClass="inner_panel" stylesheets="@AjoutReclam.css" text="Filters" textFill="#fffdfd">
+                        <JFXButton styleClass="inner_panel" stylesheets="@../../FrontOffice/Reclamation/AjoutReclam.css" text="Filters" textFill="#fffdfd">
                            <graphic>
                               <ImageView fitHeight="31.0" fitWidth="42.0" pickOnBounds="true" preserveRatio="true">
                                  <image>
-                                    <Image url="@filter.png" />
+                                    <Image url="@../../FrontOffice/Reclamation/filter.png" />
                                  </image>
                               </ImageView>
                            </graphic>
@@ -80,11 +80,11 @@
                   </HBox>
                   <HBox alignment="CENTER" layoutX="10.0" layoutY="310.0" prefHeight="56.0" prefWidth="365.0" spacing="20.0">
                      <children>
-                        <JFXButton styleClass="inner_panel" stylesheets="@AjoutReclam.css" text="Search" textFill="WHITE">
+                        <JFXButton styleClass="inner_panel" stylesheets="@../../FrontOffice/Reclamation/AjoutReclam.css" text="Search" textFill="WHITE">
                            <graphic>
                               <ImageView fitHeight="27.0" fitWidth="25.0" pickOnBounds="true" preserveRatio="true">
                                  <image>
-                                    <Image url="@loupe.png" />
+                                    <Image url="@../../FrontOffice/Reclamation/loupe.png" />
                                  </image>
                               </ImageView>
                            </graphic>
@@ -99,7 +99,7 @@
                      <children>
                         <ImageView fitHeight="150.0" fitWidth="200.0" layoutX="28.0" layoutY="42.0" pickOnBounds="true" preserveRatio="true">
                            <image>
-                              <Image url="@reclam-removebg-preview.png" />
+                              <Image url="@../../FrontOffice/Reclamation/reclam-removebg-preview.png" />
                            </image>
                         </ImageView>
                      </children>
@@ -117,8 +117,8 @@
                                 <Font name="Century Gothic" size="15.0" />
                             </font>
                         </TextField>
-                        <Button fx:id="btn" layoutX="703.0" layoutY="19.0" mnemonicParsing="false" prefHeight="22.0" prefWidth="44.0" styleClass="btn" stylesheets="@style1.css" />
-                        <Button fx:id="btn1" layoutX="742.0" layoutY="19.0" mnemonicParsing="false" prefHeight="22.0" prefWidth="44.0" styleClass="btn" stylesheets="@style1.css" />
+                        <Button fx:id="btn" layoutX="703.0" layoutY="19.0" mnemonicParsing="false" prefHeight="22.0" prefWidth="44.0" styleClass="btn" stylesheets="@../../FrontOffice/Reclamation/style1.css" />
+                        <Button fx:id="btn1" layoutX="742.0" layoutY="19.0" mnemonicParsing="false" prefHeight="22.0" prefWidth="44.0" styleClass="btn" stylesheets="@../../FrontOffice/Reclamation/style1.css" />
                     </children>
                 </Pane>
 
