@@ -19,7 +19,7 @@ public class HelloApplication extends Application {
         //Eya Blog:
         //Parent root = FXMLLoader.load(getClass().getResource("FrontOffice/Blog/AjoutBlog.fxml"));
         Parent root = FXMLLoader.load(getClass().getResource("FrontOffice/Blog/ListBlog.fxml"));
-        //Parent root = FXMLLoader.load(getClass().getResource("FrontOffice/Blog/ListBlog.fxml"));
+        //Parent root = FXMLLoader.load(getClass().getResource("backoffice/BlogsManagement.fxml"));
 
         //Parent root = FXMLLoader.load(getClass().getResource("backoffice/AdminMain.fxml"));
         //Parent root = FXMLLoader.load(getClass().getResource("FrontOffice/user/login.fxml"));

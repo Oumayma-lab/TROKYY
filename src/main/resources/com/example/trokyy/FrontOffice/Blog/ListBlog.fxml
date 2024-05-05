@@ -192,7 +192,7 @@
                     </children>
                 </HBox>
                 <JFXButton alignment="CENTER" contentDisplay="GRAPHIC_ONLY" layoutX="1291.0" layoutY="30.0" text="Button" />
-                <ImageView fitHeight="36.0" fitWidth="67.0" layoutX="671.0" layoutY="16.0" pickOnBounds="true" preserveRatio="true">
+                <ImageView fx:id="back" fitHeight="36.0" fitWidth="67.0" layoutX="671.0" layoutY="16.0" onMouseClicked="#handleBackClick" pickOnBounds="true" preserveRatio="true">
                     <image>
                         <Image url="@setting.png" />
                     </image>

@@ -3,12 +3,13 @@ package com.example.trokyy.controllers.Blog;
 
 import com.example.trokyy.models.Blog;
 import com.example.trokyy.models.Commentaire;
-import com.example.trokyy.models.Reclamation;
+
 import com.example.trokyy.services.BlogService;
 import com.example.trokyy.services.CommentaireService;
 import com.jfoenix.controls.JFXButton;
+import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
-import javafx.collections.transformation.SortedList;
+
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -18,6 +19,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
@@ -30,7 +32,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 import java.util.ResourceBundle;
-import java.util.function.Predicate;
+
 
 public class ListBlogController implements Initializable {
 
@@ -69,6 +71,8 @@ public class ListBlogController implements Initializable {
 
     @FXML
     private Button deleteButton;
+    @FXML
+    private ImageView back;
 
     BlogService blogService = new BlogService();
     CommentaireService commentaireService = new CommentaireService();
@@ -97,7 +101,8 @@ public class ListBlogController implements Initializable {
     public void initialize(URL url, ResourceBundle resourceBundle) {
 
         BlogService blogService = new BlogService();
-
+// Initially, populate the ListView with all blogs
+        refreshList();
         List<Blog> blogs = blogService.getData();
 
         BlogListView.getItems().clear();
@@ -109,6 +114,8 @@ public class ListBlogController implements Initializable {
         keywordTextField.textProperty().addListener((observable, oldValue, newValue) -> {
             searchFilter(newValue); // Call the searchFilter method with the new value
         });
+        // Apply CSS styles to the ListView
+        BlogListView.getStylesheets().add(getClass().getResource("/com/example/trokyy/FrontOffice/Blog/list-blog-styles.css").toExternalForm());
     }
 
     private void searchFilter(String newValue) {
@@ -132,12 +139,38 @@ public class ListBlogController implements Initializable {
 
         // Set the filtered list as the new items for the ListView
         BlogListView.setItems(filteredList);
+
         // If the search text is empty, show all items
         if (newValue == null || newValue.isEmpty()) {
-            BlogListView.setItems(BlogListView.getItems());
+            BlogListView.setItems((ObservableList<Blog>) blogService.getData());
         }
     }
+    // Method to refresh the ListView with all blogs
+    private void refreshList() {
+        List<Blog> blogs = blogService.getData();
+        BlogListView.getItems().clear(); // Clear existing items
+        BlogListView.getItems().addAll(blogs); // Add all blogs to the ListView
+    }
 
+    public void handleBackClick(MouseEvent mouseEvent) {
+        try {
+            // Load the FXML file of the BlogsManagement page
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/trokyy/Backoffice/BlogsManagement.fxml"));
+            Parent blogsManagementRoot = loader.load();
+
+            // Create a new scene with the BlogsManagement root node
+            Scene blogsManagementScene = new Scene(blogsManagementRoot);
+
+            // Get the stage from the event source
+            Stage stage = (Stage) back.getScene().getWindow();
+
+            // Set the scene to the stage
+            stage.setScene(blogsManagementScene);
+            stage.show();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 
     private class  BlogtListCell extends ListCell<Blog> {
         @Override
@@ -175,18 +208,27 @@ public class ListBlogController implements Initializable {
                 // Fetch all comments for the current blog from the database
                 List<Commentaire> comments = commentaireService.getAllCommentsForBlog(item.getId());
 
-                // Iterate through each comment and create a label to display it
+                // Iterate through each comment and create a VBox to hold the comment label and buttons
+                // Inside BlogtListCell class
                 for (Commentaire commentaire : comments) {
+                    VBox commentBox = new VBox();
                     Label commentLabel = new Label(commentaire.getContenu());
-                    commentsBox.getChildren().add(commentLabel);
+                    commentBox.getChildren().add(commentLabel);
 
-                    //houni l edeit w delet de comment
-                    // Create edit and delete buttons for each comment
                     Button editButton = new Button("Edit");
-                    Button deleteButton = new Button("Delete");
+                    // Ensure commentaire is effectively final
+                    final Commentaire finalCommentaire = commentaire;
+                    editButton.setOnAction(event -> handleEditComment(finalCommentaire));
 
-                    editButton.setOnAction(event -> handleEditComment(commentaire));
+                    Button deleteButton = new Button("Delete");
                     deleteButton.setOnAction(event -> deleteComment(commentaire));
+
+                    HBox buttonBox = new HBox(10);
+                    buttonBox.setAlignment(Pos.CENTER_RIGHT);
+                    buttonBox.getChildren().addAll(editButton, deleteButton);
+                    commentBox.getChildren().add(buttonBox);
+
+                    commentsBox.getChildren().add(commentBox);
                 }
 
                 // Add the comments VBox to the priorityPane
@@ -194,7 +236,10 @@ public class ListBlogController implements Initializable {
 
                 card.getChildren().addAll(typeLabel, dateLabel, descriptionPane, priorityPane);
 
+                // Like Icon and Comment Icon code remains unchanged
 
+                setGraphic(card);
+//////////////////
                 String imagePath = item.getImage();
                 if (imagePath != null && !imagePath.isEmpty()) {
                     ImageView imageView = new ImageView();
@@ -230,8 +275,14 @@ public class ListBlogController implements Initializable {
                 likeIcon.setFitWidth(25);
                 likeIcon.setFitHeight(25);
                 likeIcon.setOnMouseClicked(event -> handleLike(item));
+                // Label to display the number of likes
+                Label likeCountLabel = new Label(Integer.toString(item.getNombre_likes()));
 
-                // Comment Icon
+                // Layout for the like icon and count
+                HBox likeBox = new HBox(5);
+                likeBox.setAlignment(Pos.CENTER_LEFT);
+                likeBox.getChildren().addAll(likeIcon, likeCountLabel);
+// Comment Icon
                 ImageView commentIcon = new ImageView(new Image("C:\\Users\\Lenovo\\Desktop\\TROKYY\\src\\main\\resources\\com\\example\\trokyy\\FrontOffice\\Blog\\chat.png"));
                 commentIcon.setFitWidth(25);
                 commentIcon.setFitHeight(25);
@@ -242,8 +293,13 @@ public class ListBlogController implements Initializable {
                 iconBox.getChildren().addAll(likeIcon, commentIcon);
                 card.getChildren().add(iconBox);
 
-                setGraphic(card);
-
+// Update like count label when the number of likes changes
+                blogService.setOnLikeChangeListener((blog, likes) -> {
+                    if (blog.getId() == item.getId()) {
+                        likeCountLabel.setText(Integer.toString(likes));
+                    }
+                });
+                }
             }
         }
 
@@ -266,6 +322,8 @@ public class ListBlogController implements Initializable {
                 // Refresh the list view or perform any other necessary action
                 refreshBlogListView(); // Assuming this method refreshes the blog list view
             });
+            // Ajoutez du style personnalisé aux boutons "Edit"
+            editButton.setStyle("-fx-background-color: #4CAF50; -fx-text-fill: white; -fx-font-size: 14px;");
         }
 
         // Method to handle delete comment action
@@ -285,9 +343,9 @@ public class ListBlogController implements Initializable {
                     refreshBlogListView(); // Assuming this method refreshes the blog list view
                 }
             });
+            deleteButton.setStyle("-fx-background-color: #f44336; -fx-text-fill: white; -fx-font-size: 14px;");
 
         }
-
 
         @FXML
         private void deleteBlog(Blog BlogToDelete) {
@@ -331,7 +389,6 @@ public class ListBlogController implements Initializable {
                     stage.setTitle("Edit Complaint");
                     stage.setScene(new Scene(root));
 
-
                     stage.showAndWait();
 
                     if (editController.isSaved()) {
@@ -343,17 +400,30 @@ public class ListBlogController implements Initializable {
             }
         }
 
-
         // Handle Like Action
         private void handleLike(Blog selectedBlog) {
             if (selectedBlog != null) {
-                // Call the like method from BlogService
-                blogService.likeBlog(selectedBlog);
+                // Increment the number of likes for the selected blog
+                selectedBlog.setNombre_likes(selectedBlog.getNombre_likes() + 1);
+
+                // Update the likes count in the database using the BlogService
+                blogService.updateLikes(selectedBlog);
 
                 // Refresh the blog list view to reflect the updated likes count
                 refreshBlogListView();
+
+
+
+                // Afficher un message de confirmation
+                Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                alert.setTitle("Like ");
+                alert.setHeaderText(null);
+                alert.setContentText("You liked this blog :)");
+                alert.showAndWait();
+
             }
         }
+
 
         // Handle Comment Action
         private void handleAddComment(Blog selectedBlog) {
@@ -370,15 +440,20 @@ public class ListBlogController implements Initializable {
             // Affichez la boîte de dialogue et attendez la réponse de l'utilisateur
             Optional<String> result = dialog.showAndWait();
 
-            // Vérifiez si l'utilisateur a saisi un commentaire et mettez à jour le nouveau commentaire
+            // Check if the user entered a comment and update the new comment
             result.ifPresent(comment -> {
+                // Filter out bad words from the comment
+                String[] motsInterdits = {"mot1", "mot2", "mot3"};
+                for (String motInterdit : motsInterdits) {
+                    comment = comment.replaceAll("(?i)" + motInterdit, "****");
+                }
                 newComment.setContenu(comment);
-                // Ajoutez le nouveau commentaire à la base de données en utilisant le service de commentaire
+                // Add the new comment to the database using the comment service
                 commentaireService.addCommentaire(newComment);
-                // Actualisez la liste des commentaires ou toute autre action nécessaire
+                // Refresh the comments list or any other necessary action
             });
         }
         }
-        }
+
 
 

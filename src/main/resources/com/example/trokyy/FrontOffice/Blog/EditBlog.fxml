@@ -219,7 +219,7 @@
                             </font>
                         </Label>
                         <TextField fx:id="titleField" />
-                        <Label prefHeight="22.0" prefWidth="526.0" text="Describe your blog in detail to help .">
+                        <Label prefHeight="22.0" prefWidth="526.0" text="Describe your blog in details to help .">
                             <font>
                                 <Font name="Calibri Bold Italic" size="18.0" />
                             </font>
@@ -275,14 +275,14 @@
                 </VBox>
             </children>
         </HBox>
-        <Label layoutX="434.0" layoutY="107.0" prefHeight="57.0" prefWidth="724.0" text="&quot;Welcome to a world of creativity,">
-            <font>
-                <Font name="Calibri Bold" size="33.0" />
-            </font>
-        </Label>
-      <Label layoutX="470.0" layoutY="127.0" prefHeight="75.0" prefWidth="917.0" text="where every post sparks inspiration.&quot;">
+      <Label layoutX="431.0" layoutY="45.0" prefHeight="57.0" prefWidth="105.0" text="Edit blog" textFill="#eee200">
          <font>
-            <Font name="Calibri Bold" size="33.0" />
+            <Font name="Calibri Bold" size="26.0" />
+         </font>
+      </Label>
+      <Label layoutX="573.0" layoutY="119.0" prefHeight="57.0" prefWidth="724.0" text="&quot;Welcome to a world of creativity, where every post sparks inspiration.&quot;">
+         <font>
+            <Font name="Calibri Bold" size="24.0" />
          </font>
       </Label>
     </children>

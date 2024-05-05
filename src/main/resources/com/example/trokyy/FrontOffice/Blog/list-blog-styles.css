@@ -1,0 +1,40 @@
+/* Define styles for the blog card */
+.blog-card {
+    -fx-background-color: #f9f9f9;
+    -fx-padding: 10px;
+    -fx-spacing: 10px;
+    -fx-border-radius: 5px;
+    -fx-border-width: 1px;
+    -fx-border-color: #ddd;
+}
+
+/* Define styles for the edit and delete buttons */
+.edit-button, .delete-button {
+    -fx-background-color: #4CAF50;
+    -fx-text-fill: white;
+    -fx-font-size: 14px;
+    -fx-padding: 5px 10px;
+    -fx-border-radius: 3px;
+}
+
+.delete-button {
+    -fx-background-color: #f44336;
+}
+
+/* Define styles for the like and comment icons */
+.like-icon, .comment-icon {
+    -fx-padding: 0 5px;
+}
+
+/* Define styles for the number of likes label */
+.like-count-label {
+    -fx-font-size: 14px;
+    -fx-font-weight: bold;
+}
+
+/* Define styles for the image view */
+.image-view {
+    -fx-border-radius: 5px;
+    -fx-border-width: 1px;
+    -fx-border-color: #ddd;
+}

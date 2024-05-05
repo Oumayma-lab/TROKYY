@@ -63,7 +63,7 @@
                 </HBox>
                 <HBox alignment="CENTER" layoutX="10.0" layoutY="254.0" prefHeight="56.0" prefWidth="365.0" spacing="20.0">
                     <children>
-                        <JFXButton fx:id="blogbtn" styleClass="inner_panel" stylesheets="@styleBlog.css" text="Blogs" onAction="#handleButtonAction" textFill="#fffdfd">
+                        <JFXButton fx:id="blogbtn" onAction="#handleButtonAction" styleClass="inner_panel" stylesheets="@styleBlog.css" text="Blogs" textFill="#fffdfd">
                             <graphic>
                                 <ImageView fitHeight="22.0" fitWidth="28.0" pickOnBounds="true" preserveRatio="true">
                                     <image>
@@ -219,7 +219,7 @@
                      </font>
                   </Label>
                   <TextField fx:id="titleField" />
-                  <Label prefHeight="22.0" prefWidth="526.0" text="Describe your blog in detail .">
+                  <Label prefHeight="22.0" prefWidth="526.0" text="Describe your blog in details .">
                      <font>
                         <Font name="Calibri Bold Italic" size="18.0" />
                      </font>
@@ -278,6 +278,11 @@
       <Label layoutX="563.0" layoutY="109.0" prefHeight="57.0" prefWidth="724.0" text="&quot;Welcome to a world of creativity, where every post sparks inspiration.&quot;">
          <font>
             <Font name="Calibri Bold" size="24.0" />
+         </font>
+      </Label>
+      <Label layoutX="421.0" layoutY="35.0" prefHeight="57.0" prefWidth="105.0" text="Add blog" textFill="#eee200">
+         <font>
+            <Font name="Calibri Bold" size="26.0" />
          </font>
       </Label>
     </children>
