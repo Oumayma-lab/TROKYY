@@ -1,70 +1,176 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import java.net.URL?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
-<?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.shape.Circle?>
-<?import javafx.scene.shape.Rectangle?>
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
 <BorderPane prefHeight="783.0" prefWidth="1550.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.trokyy.controllers.ProfileController">
+   <stylesheets>
+      <URL value="@FrontOffice.css" />
+   </stylesheets>
+
+
    <top>
       <Pane prefHeight="70.0" prefWidth="1550.0" BorderPane.alignment="CENTER" />
    </top>
    <left>
+
       <Pane prefHeight="723.0" prefWidth="250.0" BorderPane.alignment="CENTER" />
    </left>
    <center>
-      <AnchorPane prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: white;" BorderPane.alignment="CENTER">
+
+      <Pane prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: FEFAF6;" BorderPane.alignment="CENTER">
          <children>
-            <ImageView fitHeight="199.0" fitWidth="1275.0" layoutX="8.0">
+            <Pane layoutX="30.0" layoutY="60.0" prefHeight="600.0" prefWidth="300.0" style="-fx-background-color: white; -fx-border-radius: 50 50 50 50;" styleClass="profile-pane">
+
+            </Pane>
+            <Pane layoutX="380.0" layoutY="60.0" prefHeight="600.0" prefWidth="850.0" style="-fx-background-color: white; -fx-background-radius: 50;" styleClass="profile-pane" />
+            <ImageView fitHeight="574.0" fitWidth="275.0" layoutX="43.0" layoutY="75.0">
                <image>
-                  <Image url="@../assets/profileBackground.png" />
+                  <Image url="@../assets/green_background.png" />
                </image>
             </ImageView>
-            <Pane layoutX="100.0" layoutY="99.0" prefHeight="618.0" prefWidth="1078.0" style="-fx-background-color: #EAE4D2; -fx-background-radius: 30 30 30 30; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.5), 10, 0, 0, 0);">
+            <Pane layoutX="76.0" layoutY="125.0" prefHeight="210.0" prefWidth="210.0" style="-fx-background-radius: 50%; -fx-border-radius: 50%; -fx-background-color: FEFAF6;" styleClass="circular-pane">
                <children>
-                  <Pane layoutX="83.0" layoutY="115.0" prefHeight="493.0" prefWidth="901.0" style="-fx-background-color: white; -fx-background-radius: 95 95 95 95; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.5), 10, 0, 0, 0);">
-                     <children>
-                        <Rectangle arcHeight="5.0" arcWidth="5.0" fill="WHITE" height="198.0" layoutX="694.0" stroke="WHITE" strokeType="INSIDE" width="207.0" />
-                        <Rectangle arcHeight="5.0" arcWidth="5.0" fill="WHITE" height="198.0" layoutY="295.0" stroke="WHITE" strokeType="INSIDE" width="207.0" />
-                        <VBox alignment="center" layoutX="81.0" layoutY="47.0" prefHeight="400.0" prefWidth="104.0" spacing="10">
-                           <children>
-                              <Label fx:id="nameLabel" text="Nom : " />
-                              <Label fx:id="emailLabel" text="Email : " />
-                              <Label fx:id="usernameLabel" text="Nom d'utilisateur : " />
-                              <Label fx:id="addressLabel" text="Adresse : " />
-                              <Label fx:id="telLabel" text="Téléphone : " />
-                              <Button fx:id="editButton" onAction="#editProfile" text="Edit" />
-                           </children>
-                        </VBox>
-                        <Text fill="DARKGREEN" fontSmoothingType="LCD" layoutX="88.0" layoutY="63.0" strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-font-family: Poppins;" text="Profile settings " textAlignment="CENTER" wrappingWidth="184.80001831054688">
-                           <font>
-                              <Font name="System Bold" size="23.0" />
-                           </font>
-                        </Text>
-                     </children>
-                  </Pane>
-                  <Circle fill="#eae4d2" layoutX="184.0" layoutY="13.0" radius="90.0" stroke="#eae4d2" strokeType="INSIDE" />
-                  <Text fill="DARKGREEN" fontSmoothingType="LCD" layoutX="353.0" layoutY="38.0" strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-font-family: Poppins;" text="Hi Trockino !" textAlignment="CENTER" wrappingWidth="359.199951171875">
+                  <ImageView fx:id="profileImage" fitHeight="180.0" fitWidth="180.0" layoutX="15.0" layoutY="15.0">
+                     <clip>
+                        <Circle centerX="90.0" centerY="90.0" radius="90.0" />
+                     </clip>
+                  </ImageView>
+                  <ImageView fx:id="updatePhotoImageView" fitHeight="25.0" fitWidth="45.0" layoutX="141.0" layoutY="173.0" onMouseClicked="#handleChangePhoto">
+                     <image>
+                        <Image url="@../assets/update.png" />
+                     </image>
+                  </ImageView>
+               </children>
+
+            </Pane>
+            <Pane layoutX="62.0" layoutY="356.0" prefHeight="262.0" prefWidth="238.0" style="-fx-background-color: transparent;">
+               <children>
+                  <Text layoutX="21.0" layoutY="132.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Passionate about photography 📸 and outdoor adventures 🌲. Looking to trade photography gear and camping equipment. Let's connect!" wrappingWidth="206.85775756835938">
                      <font>
-                        <Font name="System Bold" size="23.0" />
+                        <Font size="13.0" />
                      </font>
                   </Text>
-                  <Text fill="DARKGREEN" fontSmoothingType="LCD" layoutX="163.0" layoutY="173.0" strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-font-family: Poppins;" text=". " textAlignment="CENTER" wrappingWidth="12.799957275390625">
+                  <Text fill="#1a4d2e" layoutX="-6.0" layoutY="100.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Bio" textAlignment="CENTER" wrappingWidth="252.45773315429688">
                      <font>
-                        <Font name="System Bold" size="23.0" />
+                        <Font name="System Bold" size="15.0" />
                      </font>
                   </Text>
                </children>
             </Pane>
+            <ImageView fitHeight="574.0" fitWidth="825.0" layoutX="393.0" layoutY="74.0">
+               <image>
+                  <Image url="@../assets/green_back.png" />
+               </image>
+            </ImageView>
+
+            <Pane layoutX="433.0" layoutY="116.0" prefHeight="494.0" prefWidth="315.0" styleClass="pane-pane">
+               <children>
+                  <Text fill="#1a4d2e" layoutY="44.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Personal informations" textAlignment="CENTER" wrappingWidth="318.0577087402344">
+                     <font>
+                        <Font name="Georgia Pro Cond Semibold" size="18.0" />
+                     </font>
+                  </Text>
+                  <VBox alignment="center" layoutX="76.0" layoutY="66.0" prefHeight="427.0" prefWidth="267.0" spacing="10">
+                     <children>
+                        <Pane />
+                        <Label fx:id="nameLabel" text="Nom : ">
+                           <font>
+                              <Font name="Arabic Typesetting" size="25.0" />
+                           </font>
+                        </Label>
+                        <Label fx:id="emailLabel" text="Email : ">
+                           <font>
+                              <Font name="Arabic Typesetting" size="25.0" />
+                           </font>
+                        </Label>
+                        <Label fx:id="usernameLabel" text="Nom d'utilisateur : ">
+                           <font>
+                              <Font name="Arabic Typesetting" size="25.0" />
+                           </font>
+                        </Label>
+                        <Label fx:id="addressLabel" text="Adresse : ">
+                           <font>
+                              <Font name="Arabic Typesetting" size="25.0" />
+                           </font>
+                        </Label>
+                        <Label fx:id="telLabel" text="Téléphone : ">
+                           <font>
+                              <Font name="Arabic Typesetting" size="25.0" />
+                           </font>
+                        </Label>
+                        <Button fx:id="editButton" onAction="#editProfile" prefHeight="31.0" prefWidth="116.0" styleClass="profile-button" text="Edit" />
+                     </children>
+                  </VBox>
+                  <Text layoutX="31.0" layoutY="224.0" strokeType="OUTSIDE" strokeWidth="0.0" text="E-mail" wrappingWidth="67.65771484375">
+                     <font>
+                        <Font name="Georgia Pro Cond Semibold" size="18.0" />
+                     </font>
+                  </Text>
+                  <Text layoutX="25.0" layoutY="266.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Username" wrappingWidth="82.0577392578125">
+                     <font>
+                        <Font name="Georgia Pro Cond Semibold" size="18.0" />
+                     </font>
+                  </Text>
+                  <Text layoutX="31.0" layoutY="178.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Name" wrappingWidth="67.65771484375">
+                     <font>
+                        <Font name="Georgia Pro Cond Semibold" size="18.0" />
+                     </font>
+                  </Text>
+                  <Text layoutX="25.0" layoutY="316.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Address" wrappingWidth="82.0577392578125">
+                     <font>
+                        <Font name="Georgia Pro Cond Semibold" size="18.0" />
+                     </font>
+                  </Text>
+                  <Text layoutX="25.0" layoutY="356.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Phone N°" wrappingWidth="82.0577392578125">
+                     <font>
+                        <Font name="Georgia Pro Cond Semibold" size="18.0" />
+                     </font>
+                  </Text>
+               </children></Pane>
+            <Pane layoutX="773.0" layoutY="116.0" prefHeight="285.0" prefWidth="419.0" styleClass="pane-pane">
+               <children>
+                  <Text fill="#1a4d2e" layoutY="27.0" strokeType="OUTSIDE" strokeWidth="0.0" text="My troc section" textAlignment="CENTER" wrappingWidth="422.8577575683594">
+                     <font>
+                        <Font name="Georgia Pro Cond Semibold" size="18.0" />
+                     </font>
+                  </Text>
+               </children>
+            </Pane>
+            <Pane layoutX="773.0" layoutY="426.0" prefHeight="180.0" prefWidth="419.0" styleClass="pane-pane">
+               <children>
+                  <Text fill="#1a4d2e" layoutY="27.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Security" textAlignment="CENTER" wrappingWidth="423.6576843261719">
+                     <font>
+                        <Font name="Georgia Pro Cond Semibold" size="18.0" />
+                     </font>
+                  </Text>
+                  <Text layoutY="100.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Delete my account" textAlignment="CENTER" wrappingWidth="210.85763549804688">
+                     <font>
+                        <Font name="Georgia Pro Cond Semibold" size="18.0" />
+                     </font>
+                  </Text>
+                  <Text layoutY="140.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Change password" textAlignment="CENTER" wrappingWidth="210.85763549804688">
+                     <font>
+                        <Font name="Georgia Pro Cond Semibold" size="18.0" />
+                     </font>
+                  </Text>
+                  <Button fx:id="deleteButton" layoutX="232.0" layoutY="78.0" onAction="#handleDeleteAccount" prefHeight="30.0" prefWidth="120.0" styleClass="profile-button" text="Delete" />
+
+                  <Button onAction="#handleChangePassword" text="Change Password" />
+
+
+               </children>
+            </Pane>
          </children>
-      </AnchorPane>
+      </Pane>
    </center>
 </BorderPane>

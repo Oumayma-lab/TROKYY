@@ -22,10 +22,7 @@ public class MyDataBaseConnection {
         } catch (SQLException e) {
             System.out.println(e.getMessage());
             System.out.println("____not connected____ ");
-
         }
-
-
 
     }
 

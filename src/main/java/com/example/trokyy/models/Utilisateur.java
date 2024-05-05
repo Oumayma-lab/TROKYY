@@ -198,7 +198,7 @@ public class Utilisateur {
 
 
     public String getPhotoProfil() {
-        return photoProfil;
+            return photoProfil;
     }
 
     public void setPhotoProfil(String photoProfil) {
@@ -254,4 +254,8 @@ public class Utilisateur {
         return roles.contains("ROLE_ADMIN");
     }
 
+    public String getFullName() {
+        return nom + " " + prenom;
+
+    }
 }

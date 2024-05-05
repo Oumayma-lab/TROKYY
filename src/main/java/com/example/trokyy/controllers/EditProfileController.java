@@ -24,8 +24,6 @@ public class EditProfileController {
     @FXML
     private TextField addresseField;
     @FXML
-    private TextField passwordField;
-    @FXML
     private TextField telField;
     @FXML
     private Button saveButton;
@@ -57,25 +55,29 @@ public class EditProfileController {
         updatedUser.setNom(nameField.getText());
         updatedUser.setPrenom(prenomField.getText());
         updatedUser.setEmail(emailField.getText());
-        updatedUser.setMdp(passwordField.getText());
         updatedUser.setUsername(usernameField.getText());
         updatedUser.setAdresse(addresseField.getText());
         updatedUser.setTelephone(Integer.parseInt(telField.getText()));
-
         try {
             userDao.updateUser(userId, updatedUser);
-            // Fermer la fenêtre de modification après avoir enregistré les modifications
-            Stage stage = (Stage) saveButton.getScene().getWindow();
-            stage.close();
+            // Refresh the user data from the database
+            Utilisateur refreshedUser = userDao.getUserById(userId);
+            // Update the UI with the refreshed data
+            nameField.setText(refreshedUser.getNom());
+            prenomField.setText(refreshedUser.getPrenom());
+            emailField.setText(refreshedUser.getEmail());
+            usernameField.setText(refreshedUser.getUsername());
+            addresseField.setText(refreshedUser.getAdresse());
+            telField.setText(String.valueOf(refreshedUser.getTelephone()));
+            Stage editStage = (Stage) saveButton.getScene().getWindow();
+            editStage.close();
         } catch (SQLException e) {
             e.printStackTrace();
-            // Gérer les erreurs de mise à jour
         }
     }
 
     @FXML
     private void cancelEdit() {
-        // Close the edit profile window
         Stage stage = (Stage) cancelButton.getScene().getWindow();
         stage.close();
     }

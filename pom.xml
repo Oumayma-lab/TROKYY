@@ -161,6 +161,11 @@
       <artifactId>fontawesomefx-fontawesome</artifactId>
       <version>4.7.0-9.1.2</version>
     </dependency>
+      <dependency>
+          <groupId>org.json</groupId>
+          <artifactId>json</artifactId>
+          <version>20210307</version> <!-- or the latest version -->
+      </dependency>
 
       <dependency>
           <groupId>org.mindrot</groupId>
@@ -194,6 +199,53 @@
       <artifactId>javax.mail</artifactId>
       <version>1.6.2</version>
     </dependency>
+
+      <dependency>
+          <groupId>org.apache.pdfbox</groupId>
+          <artifactId>pdfbox</artifactId>
+          <version>2.0.24</version>
+      </dependency>
+
+      <dependency>
+          <groupId>org.slf4j</groupId>
+          <artifactId>slf4j-simple</artifactId>
+          <version>1.7.32</version> <!-- Use the latest version available -->
+      </dependency>
+
+      <dependency>
+          <groupId>com.twilio.sdk</groupId>
+          <artifactId>twilio</artifactId>
+          <version>8.22.0</version>
+      </dependency>
+
+      <dependency>
+          <groupId>org.opencv</groupId>
+          <artifactId>opencv</artifactId>
+          <version>4.9.0</version>
+          <!-- Exclude the transitive Gson and Guava dependencies to address vulnerabilities -->
+          <exclusions>
+              <exclusion>
+                  <groupId>com.google.code.gson</groupId>
+                  <artifactId>gson</artifactId>
+              </exclusion>
+              <exclusion>
+                  <groupId>com.google.guava</groupId>
+                  <artifactId>guava</artifactId>
+              </exclusion>
+          </exclusions>
+      </dependency>
+
+      <!-- Explicitly specify versions of Gson and Guava without vulnerabilities -->
+      <dependency>
+          <groupId>com.google.code.gson</groupId>
+          <artifactId>gson</artifactId>
+          <version>2.8.11</version> <!-- Replace with a version without the vulnerability -->
+      </dependency>
+      <dependency>
+          <groupId>com.google.guava</groupId>
+          <artifactId>guava</artifactId>
+          <version>30.1-jre</version> <!-- Replace with a version without the vulnerability -->
+      </dependency>
 
 
 

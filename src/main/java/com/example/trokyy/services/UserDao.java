@@ -115,18 +115,6 @@ public class UserDao {
 
 
 
-    public static boolean verifyPassword(String enteredPassword, String hashedPassword) {
-        // Check if either enteredPassword or hashedPassword is null or empty
-        if (enteredPassword == null || enteredPassword.isEmpty() || hashedPassword == null || hashedPassword.isEmpty()) {
-            return false; // Password verification fails if either password is null or empty
-        }
-
-        // Compare the entered password with the hashed password retrieved from the database
-        return BCrypt.checkpw(enteredPassword, hashedPassword);
-    }
-
-
-
 
     public Utilisateur getUserById(int userId) throws SQLException {
         Utilisateur user = null;
@@ -177,17 +165,19 @@ public class UserDao {
 
 
     public void updateUser(int userId, Utilisateur updatedUser) throws SQLException {
-        String query = "UPDATE utilisateur SET nom=?, prenom=?, email=?, mdp=?, username=?, adresse=?, tel=? WHERE id=?";
+        String query = "UPDATE utilisateur SET nom=?, prenom=?, email=?, username=?, adresse=?, tel=? WHERE id=?";
         try (PreparedStatement statement = connection.prepareStatement(query)) {
             statement.setString(1, updatedUser.getNom());
             statement.setString(2, updatedUser.getPrenom());
             statement.setString(3, updatedUser.getEmail());
-            statement.setString(4, updatedUser.getPassword());
-            statement.setString(5, updatedUser.getUsername());
-            statement.setString(6, updatedUser.getAdresse());
-            statement.setInt(7, updatedUser.getTelephone());
-            statement.setInt(8, userId);
+            statement.setString(4, updatedUser.getUsername());
+            statement.setString(5, updatedUser.getAdresse());
+            statement.setInt(6, updatedUser.getTelephone());
+            statement.setInt(7, userId);
             statement.executeUpdate();
+            System.out.println("User profile updated successfully.");
+
+
         }
     }
 
@@ -308,4 +298,203 @@ public class UserDao {
         return searchResults;
     }
 
+    public List<Utilisateur> getUsersByStatus(boolean isActive) throws SQLException {
+        List<Utilisateur> userList = new ArrayList<>();
+        String query = "SELECT id, nom, prenom, tel, email, adresse, is_active, dateinscription FROM Utilisateur WHERE is_active = ?";
+        try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+            preparedStatement.setBoolean(1, isActive);
+            try (ResultSet resultSet = preparedStatement.executeQuery()) {
+                while (resultSet.next()) {
+                    int id = resultSet.getInt("id");
+                    String nom = resultSet.getString("nom");
+                    String prenom = resultSet.getString("prenom");
+                    int tel = resultSet.getInt("tel");
+                    String email = resultSet.getString("email");
+                    String adresse = resultSet.getString("adresse");
+                    boolean is_active = resultSet.getBoolean("is_active");
+                    Timestamp timestamp = resultSet.getTimestamp("dateinscription");
+                    LocalDateTime dateInscription = (timestamp != null) ? timestamp.toLocalDateTime() : null;
+                    Utilisateur utilisateur = new Utilisateur(id, nom, prenom, tel, email, adresse, is_active, dateInscription);
+                    userList.add(utilisateur);
+                }
+            }
+        }
+        return userList;
+    }
+
+    public List<Utilisateur> getActiveUsers() throws SQLException {
+        List<Utilisateur> activeUsers = new ArrayList<>();
+        String query = "SELECT id, nom, prenom, tel, email, adresse, is_active, dateinscription FROM Utilisateur WHERE is_active = true";
+        try (PreparedStatement preparedStatement = connection.prepareStatement(query);
+             ResultSet resultSet = preparedStatement.executeQuery()) {
+            while (resultSet.next()) {
+                // Retrieve user details and create Utilisateur object
+                // Add the Utilisateur object to the activeUsers list
+            }
+        }
+        return activeUsers;
+    }
+
+    public List<Utilisateur> getBannedUsers() throws SQLException {
+        List<Utilisateur> bannedUsers = new ArrayList<>();
+        String query = "SELECT id, nom, prenom, tel, email, adresse, is_active, dateinscription FROM Utilisateur WHERE is_active = false";
+        try (PreparedStatement preparedStatement = connection.prepareStatement(query);
+             ResultSet resultSet = preparedStatement.executeQuery()) {
+            while (resultSet.next()) {
+                // Retrieve user details and create Utilisateur object
+                // Add the Utilisateur object to the bannedUsers list
+            }
+        }
+        return bannedUsers;
+    }
+
+    public static void reactivateBannedUsers() {
+        String query = "UPDATE Utilisateur SET is_active = ? WHERE is_active = ? AND banned_time <= ?";
+        long currentTime = System.currentTimeMillis();
+        long tenMinutesInMillis = 10 * 60 * 1000; // 10 minutes in milliseconds
+        long reactivationTime = currentTime - tenMinutesInMillis;
+
+        try (Connection connection = MyDataBaseConnection.getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+            preparedStatement.setBoolean(1, true); // Reactivate user
+            preparedStatement.setBoolean(2, false); // User is currently banned
+            preparedStatement.setLong(3, reactivationTime); // Users banned before reactivationTime
+            preparedStatement.executeUpdate();
+            System.out.println("Reactivated banned users.");
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void updateProfilePhoto(int userId, String photoUrl) throws SQLException {
+        String query = "UPDATE Utilisateur SET avatar = ? WHERE id = ?";
+        try (PreparedStatement statement = connection.prepareStatement(query)) {
+            statement.setString(1, photoUrl);
+            statement.setInt(2, userId);
+            statement.executeUpdate();
+        }
+    }
+
+    public String getProfilePhoto(int userId) throws SQLException {
+        String query = "SELECT avatar FROM Utilisateur WHERE id = ?";
+        try (PreparedStatement statement = connection.prepareStatement(query)) {
+            statement.setInt(1, userId);
+            try (ResultSet resultSet = statement.executeQuery()) {
+                if (resultSet.next()) {
+                    return resultSet.getString("avatar");
+                }
+            }
+        }
+        return null; // If no photo found
+    }
+
+
+    public void deleteUserAccount(int userId) throws SQLException {
+        String query = "DELETE FROM Utilisateur WHERE id = ?";
+        try (PreparedStatement statement = connection.prepareStatement(query)) {
+            statement.setInt(1, userId);
+            statement.executeUpdate();
+        }
+    }
+
+    public String getPassword(int userId) throws SQLException {
+        String query = "SELECT password FROM Utilisateur WHERE id = ?";
+        try (
+             Connection connection = MyDataBaseConnection.getConnection();
+             PreparedStatement statement = connection.prepareStatement(query)) {
+            statement.setInt(1, userId);
+            try (ResultSet resultSet = statement.executeQuery()) {
+                if (resultSet.next()) {
+                    return resultSet.getString("password");
+                } else {
+                    throw new SQLException("User not found");
+                }
+            }
+        }
+    }
+
+    public static boolean verifyPassword(String enteredPassword, String hashedPassword) {
+        // Check if either enteredPassword or hashedPassword is null or empty
+        if (enteredPassword == null || enteredPassword.isEmpty() || hashedPassword == null || hashedPassword.isEmpty()) {
+            return false; // Password verification fails if either password is null or empty
+        }
+
+        // Compare the entered password with the hashed password retrieved from the database
+        return BCrypt.checkpw(enteredPassword, hashedPassword);
+    }
+
+
+
+
+    public boolean verifyPasswordChange(String oldPassword, int userId) {
+        try (
+            PreparedStatement statement = connection.prepareStatement("SELECT mdp FROM Utilisateur WHERE id = ?")) {
+            statement.setInt(1, userId);
+            ResultSet resultSet = statement.executeQuery();
+            if (resultSet.next()) {
+                String savedPassword = resultSet.getString("mdp");
+                return BCrypt.checkpw(oldPassword, savedPassword); // Check if old password matches
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+
+    public void updatePassword(String newPassword, int userId) {
+        String hashedPassword = BCrypt.hashpw(newPassword, BCrypt.gensalt());
+
+        try (
+             PreparedStatement statement = connection.prepareStatement("UPDATE Utilisateur SET mdp = ? WHERE id = ?")) {
+            statement.setString(1, hashedPassword);
+            statement.setInt(2, userId);
+            statement.executeUpdate();
+
+            System.out.println("Password updated successfully.");
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+
+    public String getUserPhoneNumber(int userId) throws SQLException {
+        String phoneNumber = null;
+        try (
+             PreparedStatement statement = connection.prepareStatement("SELECT tel FROM Utilisateur WHERE id = ?");
+        ) {
+            statement.setInt(1, userId);
+            try (ResultSet resultSet = statement.executeQuery()) {
+                if (resultSet.next()) {
+                    phoneNumber = String.valueOf(resultSet.getInt("tel"));
+                }
+            }
+        }
+        return phoneNumber;
+    }
+
+    public List<String> getUserAddresses() throws SQLException {
+        List<String> addresses = new ArrayList<>();
+        PreparedStatement statement = null;
+        ResultSet resultSet = null;
+        try {
+            String query = "SELECT adresse FROM Utilisateur";
+            statement = connection.prepareStatement(query);
+            resultSet = statement.executeQuery();
+
+            while (resultSet.next()) {
+                addresses.add(resultSet.getString("adresse"));
+            }
+        } finally {
+            if (resultSet != null) {
+                resultSet.close();
+            }
+            if (statement != null) {
+                statement.close();
+            }
+        }
+
+        return addresses;
+    }
 }
+

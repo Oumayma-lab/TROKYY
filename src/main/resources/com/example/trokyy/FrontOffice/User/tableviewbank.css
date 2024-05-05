@@ -1,14 +1,17 @@
 
 .mainFxmlClass {
-
 }
+
+
+
 .pane1{
     -fx-background-color: #ffffff;
     -fx-background-radius : 30;
     -fx-border-radius : 30;
     -fx-effect: dropshadow(three-pass-box,grey, 10, 0, 4, 4);
-
 }
+
+
 .pane2{
     -fx-background-color: #f2f2f2;
 }
@@ -24,7 +27,6 @@
 .overview{
     -fx-font-family :  Open Sans;
     -fx-font-size: 14px;
-
 }
 
 .btn{
@@ -62,14 +64,14 @@
     -fx-background-color: #ffffff;
     /*-fx-background-radius:14;*/
     -fx-background-insets: 0 0 10 0;
-
 }
+
+
 .table-view .column-header, .table-view .filler{
     -fx-size:50px;
     -fx-border-width: 1 0 1 0;
     -fx-background-color:#F1F1F1;
     -fx-border-color: #E1E1E1;
-
 }
 
 .table-view .column-header .label {

@@ -4,7 +4,10 @@ import com.example.trokyy.services.UserDao;
 import com.example.trokyy.models.Utilisateur;
 import com.example.trokyy.tools.MyDataBaseConnection;
 
+import com.example.trokyy.tools.SessionManager;
+import javafx.animation.RotateTransition;
 import javafx.fxml.FXML;
+import javafx.scene.Node;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.PasswordField;
@@ -14,6 +17,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
+import javafx.scene.transform.Rotate;
 import javafx.stage.Stage;
 
 import java.io.IOException;
@@ -22,10 +26,18 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.UUID;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import javafx.scene.text.Text;
 import org.controlsfx.control.Notifications;
+import javafx.animation.FadeTransition;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.layout.Pane;
+import javafx.util.Duration;
+
+
 
 public class LogInController {
 
@@ -79,6 +91,9 @@ public class LogInController {
                     List<String> roles = new ArrayList<>();
                     for (String nestedRoles : user.getRoles()) {
                         roles.addAll(Collections.singleton(nestedRoles));
+                        String sessionId = generateSessionId(); // Generate a unique session ID
+                        SessionManager.createSession(sessionId, user);
+
                     }
                     System.out.println("User roles: " + roles); // Debugging statement
                     if (roles.contains("ROLE_ADMIN")) {
@@ -98,7 +113,9 @@ public class LogInController {
             showAlert("Error", "Failed to log in.");
         }
     }
-
+    private String generateSessionId() {
+        return UUID.randomUUID().toString();
+    }
     private void openAdminHome() {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/trokyy/Backoffice/AdminMain.fxml"));
@@ -167,7 +184,9 @@ public class LogInController {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/trokyy/FrontOffice/User/signup.fxml"));
             Parent signUpForm = loader.load();
             if (Container != null) {
-                Container.getChildren().setAll(signUpForm);
+                //Container.getChildren().setAll(signUpForm);
+                animateTransition(Container, signUpForm);
+
             } else {
                 System.err.println("Container is null. Check FXML binding.");
             }
@@ -177,6 +196,30 @@ public class LogInController {
         }
     }
 
+
+    private void animateTransition(Pane container, Parent newContent) {
+        Node currentContent = container.getChildren().isEmpty() ? null : container.getChildren().get(0);
+        if (currentContent != null) {
+            // Create a rotate transition for the current content (flip out)
+            RotateTransition rotateOut = new RotateTransition(Duration.seconds(0.3), currentContent);
+            rotateOut.setAxis(Rotate.Y_AXIS);
+            rotateOut.setFromAngle(0);
+            rotateOut.setToAngle(-90);
+            rotateOut.setOnFinished(event -> {
+                container.getChildren().setAll(newContent);
+                // Create a rotate transition for the new content (flip in)
+                RotateTransition rotateIn = new RotateTransition(Duration.seconds(0.3), newContent);
+                rotateIn.setAxis(Rotate.Y_AXIS);
+                rotateIn.setFromAngle(90);
+                rotateIn.setToAngle(0);
+                rotateIn.play();
+            });
+            rotateOut.play();
+        } else {
+            // If no current content, simply add the new content
+            container.getChildren().setAll(newContent);
+        }
+    }
 
     public void setContainer(Pane container) {
         this.Container = container;

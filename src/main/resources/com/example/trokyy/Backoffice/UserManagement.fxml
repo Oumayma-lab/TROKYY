@@ -8,6 +8,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
@@ -36,9 +37,12 @@
                </children>
             </VBox>
 
-                      <BorderPane layoutX="26.0" layoutY="25.0" prefHeight="660.0" prefWidth="1254.0">
-               <center>
-                        <TableView fx:id="tableView" maxWidth="950.0" prefHeight="518.0" prefWidth="950.0" style="-fx-border-radius: 14 14 14 14;" styleClass="column-header-background" BorderPane.alignment="CENTER">
+                <BorderPane layoutX="26.0" layoutY="25.0" prefHeight="660.0" prefWidth="1254.0">
+
+                <center>
+                   <VBox>
+
+                        <TableView fx:id="tableView" maxWidth="1066.0" prefHeight="520.0" prefWidth="959.0" style="-fx-border-radius: 14 14 14 14;" styleClass="column-header-background" BorderPane.alignment="CENTER">
                             <columns>
                                 <TableColumn fx:id="idColumn" minWidth="37.60000532865524" prefWidth="50.0" style="-fx-alignment: center;" text="ID" />
                                 <TableColumn fx:id="nameColumn" minWidth="15.0" prefWidth="150.0" style="-fx-alignment: center;" styleClass="column-header" text="Name" />
@@ -47,9 +51,10 @@
                                 <TableColumn fx:id="addressColumn" prefWidth="125.0" style="-fx-alignment: center;" styleClass="column-header" text="Address" />
                                 <TableColumn fx:id="statusColumn" prefWidth="100.0" style="-fx-alignment: center;" styleClass="column-header" text="Status" />
                                 <TableColumn fx:id="registrationDateColumn" prefWidth="150.0" style="-fx-alignment: center;" styleClass="column-header" text="Registration Date" />
-                                <TableColumn fx:id="actionColumn" prefWidth="120.0" style="-fx-alignment: center;" styleClass="column-header" text="Actions" />
+                                <TableColumn fx:id="actionColumn" prefWidth="120.79996337890623" style="-fx-alignment: center;" styleClass="column-header" text="Actions" />
                           </columns>
                         </TableView>
+                   </VBox>
                </center>
                <top>
                   <HBox prefHeight="151.0" prefWidth="1254.0" BorderPane.alignment="CENTER">
@@ -68,10 +73,27 @@
                               </Text>
                            </children>
                         </VBox>
-                     </children></HBox>
+                     </children>
+                  </HBox>
                </top>
                <right>
-                  <HBox prefHeight="522.0" prefWidth="209.0" BorderPane.alignment="CENTER" />
+                  <Pane BorderPane.alignment="CENTER">
+                     <children>
+                        <HBox layoutY="9.0" prefHeight="522.0" prefWidth="209.0" style="-fx-background-color: transparent;">
+                           <children>
+
+
+                               <ImageView fitHeight="41.0" fitWidth="31.0" layoutX="10.0" layoutY="10.0" onMouseClicked="#exportToPDF" pickOnBounds="true" preserveRatio="true" style="-fx-background-color: blue;">
+                                   <image>
+                                       <Image url="@assets/print.jpg" />
+                                   </image>
+                               </ImageView>
+
+
+                           </children>
+                        </HBox>
+                     </children>
+                  </Pane>
                </right>
                <bottom>
                   <HBox prefHeight="0.0" prefWidth="1254.0" BorderPane.alignment="CENTER" />

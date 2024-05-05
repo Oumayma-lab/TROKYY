@@ -167,3 +167,13 @@
     -fx-text-fill: white;
     -fx-border-radius: 10px; /* or any value you want */
 }
+
+
+.blue-icon {
+    -fx-fill: blue;
+    -fx-stroke: white;
+}
+
+.printer-icon {
+    -fx-text-fill: blue;
+}

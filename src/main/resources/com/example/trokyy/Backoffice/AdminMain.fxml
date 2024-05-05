@@ -49,9 +49,9 @@
                         <Font name="MS Reference Sans Serif" size="12.0" />
                      </font>
                   </Text>
-                        <Button fx:id="Logout" onAction="#logout" prefHeight="38.0" prefWidth="200.0" styleClass="btn" text="Notifications" />
-                  <Button fx:id="Logout2" onAction="#logout" prefHeight="38.0" prefWidth="200.0" styleClass="btn" text="Settings" />
-                  <Button fx:id="Logout1" onAction="#logout" prefHeight="38.0" prefWidth="200.0" styleClass="btn" text="Logout" />
+                  <Button fx:id="Notifications" onAction="#logout" prefHeight="38.0" prefWidth="200.0" styleClass="btn" text="Notifications" />
+                  <Button fx:id="Settings" onAction="#logout" prefHeight="38.0" prefWidth="200.0" styleClass="btn" text="Settings" />
+                  <Button fx:id="Logout" onAction="#handleLogout" prefHeight="38.0" prefWidth="200.0" styleClass="btn" text="Logout" />
                   <Line endX="100.0" startX="-100.0" stroke="#dfe0e1" />
                   <Text fill="#606061" strokeType="OUTSIDE" strokeWidth="0.0" text="Profile" wrappingWidth="80.0">
                      <font>

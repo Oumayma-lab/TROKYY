@@ -2,6 +2,7 @@ package com.example.trokyy.controllers;
 
 import com.example.trokyy.services.UserDao;
 import com.example.trokyy.models.Utilisateur;
+import com.example.trokyy.tools.EmailService;
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon;
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView;
 import javafx.event.ActionEvent;
@@ -11,11 +12,10 @@ import javafx.fxml.Initializable;
 import javafx.geometry.Pos;
 import javafx.scene.Parent;
 import javafx.scene.control.*;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
+import javafx.scene.shape.Rectangle;
 import javafx.util.Duration;
 import org.controlsfx.control.Notifications;
 import java.io.IOException;
@@ -25,9 +25,23 @@ import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.List;
 import java.util.ResourceBundle;
+import java.util.Scanner;
 import java.util.regex.Pattern;
+import javafx.animation.Interpolator;
+import javafx.animation.RotateTransition;
+import javafx.scene.Node;
+import org.json.JSONObject; // Import for JSON handling
+import javax.mail.*;
+import javax.mail.internet.InternetAddress;
+import javax.mail.internet.MimeBodyPart;
+import javax.mail.internet.MimeMessage;
+import javax.mail.internet.MimeMultipart;
+import java.util.Properties;
+
+
 
 public class SignUpController implements Initializable {
+
     @FXML
     private TextField firstName;
     @FXML
@@ -49,11 +63,20 @@ public class SignUpController implements Initializable {
     private final UserDao userDao = new UserDao();
     @FXML
     private Pane passwordParent; // Add this field to reference the parent container of the password field in your FXML
-
     @FXML
     private Pane confirmPasswordParent; // Add this field to reference the parent container of the confirmPassword field in your FXML
     @FXML
     private Pane FormContainer;
+
+    @FXML
+    private Label countryCodeValueLabel;
+
+    @FXML
+    private Rectangle strengthIndicator;
+
+    private static final double CRITERIA_WEIGHT = 0.25; // Each criteria contributes 25% to the progress
+    private static final double MAX_WIDTH = 200; // Maximum width for the strength indicator
+
 
     private static final List<String> TUNISIAN_GOVERNORATES = Arrays.asList(
             "Ariana", "Beja", "Ben Arous", "Bizerte", "Gabes", "Gafsa", "Jendouba",
@@ -61,6 +84,10 @@ public class SignUpController implements Initializable {
             "Monastir", "Nabeul", "Sfax", "Sidi Bouzid", "Siliana", "Sousse", "Tataouine",
             "Tozeur", "Tunis", "Zaghouan"
     );
+
+    public SignUpController() {
+    }
+
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         if (FormContainer == null) {
@@ -96,7 +123,58 @@ public class SignUpController implements Initializable {
             validateField(address, newValue);
         });
 
+        String countryCode = getCountryCodeFromIPAddress();
+        countryCodeValueLabel.setText(countryCode);
+
+        strengthIndicator.setStyle("-fx-background-color: #E8F0E6; -fx-background-radius: 30px; -fx-border-color: #006400; -fx-border-radius: 30px; -fx-pref-height: 2px;");
+        strengthIndicator.setVisible(false);
+        password.textProperty().addListener((observable, oldValue, newValue) -> {
+            if (newValue.isEmpty()) {
+                strengthIndicator.setVisible(false);
+            } else {
+                strengthIndicator.setVisible(true);
+                updateStrengthIndicator(newValue);
+            }
+        });
     }
+
+    private void updateStrengthIndicator(String password) {
+        int numCriteriaMet = calculateCriteriaMet(password);
+        double progress = numCriteriaMet * CRITERIA_WEIGHT;
+        strengthIndicator.setStyle("-fx-background-color: #E8F0E6; -fx-background-radius: 30px; -fx-border-color: #006400; -fx-border-radius: 30px; -fx-pref-height: 2px;");
+        double maxWidth = Math.min(password.length() * 15, MAX_WIDTH);
+        strengthIndicator.setWidth(maxWidth);
+        if (progress == 0) {
+            strengthIndicator.setFill(Color.RED);
+        } else if (progress < 0.25) {
+            strengthIndicator.setFill(Color.RED);
+        } else if (progress < 0.5) {
+            strengthIndicator.setFill(Color.ORANGE);
+        } else if (progress < 0.75) {
+            strengthIndicator.setFill(Color.YELLOW);
+        } else {
+            strengthIndicator.setFill(Color.GREEN);
+        }
+    }
+
+    private int calculateCriteriaMet(String password) {
+        int criteriaMet = 0;
+        if (password.matches(".*[a-z].*")) {
+            criteriaMet++;
+        }
+        if (password.matches(".*[A-Z].*")) {
+            criteriaMet++;
+        }
+        if (password.matches(".*\\d.*")) {
+            criteriaMet++;
+        }
+        if (password.matches(".*[!@#$%^&*()-_=+\\|\\[{\\]};:'\",<.>/?`~].*")) {
+            criteriaMet++;
+        }
+        return criteriaMet;
+    }
+
+
 
     @FXML
     public void registerUser(ActionEvent actionEvent) throws SQLException {
@@ -107,6 +185,7 @@ public class SignUpController implements Initializable {
         String confirmUserPassword = confirmPassword.getText();
         String phoneNumberText = phoneNumber.getText().trim();
         String adresse = address.getText();
+        UserDao userDao = new UserDao();
 
         if (nom.isEmpty() || prenom.isEmpty() || email.isEmpty() || mdp.isEmpty() ||
                 confirmUserPassword.isEmpty() || phoneNumberText.isEmpty() || adresse.isEmpty()) {
@@ -122,7 +201,6 @@ public class SignUpController implements Initializable {
             showAlert(Alert.AlertType.ERROR, "Error", "Invalid phone number format.");
             return;
         }
-
         validateField(firstName, firstName.getText());
         validateField(lastName, lastName.getText());
         validateField(useremail, useremail.getText());
@@ -130,44 +208,44 @@ public class SignUpController implements Initializable {
         validateField(confirmPassword, confirmPassword.getText());
         validateField(phoneNumber, phoneNumber.getText());
         validateField(address, address.getText());
-
         ValidationResult validationResult = validateFields(nom, prenom, email, mdp, confirmUserPassword, Integer.parseInt(phoneNumberText), adresse);
         if (!validationResult.isValid()) {
             showAlert(Alert.AlertType.ERROR, "Error", validationResult.getMessage());
             return;
         }
-
         LocalDateTime dateInscription = LocalDateTime.now();
-        Utilisateur user = new Utilisateur(nom, prenom, email, mdp,+phoneNumberValue, adresse) ; // Create user object
+        Utilisateur user = new Utilisateur(nom, prenom, email, mdp, phoneNumberValue, adresse) ; // Create user object
         try {
-            System.out.println("Creating user: " + user); // Debug message
             UserDao.createUser(user, LocalDateTime.now()); // Register user with hashed password
             System.out.println("User created successfully."); // Debug message
             showNotification("Registration Successful!", "Welcome " + prenom + ". Please log in using your credentials.");
             showLoginForm(null);
+            EmailService.sendEmail(email);
         } catch (SQLException e) {
             e.printStackTrace();
             showAlert(Alert.AlertType.ERROR, "Error", "Failed to register user.");
         }
 
     }
+
+
+
     private void showNotification(String title, String message) {
         FontAwesomeIconView successIcon = new FontAwesomeIconView(FontAwesomeIcon.CHECK_CIRCLE);
-        successIcon.setSize("36"); // Set icon size to 36
-        successIcon.setFill(Color.web("#4CAF50")); // Set icon color to a shade of green
-
+        successIcon.setSize("36");
+        successIcon.setFill(Color.web("#4CAF50"));
         Notifications.create()
                 .title(title)
                 .text(message)
-                .hideAfter(Duration.seconds(5)) // Hide after 5 seconds
-                .position(Pos.BOTTOM_RIGHT) // Position of the notification
-                .graphic(successIcon) // Custom icon for the notification
-                .darkStyle() // Use dark style for the notification
+                .hideAfter(Duration.seconds(5))
+                .position(Pos.BOTTOM_RIGHT)
+                .graphic(successIcon)
+                .darkStyle()
                 .show();
     }
 
     private void validateField(TextField field, String value){
-        System.out.println("Validating field: " + field.getId()); // Add this line for debugging
+        System.out.println("Validating field: " + field.getId());
         if (value.isEmpty()) {
             field.setStyle("-fx-border-color: red; -fx-border-radius: 30px;");
         } else {
@@ -286,7 +364,8 @@ public class SignUpController implements Initializable {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/trokyy/FrontOffice/User/login1.fxml"));
             Parent loginForm = loader.load();
             if (FormContainer != null) {
-                FormContainer.getChildren().setAll(loginForm);
+                animateTransition(FormContainer, loginForm);
+
             } else {
                 System.err.println("FormContainer is null. Check FXML binding.");
             }
@@ -296,9 +375,74 @@ public class SignUpController implements Initializable {
         }
     }
 
+    private void animateTransition(Pane container, Parent newContent) {
+        Node currentContent = container.getChildren().isEmpty() ? null : container.getChildren().get(0);
+
+        if (currentContent != null) {
+            // Create a rotate transition for the current content (flip out)
+            RotateTransition rotateOut = new RotateTransition(Duration.seconds(0.5), currentContent);
+            rotateOut.setAxis(javafx.geometry.Point3D.ZERO.add(0, 1, 0)); // Rotate around Y-axis
+            rotateOut.setFromAngle(0);
+            rotateOut.setToAngle(90);
+            rotateOut.setInterpolator(Interpolator.EASE_BOTH);
+
+            // Create a rotate transition for the new content (flip in)
+            RotateTransition rotateIn = new RotateTransition(Duration.seconds(0.5), newContent);
+            rotateIn.setAxis(javafx.geometry.Point3D.ZERO.add(0, 1, 0)); // Rotate around Y-axis
+            rotateIn.setFromAngle(-90);
+            rotateIn.setToAngle(0);
+            rotateIn.setInterpolator(Interpolator.EASE_BOTH);
+
+            // Play both transitions
+            rotateOut.setOnFinished(event -> {
+                container.getChildren().setAll(newContent);
+                rotateIn.play();
+            });
+
+            rotateOut.play();
+        } else {
+            container.getChildren().setAll(newContent);
+        }
+    }
+
+
     public void setFormContainer(Pane container) {
         this.FormContainer = container;
     }
 
+    private String getCountryCodeFromIPAddress() {
+        String countryCallingCode = "";
+        try {
+            URL url = new URL("https://ipinfo.io/json");
+            Scanner scanner = new Scanner(url.openStream());
+            StringBuilder response = new StringBuilder();
+            while (scanner.hasNext()) {
+                response.append(scanner.nextLine());
+            }
+            scanner.close();
+            JSONObject jsonObject = new JSONObject(response.toString());
+            String countryCode = jsonObject.getString("country");
+            switch (countryCode) {
+                case "TN":
+                    countryCallingCode = "+216";
+                    break;
+                case "DZ":
+                    countryCallingCode = "+213";
+                    break;
+                case "FR":
+                    countryCallingCode = "+33";
+                    break;
+                default:
+                    break;
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
-}
+        return countryCallingCode;
+    }
+
+
+
+
+    }

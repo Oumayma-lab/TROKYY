@@ -18,6 +18,9 @@ module com.example.trokyy {
     requires google.api.client;
     requires com.google.api.client;
     requires google.api.services.oauth2.v2.rev157;
+    requires org.json;
+    requires org.apache.pdfbox;
+    requires twilio;
 
 
     opens com.example.trokyy to javafx.fxml;

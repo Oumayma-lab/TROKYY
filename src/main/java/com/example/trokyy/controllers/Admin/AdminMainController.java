@@ -6,23 +6,31 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
-import javafx.scene.control.Button;
-import javafx.scene.control.TableView;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.layout.BorderPane;
 import javafx.fxml.Initializable;
-import javafx.scene.input.KeyCode;
-import javafx.scene.input.KeyEvent;
+import javafx.scene.Node;
+import javafx.scene.Scene;
+import javafx.scene.layout.StackPane;
+import javafx.stage.Stage;
 import java.io.IOException;
 import java.net.URL;
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.util.*;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javafx.scene.chart.LineChart;
+import javafx.scene.chart.NumberAxis;
+import javafx.scene.chart.XYChart;
+import javafx.scene.control.Button;
+import javafx.scene.layout.BorderPane;
+import java.sql.SQLException;
+import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.ResourceBundle;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import javafx.application.Platform;
 
 
 public class AdminMainController implements Initializable {
@@ -67,7 +75,11 @@ public class AdminMainController implements Initializable {
     private Button selectedButton = null;
     private static final UserDao userDao = new UserDao();
 
+    @FXML
+    private StackPane rootPane; // Reference to the root pane
 
+    @FXML
+    private LineChart<Number, Number> userChart;
 
     public AdminMainController() throws SQLException {
         Connection connection = MyDataBaseConnection.getConnection();
@@ -85,12 +97,44 @@ public class AdminMainController implements Initializable {
         buttonFXMLMap.put(Events, "EventsManagement.fxml");
         buttonFXMLMap.put(Complaints, "ComplaintsManagement.fxml");
         buttonFXMLMap.put(Donations, "DonationsManagement.fxml");
+
         // Initialize map with buttons and their styles
         initializeButtonStyles();
         // Add event handlers to all buttons
         addButtonEventHandlers();
         // Set initial content (Home page)
         loadContent("Home.fxml");
+        // displayUserEvolutionChart();
+
+
+
+
+
+
+
+        if (userChart != null) {
+            NumberAxis xAxis = (NumberAxis) userChart.getXAxis();
+            NumberAxis yAxis = (NumberAxis) userChart.getYAxis();
+            xAxis.setLabel("Month");
+            yAxis.setLabel("Number of Users");
+
+            // Add sample data to represent user growth evolution
+            XYChart.Series<Number, Number> series = new XYChart.Series<>();
+            series.setName("User Growth");
+
+            // Generating sample data for 12 months
+            for (int i = 1; i <= 12; i++) {
+                // Simulating new user creation, you can replace this with your actual logic
+                int newUserCount = (int) (Math.random() * 100) + 50; // Random between 50 and 150
+                series.getData().add(new XYChart.Data<>(i, newUserCount));
+            }
+
+            userChart.getData().add(series);
+
+            // Apply styles
+            rootPane.setStyle("-fx-background-color: white;");
+            userChart.setStyle("-fx-stroke: green;");
+        }
 
     }
 
@@ -102,8 +146,10 @@ public class AdminMainController implements Initializable {
         Events.setOnAction(this::handleButtonClick);
         Complaints.setOnAction(this::handleButtonClick);
         Donations.setOnAction(this::handleButtonClick);
-        Logout.setOnAction(this::handleButtonClick);
+        Logout.setOnAction(this::handleLogout);
     }
+
+
 
 
     private void initializeButtonStyles() {
@@ -197,12 +243,9 @@ public class AdminMainController implements Initializable {
         loadContent("DonationsManagement");
     }
 
+
     @FXML
-    private void logout(ActionEvent event) {
-        // Handle logout action here
-    }
-    @FXML
-    private void handleSearch() {
+    private void handleSearch() throws SQLException {
         if (userManagementController != null) {
             String query = searchField.getText().trim();
             userManagementController.setSearchQuery(query);
@@ -211,12 +254,86 @@ public class AdminMainController implements Initializable {
         }
     }
 
+    private void displayUserEvolutionChart() throws SQLException {
+        // Retrieve user data
+        List<Utilisateur> userList = userDao.getAllUsers();
 
+        // Count the number of users registered on each day
+        Map<LocalDate, Integer> userCountByDate = new HashMap<>();
+        for (Utilisateur user : userList) {
+            LocalDate registrationDate = user.getDateInscription().toLocalDate();
+            userCountByDate.put(registrationDate, userCountByDate.getOrDefault(registrationDate, 0) + 1);
+        }
 
+        NumberAxis xAxis = new NumberAxis();
+        NumberAxis yAxis = new NumberAxis();
+        LineChart<Number, Number> lineChart = new LineChart<>(xAxis, yAxis);
+        lineChart.setTitle("User Evolution Over Days");
 
-    public void setUserManagementController(UserManagementController userManagementController) {
-        this.userManagementController = userManagementController;
+        XYChart.Series<Number, Number> series = new XYChart.Series<>();
+        series.setName("User Count");
+
+        userCountByDate.forEach((date, count) -> series.getData().add(new XYChart.Data<>(date.toEpochDay(), count)));
+
+        lineChart.getData().add(series);
+
+        borderPane.setCenter(lineChart);
     }
+
+    @FXML
+    private void logout(ActionEvent event) {
+        try {
+            // Load the FXML file of the login screen
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/trokyy/FrontOffice/User/Main.fxml"));
+            Parent root = loader.load();
+
+            // Create a new scene with the login screen
+            Scene scene = new Scene(root);
+
+            // Get the stage (window) from the event source
+            Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+
+            // Close the previous stage
+            stage.close();
+
+            // Open a new stage for the login screen
+            Stage newStage = new Stage();
+            newStage.setScene(scene);
+            newStage.show();
+        } catch (IOException e) {
+            e.printStackTrace(); // Handle the exception appropriately
+        }
+    }
+
+    @FXML
+    private void handleLogout(ActionEvent actionEvent) {
+        // Create an alert dialog for confirmation
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("Confirm Logout");
+        alert.setHeaderText("Are you sure you want to logout? 😢");
+        alert.setContentText("Don't go, trockino!");
+
+        // Customize the dialog's appearance
+        DialogPane dialogPane = alert.getDialogPane();
+        dialogPane.setStyle("-fx-background-color: #7CFC00; -fx-border-color: #7CFC00; -fx-border-radius: 50px; -fx-background-radius: 50px;");
+        dialogPane.getScene().getRoot().setStyle("-fx-background-color: transparent;");
+
+        // Force the styles to be applied
+        dialogPane.applyCss();
+
+        // Show the alert and wait for user response
+        Optional<ButtonType> result = alert.showAndWait();
+
+        // If the user confirms logout, close the window and exit the application
+        if (result.isPresent() && result.get() == ButtonType.OK) {
+            Stage stage = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
+            stage.close();
+            Platform.exit();
+        }
+    }
+
+
+
 
 
 }

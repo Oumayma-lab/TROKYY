@@ -7,7 +7,10 @@
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
 <?import javafx.scene.shape.Line?>
+<?import javafx.scene.shape.Rectangle?>
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
@@ -23,8 +26,12 @@
             <TextField fx:id="firstName" layoutX="39.0" layoutY="136.0" prefHeight="37.0" prefWidth="280.0" promptText="First Name" style="-fx-background-color: #E8F0E6; -fx-background-radius: 20px; -fx-font-family: 'Poppins';" />
             <TextField fx:id="lastName" layoutX="39.0" layoutY="183.0" prefHeight="37.0" prefWidth="280.0" promptText="Last Name" style="-fx-background-color: #E8F0E6; -fx-background-radius: 20px; -fx-font-family: 'Poppins';" />
             <TextField fx:id="useremail" layoutX="40.0" layoutY="227.0" prefHeight="37.0" prefWidth="280.0" promptText="Email" style="-fx-background-color: #E8F0E6; -fx-background-radius: 20px; -fx-font-family: 'Poppins';" />
-            <PasswordField fx:id="password" layoutX="39.0" layoutY="359.0" prefHeight="37.0" prefWidth="280.0" promptText="Password" style="-fx-background-color: #E8F0E6;  -fx-background-radius: 20px; -fx-font-family: 'Poppins';" />
+            <VBox alignment="CENTER" layoutX="4.0" layoutY="275.0" prefHeight="31.0" prefWidth="33.0" spacing="5" />
+
             <PasswordField fx:id="confirmPassword" layoutX="39.0" layoutY="404.0" prefHeight="37.0" prefWidth="280.0" promptText="Confirm Password" style="-fx-background-color: #E8F0E6;   -fx-background-radius: 20px; -fx-font-family: 'Poppins';" />
+            <HBox alignment="CENTER">
+               <Label fx:id="countryCodeValueLabel" style="-fx-font-size: 14px;" text="" />
+            </HBox>
             <TextField fx:id="phoneNumber" layoutX="40.0" layoutY="270.0" prefHeight="37.0" prefWidth="280.0" promptText="Phone Number" style="-fx-background-color: #E8F0E6; -fx-background-radius: 20px; -fx-font-family: 'Poppins';" />
             <TextField fx:id="address" layoutX="40.0" layoutY="313.0" prefHeight="37.0" prefWidth="280.0" promptText="Address" style="-fx-background-color: #E8F0E6; -fx-background-radius: 20px; -fx-font-family: 'Poppins';" />
 
@@ -39,6 +46,8 @@
             </font>
          </Label>
          <Text fill="DARKGREEN" layoutX="226.0" layoutY="531.0" onMouseClicked="#showLoginForm" strokeType="OUTSIDE" strokeWidth="0.0" text=" Login" />
+         <PasswordField fx:id="password" layoutX="39.0" layoutY="357.0" prefHeight="37.0" prefWidth="280.0" promptText="Password" style="-fx-background-color: #E8F0E6;  -fx-background-radius: 20px; -fx-font-family: 'Poppins';" />
+         <Rectangle fx:id="strengthIndicator" accessibleText="Password complexity" height="4.0" layoutX="66.0" layoutY="397.0" style="-fx-arc-width: 10; -fx-arc-height: 10;" width="36.0" />
          </children>
       </AnchorPane>
    <Text fill="DARKGREEN" fontSmoothingType="LCD" layoutX="8.0" layoutY="57.0" strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-font-family: Poppins;" text="Register" textAlignment="CENTER" wrappingWidth="359.199951171875">

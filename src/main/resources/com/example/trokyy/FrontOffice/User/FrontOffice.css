@@ -1,0 +1,49 @@
+.profile-pane {
+    -fx-background-color: white;
+    -fx-background-radius: 50px;
+    -fx-effect: dropshadow(three-pass-box, grey, 10, 0, 4, 4);
+}
+
+
+
+.pane-pane {
+    -fx-background-color: rgba(255, 255, 255, 0.4);
+    -fx-filter: blur(5px);
+    -fx-z-index: -1;
+    -fx-background-radius: 50px;
+    -fx-effect: dropshadow(three-pass-box, grey, 10, 0, 4, 4), blur(4px);
+    /* -fx-background-color: rgba(255, 255, 255, 0.5); /* Couleur de fond translucide */
+    /* -fx-effect: dropshadow(three-pass-box, rgba(0, 0, 0, 0.5), 10, 0, 0, 0); /* Effet de flou */
+}
+
+.blur-container {
+    -fx-effect: blur(4px);
+}
+
+.backgroundimage-pane {
+    -fx-background-image: url("com/example/trokyy/FrontOffice/assets/green_background.png");
+    -fx-background-size: cover; /* Adjust as needed */
+    -fx-background-repeat: no-repeat;
+    -fx-background-position: center;
+    -fx-effect: dropshadow(three-pass-box, grey, 10, 0, 4, 4);
+}
+.profile-button {
+    -fx-background-color : #1a4d2e;
+    -fx-background-radius : 30;
+    -fx-text-fill: black;
+    -fx-font-family : Open Sans;
+    -fx-font-size:15px;
+
+}
+
+.circle-pane {
+    -fx-background-color:  #FEFAF6; /* Couleur de fond */
+    -fx-background-radius: 50%; /* Forme du fond (cercle) */
+    -fx-border-color: transparent; /* Couleur de la bordure transparente */
+}
+.circular-pane {
+    -fx-background-color: transparent; /* Set background color to transparent */
+    -fx-border-color: #fefaf6; /* Set border color */
+    -fx-border-radius: 100; /* Set border radius to make it circular */
+    -fx-border-width: 2; /* Set border width */
+}

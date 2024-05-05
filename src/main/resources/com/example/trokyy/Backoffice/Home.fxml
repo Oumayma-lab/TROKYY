@@ -1,26 +1,48 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.net.URL?>
-<?import javafx.scene.control.Button?>
-<?import javafx.scene.control.TextField?>
+<?import javafx.scene.chart.LineChart?>
+<?import javafx.scene.chart.NumberAxis?>
+<?import javafx.scene.chart.PieChart?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.Pane?>
-<?import javafx.scene.layout.Region?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<?import javafx.scene.layout.VBox?>
 <VBox prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.trokyy.controllers.HomepageController">
 
 
         <AnchorPane layoutX="5.0" prefHeight="712.0" prefWidth="1250.0" BorderPane.alignment="CENTER">
             <children>
-                <HBox layoutX="3.0" layoutY="153.0" prefHeight="570.0" prefWidth="1303.0" style="-fx-background-color: #dee8fa;" />
+                <HBox layoutX="3.0" layoutY="153.0" prefHeight="570.0" prefWidth="1303.0" style="-fx-background-color: #dee8fa;">
+            <children>
+               <Pane>
+                  <children>
+                      <LineChart fx:id="userChart" layoutX="11.0" layoutY="112.0" prefHeight="357.0" prefWidth="558.0">
+                          <xAxis>
+                              <NumberAxis label="Number of Users" side="BOTTOM" />
+                          </xAxis>
+                          <yAxis>
+                              <NumberAxis label="Number of Days" side="LEFT" />
+                          </yAxis>
+                      </LineChart>
+
+
+
+
+                      <PieChart fx:id="regionPieChart" layoutX="681.0" layoutY="123.0" prefHeight="300.0" prefWidth="300.0">
+                          <data>
+                              <!-- Data for the pie chart will be populated dynamically -->
+                          </data>
+                      </PieChart>
+                  </children>
+               </Pane>
+            </children>
+                </HBox>
                 <HBox layoutX="2.0" layoutY="14.0" prefHeight="146.0" prefWidth="1294.0">
                     <children>
                         <ImageView fitHeight="191.0" fitWidth="1303.0">
@@ -28,6 +50,15 @@
                                 <Image url="@assets/top-header.png" />
                             </image>
                         </ImageView>
+               <Pane>
+                  <children>
+                     <Text fill="BLUE" layoutX="-1280.0" layoutY="151.0" strokeType="OUTSIDE" strokeWidth="0.0" text="The evolution of users using troky" textAlignment="CENTER" wrappingWidth="421.23907470703125">
+                        <font>
+                           <Font name="Microsoft Sans Serif" size="19.0" />
+                        </font>
+                     </Text>
+                  </children>
+               </Pane>
                     </children>
                 </HBox>
             </children>
