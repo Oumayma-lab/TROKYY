@@ -17,11 +17,11 @@ public class OTPService {
 
         // Send OTP via Twilio
         Twilio.init(ACCOUNT_SID, AUTH_TOKEN);
-        //       Message message = Message.creator(
-                //                      new PhoneNumber(formatPhoneNumber(phoneNumber)), // Destination phone number in international format
-                //                    new PhoneNumber(TWILIO_PHONE_NUMBER), // Twilio phone number
-                //                    "Hello Trockino ദ്ദി(˵•̀ᴗ-˵)," + "Your OTP for password change is: " + otp)
-//                 .create();
+              Message message = Message.creator(
+                                      new PhoneNumber(formatPhoneNumber(phoneNumber)), // Destination phone number in international format
+                                  new PhoneNumber(TWILIO_PHONE_NUMBER), // Twilio phone number
+                                   "Hello Trockino ദ്ദി(˵•̀ᴗ-˵)," + "Your OTP for password change is: " + otp)
+                .create();
 
         // Print message SID for reference
         System.out.println("Sent OTP: " + otp);

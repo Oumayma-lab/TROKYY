@@ -4,7 +4,11 @@ import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeBodyPart;
 import javax.mail.internet.MimeMessage;
 import javax.mail.internet.MimeMultipart;
+import javax.sql.DataSource;
 import java.util.Properties;
+import javax.activation.DataHandler;
+import javax.activation.FileDataSource;
+
 public class EmailService {
     private final String senderEmail;
     private final String password;
@@ -121,5 +125,51 @@ public class EmailService {
         }
     }
 
+
+    public static void sendEmailWithAttachment(String recipientEmail, String imagePath) {
+        String senderEmail = "batoutbata5@gmail.com";
+        if (recipientEmail == null || recipientEmail.isEmpty()) {
+            System.out.println("Recipient email is null or empty. Cannot send email.");
+            return;
+        }
+        String password = "prxidlislxcnfedc";
+        Properties properties = new Properties();
+        properties.put("mail.smtp.auth", "true");
+        properties.put("mail.smtp.starttls.enable", "true");
+        properties.put("mail.smtp.host", "smtp.gmail.com");
+        properties.put("mail.smtp.port", "587");
+        properties.put("mail.smtp.ssl.trust", "*");
+        Session session = Session.getInstance(properties, new Authenticator() {
+            @Override
+            protected PasswordAuthentication getPasswordAuthentication() {
+                return new PasswordAuthentication(senderEmail, password);
+            }
+        });
+
+        try {
+            // Create a MimeMessage object
+            MimeMessage message = new MimeMessage(session);
+            message.setFrom(new InternetAddress(senderEmail));
+            message.addRecipient(Message.RecipientType.TO, new InternetAddress(recipientEmail));
+            message.setSubject("Unauthorized Access Attempt Detected");
+            BodyPart messageBodyPart = new MimeBodyPart();
+            messageBodyPart.setText("An unauthorized access attempt was detected. See the attached image.");
+            Multipart multipart = new MimeMultipart();
+            multipart.addBodyPart(messageBodyPart);
+            messageBodyPart = new MimeBodyPart();
+            String filename = imagePath;
+            DataSource source = (DataSource) new FileDataSource(filename);
+            messageBodyPart.setDataHandler(new DataHandler((javax.activation.DataSource) source));
+            messageBodyPart.setFileName(filename);
+            multipart.addBodyPart(messageBodyPart);
+            // Send the complete message parts
+            message.setContent(multipart);
+            // Send message
+            Transport.send(message);
+            System.out.println("Email sent successfully...");
+        } catch (MessagingException mex) {
+            mex.printStackTrace();
+        }
+    }
 
 }

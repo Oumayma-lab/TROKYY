@@ -21,6 +21,8 @@ module com.example.trokyy {
     requires org.json;
     requires org.apache.pdfbox;
     requires twilio;
+    requires org.bytedeco.opencv;
+    requires java.activation;
 
 
     opens com.example.trokyy to javafx.fxml;

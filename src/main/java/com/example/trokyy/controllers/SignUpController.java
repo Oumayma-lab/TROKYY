@@ -1,5 +1,5 @@
 package com.example.trokyy.controllers;
-
+import javafx.collections.FXCollections;
 import com.example.trokyy.services.UserDao;
 import com.example.trokyy.models.Utilisateur;
 import com.example.trokyy.tools.EmailService;
@@ -12,6 +12,7 @@ import javafx.fxml.Initializable;
 import javafx.geometry.Pos;
 import javafx.scene.Parent;
 import javafx.scene.control.*;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
@@ -30,6 +31,7 @@ import java.util.regex.Pattern;
 import javafx.animation.Interpolator;
 import javafx.animation.RotateTransition;
 import javafx.scene.Node;
+import org.controlsfx.control.textfield.TextFields;
 import org.json.JSONObject; // Import for JSON handling
 import javax.mail.*;
 import javax.mail.internet.InternetAddress;
@@ -74,11 +76,17 @@ public class SignUpController implements Initializable {
     @FXML
     private Rectangle strengthIndicator;
 
+
     private static final double CRITERIA_WEIGHT = 0.25; // Each criteria contributes 25% to the progress
     private static final double MAX_WIDTH = 200; // Maximum width for the strength indicator
 
 
     private static final List<String> TUNISIAN_GOVERNORATES = Arrays.asList(
+
+    );
+
+
+    private final List<String> addresses = Arrays.asList(
             "Ariana", "Beja", "Ben Arous", "Bizerte", "Gabes", "Gafsa", "Jendouba",
             "Kairouan", "Kasserine", "Kebili", "Kef", "Mahdia", "Manouba", "Medenine",
             "Monastir", "Nabeul", "Sfax", "Sidi Bouzid", "Siliana", "Sousse", "Tataouine",
@@ -87,9 +95,54 @@ public class SignUpController implements Initializable {
 
     public SignUpController() {
     }
+    private boolean updatingText = false;
+
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+        address.textProperty().addListener((observable, oldValue, newValue) -> {
+            if (updatingText) {
+                return;
+            }
+
+            String input = newValue.toLowerCase();
+            String foundAddress = null;
+
+            // Find the first address that starts with the input from the first two letters
+            if (input.length() >= 2) {
+                for (String addr : addresses) {
+                    if (addr.toLowerCase().startsWith(input.substring(0, 2))) {
+                        foundAddress = addr;
+                        break;
+                    }
+                }
+            }
+
+            // If found, update the address field
+            if (foundAddress != null) {
+                updatingText = true;
+                address.setText(foundAddress);
+                address.positionCaret(input.length());
+                updatingText = false;
+            }
+        });
+
+        // Add a listener to reset the updatingText flag when user manually edits the text field
+        address.textProperty().addListener((observable, oldValue, newValue) -> {
+            if (!updatingText) {
+                updatingText = false;
+            }
+        });
+
+
+        // Add a listener to reset the updatingText flag when user manually edits the text field
+        address.textProperty().addListener((observable, oldValue, newValue) -> {
+            if (!updatingText) {
+                updatingText = false;
+            }
+        });
+
+
         if (FormContainer == null) {
             System.err.println("FormContainer is null. Check FXML binding.");
         } else {
@@ -324,6 +377,9 @@ public class SignUpController implements Initializable {
         String passwordRegex = "^(?=.*[0-9]).{8,}$";
         Pattern pattern = Pattern.compile(passwordRegex);
         return pattern.matcher(password).matches();
+    }
+
+    public void handleAutoComplete(KeyEvent keyEvent) {
     }
 
     private static class ValidationResult {

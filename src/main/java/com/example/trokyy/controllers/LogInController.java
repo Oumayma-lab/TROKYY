@@ -2,11 +2,16 @@ package com.example.trokyy.controllers;
 
 import com.example.trokyy.services.UserDao;
 import com.example.trokyy.models.Utilisateur;
+import com.example.trokyy.tools.EmailService;
+import com.example.trokyy.tools.CameraHandler;
 import com.example.trokyy.tools.MyDataBaseConnection;
 
 import com.example.trokyy.tools.SessionManager;
+import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon;
+import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView;
 import javafx.animation.RotateTransition;
 import javafx.fxml.FXML;
+import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
@@ -17,16 +22,14 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
+import javafx.scene.paint.Color;
 import javafx.scene.transform.Rotate;
 import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import javafx.scene.text.Text;
@@ -36,7 +39,10 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.layout.Pane;
 import javafx.util.Duration;
+import org.controlsfx.glyphfont.FontAwesome;
+import org.controlsfx.glyphfont.Glyph;
 
+import static com.example.trokyy.tools.EmailService.sendEmailWithAttachment;
 
 
 public class LogInController {
@@ -54,6 +60,12 @@ public class LogInController {
     @FXML
     private Pane Container; // Reference to the container pane in Main.fxml
     private final UserDao userDao = new UserDao();
+    private int loginAttempts = 0;
+    private static final int MAX_LOGIN_ATTEMPTS = 3;
+    private boolean isAccountLocked = false;
+    private static final long LOCKOUT_DURATION = 5 * 60 * 1000; // 5 minutes in milliseconds
+
+
 
     public LogInController() {
         Connection connection = MyDataBaseConnection.getConnection();
@@ -83,9 +95,13 @@ public class LogInController {
             passwordField.requestFocus();
             return;
         }
-
+        if (isAccountLocked) {
+            showAlert("Error", "Your account is locked. Please contact support to unlock.");
+            return;
+        }
         try {
             Utilisateur user = userDao.getUserByEmail(email);
+            int userId = user.getId(); // Get user ID
             if (user != null) {
                 if (UserDao.verifyPassword(password, user.getPassword())) {
                     List<String> roles = new ArrayList<>();
@@ -93,7 +109,6 @@ public class LogInController {
                         roles.addAll(Collections.singleton(nestedRoles));
                         String sessionId = generateSessionId(); // Generate a unique session ID
                         SessionManager.createSession(sessionId, user);
-
                     }
                     System.out.println("User roles: " + roles); // Debugging statement
                     if (roles.contains("ROLE_ADMIN")) {
@@ -103,7 +118,12 @@ public class LogInController {
                         openProfile(user.getId());
                     }
                 } else {
-                    showAlert("Error", "Invalid username or password.");
+                    loginAttempts++;
+                    if (loginAttempts >= MAX_LOGIN_ATTEMPTS) {
+                        lockAccount(userId); // Pass userId to lockAccount method
+                    } else {
+                        showNotification("Error", "Incorrect password. Attempts remaining: " + (MAX_LOGIN_ATTEMPTS - loginAttempts));
+                    }
                 }
             } else {
                 showAlert("Error", "User not found.");
@@ -113,6 +133,48 @@ public class LogInController {
             showAlert("Error", "Failed to log in.");
         }
     }
+
+
+
+
+    private void showNotification(String title, String message) {
+        FontAwesomeIconView warningIcon = new FontAwesomeIconView(FontAwesomeIcon.WARNING);
+        warningIcon.setSize("36");
+        warningIcon.setFill(Color.web("#FFA500"));
+        Notifications.create()
+                .title(title)
+                .text(message)
+                .hideAfter(Duration.seconds(5))
+                .position(Pos.BOTTOM_RIGHT)
+                .graphic(warningIcon)
+                .darkStyle()
+                .show();
+    }
+
+
+    private void lockAccount(int userId) {
+        isAccountLocked = true;
+        showNotification("Error", "Your account has been temporarily locked for 5 minutes due to multiple failed login attempts.");
+        Timer timer = new Timer();
+        timer.schedule(new TimerTask() {
+            @Override
+            public void run() {
+                isAccountLocked = false;
+                loginAttempts = 0;
+                showNotification("Success", "Your account has been unlocked.");
+            }
+        }, LOCKOUT_DURATION);
+    }
+
+
+
+    private void captureAndSendImage(String userEmail) {
+        String imagePath = CameraHandler.captureImage();
+        sendEmailWithAttachment(userEmail, imagePath);
+        System.out.println("Image captured and email sent to user.");
+    }
+
+
     private String generateSessionId() {
         return UUID.randomUUID().toString();
     }

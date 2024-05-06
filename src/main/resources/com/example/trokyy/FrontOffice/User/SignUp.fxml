@@ -28,14 +28,14 @@
             <TextField fx:id="useremail" layoutX="40.0" layoutY="227.0" prefHeight="37.0" prefWidth="280.0" promptText="Email" style="-fx-background-color: #E8F0E6; -fx-background-radius: 20px; -fx-font-family: 'Poppins';" />
             <VBox alignment="CENTER" layoutX="4.0" layoutY="275.0" prefHeight="31.0" prefWidth="33.0" spacing="5" />
 
-            <PasswordField fx:id="confirmPassword" layoutX="39.0" layoutY="404.0" prefHeight="37.0" prefWidth="280.0" promptText="Confirm Password" style="-fx-background-color: #E8F0E6;   -fx-background-radius: 20px; -fx-font-family: 'Poppins';" />
+            <PasswordField fx:id="confirmPassword" layoutX="39.0" layoutY="424.0" prefHeight="37.0" prefWidth="280.0" promptText="Confirm Password" style="-fx-background-color: #E8F0E6;   -fx-background-radius: 20px; -fx-font-family: 'Poppins';" />
             <HBox alignment="CENTER">
                <Label fx:id="countryCodeValueLabel" style="-fx-font-size: 14px;" text="" />
             </HBox>
             <TextField fx:id="phoneNumber" layoutX="40.0" layoutY="270.0" prefHeight="37.0" prefWidth="280.0" promptText="Phone Number" style="-fx-background-color: #E8F0E6; -fx-background-radius: 20px; -fx-font-family: 'Poppins';" />
-            <TextField fx:id="address" layoutX="40.0" layoutY="313.0" prefHeight="37.0" prefWidth="280.0" promptText="Address" style="-fx-background-color: #E8F0E6; -fx-background-radius: 20px; -fx-font-family: 'Poppins';" />
+            <TextField fx:id="address" layoutX="40.0" layoutY="313.0" onKeyReleased="#handleAutoComplete" prefHeight="37.0" prefWidth="280.0" promptText="Address" style="-fx-background-color: #E8F0E6; -fx-background-radius: 20px; -fx-font-family: 'Poppins';" />
 
-            <Button fx:id="registerButton" layoutX="42.0" layoutY="462.0" mnemonicParsing="false" onAction="#registerUser" prefHeight="37.0" prefWidth="280.0" style="-fx-background-color: #006400;" styleClass="login-button" text="Sign Up">
+            <Button fx:id="registerButton" layoutX="42.0" layoutY="472.0" mnemonicParsing="false" onAction="#registerUser" prefHeight="37.0" prefWidth="280.0" style="-fx-background-color: #006400;" styleClass="login-button" text="Sign Up">
 
             </Button>
             <Text fill="#404040" layoutX="88.0" layoutY="531.0" onMouseClicked="#showLoginForm" strokeType="OUTSIDE" strokeWidth="0.0" text="Already have an account?">
@@ -46,8 +46,8 @@
             </font>
          </Label>
          <Text fill="DARKGREEN" layoutX="226.0" layoutY="531.0" onMouseClicked="#showLoginForm" strokeType="OUTSIDE" strokeWidth="0.0" text=" Login" />
-         <PasswordField fx:id="password" layoutX="39.0" layoutY="357.0" prefHeight="37.0" prefWidth="280.0" promptText="Password" style="-fx-background-color: #E8F0E6;  -fx-background-radius: 20px; -fx-font-family: 'Poppins';" />
-         <Rectangle fx:id="strengthIndicator" accessibleText="Password complexity" height="4.0" layoutX="66.0" layoutY="397.0" style="-fx-arc-width: 10; -fx-arc-height: 10;" width="36.0" />
+         <PasswordField fx:id="password" layoutX="39.0" layoutY="377.0" prefHeight="37.0" prefWidth="280.0" promptText="Password" style="-fx-background-color: #E8F0E6;  -fx-background-radius: 20px; -fx-font-family: 'Poppins';" />
+         <Rectangle fx:id="strengthIndicator" accessibleText="Password complexity" height="4.0" layoutX="66.0" layoutY="417.0" style="-fx-arc-width: 10; -fx-arc-height: 10;" width="36.0" />
          </children>
       </AnchorPane>
    <Text fill="DARKGREEN" fontSmoothingType="LCD" layoutX="8.0" layoutY="57.0" strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-font-family: Poppins;" text="Register" textAlignment="CENTER" wrappingWidth="359.199951171875">

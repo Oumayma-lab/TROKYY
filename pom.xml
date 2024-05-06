@@ -218,6 +218,15 @@
           <version>8.22.0</version>
       </dependency>
 
+
+      <dependency>
+          <groupId>org.controlsfx</groupId>
+          <artifactId>controlsfx</artifactId>
+          <version>11.1.0</version>
+      </dependency>
+
+
+
       <dependency>
           <groupId>org.opencv</groupId>
           <artifactId>opencv</artifactId>
@@ -235,12 +244,29 @@
           </exclusions>
       </dependency>
 
-      <!-- Explicitly specify versions of Gson and Guava without vulnerabilities -->
       <dependency>
-          <groupId>com.google.code.gson</groupId>
-          <artifactId>gson</artifactId>
-          <version>2.8.11</version> <!-- Replace with a version without the vulnerability -->
+          <groupId>org.bytedeco</groupId>
+          <artifactId>openblas</artifactId>
+          <version>0.3.13-1.5.5</version>
       </dependency>
+
+
+      <dependency>
+
+          <groupId>org.bytedeco</groupId>
+          <artifactId>javacv</artifactId>
+          <version>1.5.5</version>
+      </dependency>
+
+
+
+
+      <!-- Explicitly specify versions of Gson and Guava without vulnerabilities -->
+      <!--<dependency>
+         <groupId>com.google.code.gson</groupId>
+         <artifactId>gson</artifactId>
+         <version>2.8.11</version> Replace with a version without the vulnerability -->
+
       <dependency>
           <groupId>com.google.guava</groupId>
           <artifactId>guava</artifactId>
