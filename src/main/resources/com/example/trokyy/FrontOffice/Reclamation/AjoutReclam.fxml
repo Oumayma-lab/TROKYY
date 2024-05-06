@@ -17,7 +17,7 @@
 <?import javafx.scene.shape.Circle?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane fx:id="root" prefHeight="810.0" prefWidth="1984.0" stylesheets="@AjoutReclam.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.trokyy.controllers.Reclamation.AjoutReclamController">
+<AnchorPane fx:id="root" prefHeight="785.0" prefWidth="1550.0" stylesheets="@AjoutReclam.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.trokyy.controllers.Reclamation.AjoutReclamController">
     <children>
         <VBox fx:id="side" alignment="BOTTOM_CENTER" layoutX="-12.0" layoutY="14.0" prefHeight="810.0" prefWidth="325.0" styleClass="side" stylesheets="@AjoutReclam.css" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0">
             <children>
@@ -186,6 +186,7 @@
                             </image>
                         </ImageView>
                     </children>
+                    <Button fx:id="sttButton" layoutX="650.0" layoutY="9.0" onMouseClicked="#stt" text="Start Speech Recognition" />
                 </HBox>
                 <JFXButton alignment="CENTER" contentDisplay="GRAPHIC_ONLY" layoutX="1291.0" layoutY="30.0" />
                 <ImageView fitHeight="36.0" fitWidth="67.0" layoutX="671.0" layoutY="16.0" pickOnBounds="true" preserveRatio="true">
@@ -223,6 +224,17 @@
                </image>
             </ImageView>
          </graphic>
+
       </JFXButton>
+      <JFXButton fx:id="btncaptcha" layoutX="1299.0" layoutY="579.0" onAction="#verifierr" prefHeight="25.0" prefWidth="36.0" text=".">
+         <graphic>
+            <ImageView fitHeight="29.0" fitWidth="29.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@captcha.png" />
+               </image>
+            </ImageView>
+         </graphic>
+      </JFXButton>
+      <Button fx:id="openChatButton" layoutX="1289.0" layoutY="531.0" onAction="#startConversation" prefHeight="25.0" prefWidth="52.0" text="chat" />
     </children>
 </AnchorPane>

@@ -1,6 +1,8 @@
 package com.example.trokyy.controllers.Admin.Reponse;
 
+import com.example.trokyy.controllers.Admin.AdminMainController;
 import com.example.trokyy.controllers.Reclamation.ListReclamController;
+import com.example.trokyy.models.Captcha;
 import com.example.trokyy.models.Reclamation;
 import com.example.trokyy.tools.MyDataBaseConnection;
 import javafx.beans.property.SimpleObjectProperty;
@@ -12,6 +14,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
@@ -35,7 +38,12 @@ import java.util.function.Predicate;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+
+import com.example.trokyy.controllers.Reclamation.ChatClient;
+
 public class ApplicationViewComplaintsController implements Initializable {
+
+
 
 
     @FXML
@@ -65,6 +73,31 @@ public class ApplicationViewComplaintsController implements Initializable {
 
     // Déclaration de la liste des réclamations comme une variable de membre
     private ObservableList<Reclamation> complaintsList = FXCollections.observableArrayList();
+
+
+
+
+    @FXML
+    private Button acceptButton; // Button to open chat
+
+    @FXML
+    private void acceptConversation(ActionEvent event) {
+
+        System.out.println("Accepting a conversation...");
+
+        // Launch the ChatClient application
+        launchChatClient();
+    }
+    private void launchChatClient() {
+        try {
+            // Launch the ChatClient application
+            ChatClient chatClient = new ChatClient();
+            Stage stage = new Stage();
+            chatClient.start(stage);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 
 
 
@@ -99,8 +132,10 @@ public class ApplicationViewComplaintsController implements Initializable {
     }
 
 
+
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+
         // Applique le filtre de recherche
         searchFilter();
         // Initialiser la valeur par défaut du ChoiceBox statusFilterChoiceBox à "All"
@@ -200,19 +235,29 @@ public class ApplicationViewComplaintsController implements Initializable {
                         alert.showAndWait();
                     } else {
                         try {
+                            // Charger le fichier FXML de la vue AjoutReponse.fxml
                             FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/trokyy/Backoffice/ComplaintResponse/AjoutReponse.fxml"));
                             Parent parent = loader.load();
-                            AjoutReponseController reponseController = loader.getController();
-                            reponseController.setComplaintId(selectedComplaint.getId());
+
+                            // Récupérer le contrôleur de la vue AjoutReponse.fxml directement à partir du loader
+                            AjoutReponseController ajoutResponseController = loader.getController();
+
+                            // Passer le contrôleur de la vue principale au contrôleur de la vue AjoutReponse.fxml
+                            ajoutResponseController.setComplaintsController(ApplicationViewComplaintsController.this);
+
+                            // Passer l'ID de la réclamation au contrôleur de la vue AjoutReponse.fxml
+                            ajoutResponseController.setComplaintId(selectedComplaint.getId());
+
+                            // Afficher la vue AjoutReponse.fxml dans une nouvelle fenêtre
                             Stage stage = new Stage();
                             stage.setScene(new Scene(parent));
                             stage.initStyle(StageStyle.UTILITY);
                             stage.show();
-
                         } catch (IOException ex) {
                             Logger.getLogger(ApplicationViewComplaintsController.class.getName()).log(Level.SEVERE, null, ex);
                         }
-                    }
+
+                        }
                 });
 
                 displayResponsesButton.setOnAction(event -> {
@@ -224,17 +269,21 @@ public class ApplicationViewComplaintsController implements Initializable {
                         displayComplaintResponseController.setComplaintId(selectedComplaint.getId());
 
                         Stage stage = new Stage();
-                        stage.setScene(new Scene(parent, 800, 600)); // Taille moyenne de l'interface
+                        stage.setScene(new Scene(parent, 600, 400)); // Taille moyenne de l'interface
                         stage.initStyle(StageStyle.UTILITY);
                         stage.show();
                     } catch (IOException ex) {
                         Logger.getLogger(AjoutReponseController.class.getName()).log(Level.SEVERE, null, ex);
                     }
+
                 });
 
                 respondButton.getStyleClass().add("edit-button");
                 displayResponsesButton.getStyleClass().add("delete-button");
             }
+
+
+
 
             @Override
             protected void updateItem(Void item, boolean empty) {
@@ -277,6 +326,9 @@ public class ApplicationViewComplaintsController implements Initializable {
 
 
     }
+
+
+
 
     @FXML
     private ChoiceBox<String> statusFilterChoiceBox;
@@ -469,8 +521,8 @@ public class ApplicationViewComplaintsController implements Initializable {
         complaintsTable.setItems(complaintsList);
     }*/
 
-    @FXML
-    private void refresh() {
+   /* @FXML
+     void refresh() {
 
         try {
             // Efface la liste des réclamations actuellement affichées
@@ -509,9 +561,13 @@ public class ApplicationViewComplaintsController implements Initializable {
             Logger.getLogger(ApplicationViewComplaintsController.class.getName()).log(Level.SEVERE, null, ex);
         }
 
+    }*/
+    @FXML
+     void refresh() {
+        complaintsTable.getItems().clear();
+        java.util.List<Reclamation> complaintsList = getAllComplaints();
+        complaintsTable.getItems().addAll(complaintsList);
     }
 
 
 }
-
-//par defaut sont triée par l'ordre decroi de date

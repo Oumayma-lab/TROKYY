@@ -43,6 +43,8 @@ public class UpdateReclamationController implements Initializable {
     @FXML
     private ChoiceBox<String> typeChoiceBox;
 
+    ReclamationService reclamationService = new ReclamationService();
+
     private Reclamation selectedReclamation; // Ajoutez cet attribut pour stocker la réclamation sélectionnée
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -93,8 +95,6 @@ public class UpdateReclamationController implements Initializable {
 
     }
 
-    @FXML
-    private Button updatebtn;
 
     @FXML
     private void updateReclamation(ActionEvent event) {
@@ -119,12 +119,16 @@ public class UpdateReclamationController implements Initializable {
 
 
 
-        // Filtrer les mots interdits dans la description
-        String[] motsInterdits = {"mot1", "mot2", "mot3"}; // Ajoutez vos mots interdits ici
-        for (String motInterdit : motsInterdits) {
-            description = description.replaceAll("(?i)" + motInterdit, "***");
+
+
+        // Vérifier si la description est unique
+        if (!reclamationService.isDescriptionUnique(description)) {
+            showAlert("The description of the complaint already exists. Please enter a different one.");
+            return;
         }
 
+        // Filtrage des mots interdits
+        description = filterBadWords(description);
 
         // Mettre à jour la réclamation
         selectedReclamation.setDescription_reclamation(description);
@@ -132,9 +136,9 @@ public class UpdateReclamationController implements Initializable {
         selectedReclamation.setImage_path(imagePath); // Utiliser imagePath ici
 
         // Appeler la méthode updateReclamation de  service ReclamationService
-        ReclamationService reclamationService = new ReclamationService();
-        reclamationService.updateReclamation(selectedReclamation);
 
+        reclamationService.updateReclamation(selectedReclamation);
+        clearFields();
         // Afficher un message de succès
         showNotification("Complaint Updated successfully");
 
@@ -144,6 +148,21 @@ public class UpdateReclamationController implements Initializable {
 
         Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
         stage.close();
+    }
+
+
+    // filterBadWords
+    private String filterBadWords(String description) {
+        String[] motsInterdits = {  "f r a u d",  "s p a m", "v i o l e n c e","h a t e", "t e r r o r i s m", "t e r r o r i s m",
+                "d a n g e r"};
+        for (String motInterdit : motsInterdits) {
+            // Échappez les caractères spéciaux pour s'assurer que la regex fonctionne correctement
+            motInterdit = motInterdit.replaceAll("([\\\\{}()\\[\\].+*?^$|])", "\\\\$1");
+            // Remplacez les espaces par des expressions régulières correspondant à n'importe quel espace
+            motInterdit = motInterdit.replaceAll(" ", "\\\\s*");
+            description = description.replaceAll("(?i)" + motInterdit, "***");
+        }
+        return description;
     }
     public void showNotification(String message) {
         Notifications notifications = Notifications.create();

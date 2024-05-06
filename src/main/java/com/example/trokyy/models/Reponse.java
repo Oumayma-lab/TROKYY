@@ -3,7 +3,7 @@ package com.example.trokyy.models;
 import java.util.Date;
 
 public class Reponse {
-      private int id;
+    private int id;
     private int reclam_reponse_id;
     private int admin_id;
     private String description;

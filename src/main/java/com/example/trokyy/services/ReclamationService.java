@@ -63,7 +63,7 @@ public class ReclamationService implements IService<Reclamation> {
 
     @Override
     public void deleteReclamation(Reclamation reclamation) {
-        String requete = "DELETE FROM Reclamation WHERE id = ?";
+        String requete = "DELETE FROM reclamation WHERE id = ?";
 
         try (Connection connection = new MyDataBaseConnection().getConnection();
              PreparedStatement statement = connection.prepareStatement(requete)) {
@@ -99,7 +99,7 @@ public class ReclamationService implements IService<Reclamation> {
         }
 
         String requete = "UPDATE Reclamation SET date_reclamation = ?, description_reclamation = ?, " +
-                "statut_reclamation = ?, type = ? WHERE id = ?";
+                "statut_reclamation = ?, type = ?, image_path = ? WHERE id = ?";
 
         try (Connection connection = new MyDataBaseConnection().getConnection();
              PreparedStatement statement = connection.prepareStatement(requete)) {
@@ -108,7 +108,8 @@ public class ReclamationService implements IService<Reclamation> {
             statement.setString(2, reclamation.getDescription_reclamation());
             statement.setString(3, reclamation.getStatut_reclamation());
             statement.setString(4, reclamation.getType());
-            statement.setInt(5, reclamation.getId());
+            statement.setString(5, reclamation.getImage_path()); // Mise à jour de l'image_path
+            statement.setInt(6, reclamation.getId());
 
             int rowsUpdated = statement.executeUpdate();
 
@@ -120,9 +121,7 @@ public class ReclamationService implements IService<Reclamation> {
         } catch (SQLException e) {
             System.out.println("Erreur lors de la mise à jour de la réclamation : " + e.getMessage());
         }
-
     }
-
     @Override
     public List<Reclamation> getData() {
 
@@ -412,6 +411,26 @@ public class ReclamationService implements IService<Reclamation> {
             System.out.println("Error retrieving complaints: " + e.getMessage());
         }
         return complaints;
+    }
+
+
+
+    public int getNumberOfComplaintsFromDatabase() {
+        int numberOfComplaints = 0;
+        String query = "SELECT COUNT(*) AS count FROM reclamation WHERE statut_reclamation = 'In progress'";
+
+        try (Connection connection = new MyDataBaseConnection().getConnection();
+             PreparedStatement statement = connection.prepareStatement(query);
+             ResultSet resultSet = statement.executeQuery()) {
+
+            if (resultSet.next()) {
+                numberOfComplaints = resultSet.getInt("count");
+            }
+        } catch (SQLException e) {
+            System.out.println("Error counting complaints in progress: " + e.getMessage());
+        }
+
+        return numberOfComplaints;
     }
 
 }

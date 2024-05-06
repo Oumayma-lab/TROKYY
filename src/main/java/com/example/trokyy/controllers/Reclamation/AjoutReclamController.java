@@ -1,9 +1,12 @@
 package com.example.trokyy.controllers.Reclamation;
 
+import com.example.trokyy.controllers.Admin.AdminMainController;
+import com.example.trokyy.models.Captcha;
 import com.example.trokyy.models.Reclamation;
 import com.example.trokyy.services.ReclamationService;
 
 import com.example.trokyy.tools.Chatbot;
+import com.jfoenix.controls.JFXButton;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -13,6 +16,8 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.input.MouseEvent;
+import javafx.scene.text.Text;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import javafx.util.Duration;
@@ -21,7 +26,10 @@ import org.controlsfx.control.Notifications;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
+import java.sql.SQLException;
 import java.util.ResourceBundle;
+import java.util.concurrent.Future;
+import java.util.regex.Pattern;
 
 
 import javafx.scene.Node;
@@ -31,7 +39,15 @@ import javafx.scene.control.TextInputControl;
 import javafx.scene.layout.AnchorPane;
 
 
+import com.microsoft.cognitiveservices.speech.audio.AudioConfig;
+import javafx.concurrent.Task;
+import javafx.event.ActionEvent;
+import com.microsoft.cognitiveservices.speech.*;
+import javafx.scene.control.Button;
+
 public class AjoutReclamController implements Initializable {
+    @FXML
+    private JFXButton btncaptcha;
     @FXML
     private AnchorPane root;
 
@@ -62,6 +78,15 @@ public class AjoutReclamController implements Initializable {
     private Button chatbot;
 
 
+    @FXML
+    private Button openChatButton; // Button to open chat
+
+    @FXML
+    private void startConversation(ActionEvent event) {
+        ChatServer chatServer = new ChatServer();
+        chatServer.start();
+        System.out.println("Starting a conversation...");
+    }
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -86,8 +111,11 @@ public class AjoutReclamController implements Initializable {
             lblImagePath.setText(image_path);
         }
     }
+
+
     @FXML
-    public void AddReclamation(ActionEvent event) {
+    public void AddReclamation(ActionEvent event)  {
+        if (captchaController != null && captchaController.isCaptchaVerified()) {
         String description = descriptionTextArea.getText();
         String type = typeChoiceBox.getValue();
 
@@ -97,10 +125,9 @@ public class AjoutReclamController implements Initializable {
         }
 
         // Filtrage des mots interdits
-        String[] motsInterdits = {"mot1", "mot2", "mot3"}; // Ajoutez vos mots interdits ici
-        for (String motInterdit : motsInterdits) {
-            description = description.replaceAll("(?i)" + motInterdit, "***");
-        }
+        description = filterBadWords(description);
+
+
 
         // Vérifier si la description est unique
         if (!reclamationService.isDescriptionUnique(description)) {
@@ -114,10 +141,26 @@ public class AjoutReclamController implements Initializable {
         showNotification("Complaint Added successfully.");
         clearFields();
 
+
     }
+     else {
+        showAlert("Captcha Incorrect Veuillez saisir le captcha correct.");
+    }}
 
 
-
+    // filterBadWords
+    private String filterBadWords(String description) {
+        String[] motsInterdits = {  "f r a u d",  "s p a m", "v i o l e n c e","h a t e", "t e r r o r i s m", "t e r r o r i s m",
+            "d a n g e r"};
+        for (String motInterdit : motsInterdits) {
+            // Échappez les caractères spéciaux pour s'assurer que la regex fonctionne correctement
+            motInterdit = motInterdit.replaceAll("([\\\\{}()\\[\\].+*?^$|])", "\\\\$1");
+            // Remplacez les espaces par des expressions régulières correspondant à n'importe quel espace
+            motInterdit = motInterdit.replaceAll(" ", "\\\\s*");
+            description = description.replaceAll("(?i)" + motInterdit, "***");
+        }
+        return description;
+    }
     private void showAlert(String message) {
         Alert alert = new Alert(Alert.AlertType.WARNING);
         alert.setTitle("Warning");
@@ -187,7 +230,7 @@ public class AjoutReclamController implements Initializable {
         Notifications notifications = Notifications.create();
         notifications.text(message);
         notifications.title("Success Message");
-        notifications.hideAfter(Duration.seconds(30));
+        notifications.hideAfter(Duration.seconds(10));
         notifications.darkStyle();
         notifications.position(Pos.BOTTOM_CENTER);
         notifications.show();
@@ -207,7 +250,7 @@ public class AjoutReclamController implements Initializable {
 @FXML
     public void switchToAnotherView1(ActionEvent actionEvent) {
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/trokyy/FrontOffice/Reclamation/ListReclam.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/trokyy/FrontOffice/Reclamation/List.fxml"));
             Parent root = loader.load();
 
             Stage stage = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
@@ -218,4 +261,76 @@ public class AjoutReclamController implements Initializable {
         }
     }
 
+
+
+
+
+
+    @FXML
+    void verifierr(ActionEvent event) throws IOException {
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/trokyy/FrontOffice/Reclamation/captcha.fxml"));
+        Parent root = loader.load();
+        captchaController = loader.getController();
+        Stage stage = new Stage();
+        stage.setScene(new Scene(root));
+        stage.show();
+    }
+
+    private Captcha captchaController;
+
+
+
+
+
+
+
+
+    @FXML
+    private Text Repreponse;
+    @FXML
+    void stt(MouseEvent event){
+        // Create a new Task for asynchronous speech recognition
+        Task<String> recognitionTask = new Task<String>() {
+            @Override
+            protected String call() throws Exception {
+                // Replace with your subscription key and region
+                SpeechConfig speechConfig = SpeechConfig.fromSubscription("9060f63ba0654e7b8533abfa8e407a6e", "westeurope");
+
+                try (SpeechRecognizer speechRecognizer = new SpeechRecognizer(speechConfig, AudioConfig.fromDefaultMicrophoneInput())) {
+                    System.out.println("Speak into your microphone."); // Inform user to speak
+
+                    Future<SpeechRecognitionResult> task = speechRecognizer.recognizeOnceAsync();
+                    SpeechRecognitionResult result = task.get();
+
+                    if (result.getReason() == ResultReason.Canceled) {
+                        System.out.println("Cancellation detected.");
+                        return null;
+                    } else if (result.getReason() == ResultReason.NoMatch) {
+                        System.out.println("No speech recognized.");
+                        return null;
+                    } else {
+                        String recognizedText = result.getText();
+                        //System.out.println("Recognized text: " + recognizedText);
+                        return recognizedText;
+                    }
+                }
+            }
+        };
+
+        // Start the recognition task and handle the result
+        recognitionTask.setOnSucceeded(event1 -> {
+            String transcribedText = recognitionTask.getValue();
+            if (transcribedText != null) {
+                // Update UI element (if desired)
+                Repreponse.setText(transcribedText);
+            }
+        });
+
+        recognitionTask.setOnFailed(event1 -> {
+            Throwable exception = recognitionTask.getException();
+            System.err.println("Speech recognition failed: " + exception.getMessage());
+        });
+
+        new Thread(recognitionTask).start();
+    }
     }

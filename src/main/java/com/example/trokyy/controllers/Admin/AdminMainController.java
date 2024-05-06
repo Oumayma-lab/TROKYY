@@ -1,12 +1,17 @@
 package com.example.trokyy.controllers.Admin;
+import com.example.trokyy.controllers.Admin.Reponse.ApplicationViewComplaintsController;
+import com.example.trokyy.controllers.Admin.Reponse.DisplayComplaintResponseController;
+import com.example.trokyy.services.ReclamationService;
 import com.example.trokyy.services.UserDao;
 import com.example.trokyy.models.Utilisateur;
 import com.example.trokyy.tools.MyDataBaseConnection;
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.BorderPane;
@@ -22,6 +27,10 @@ import java.util.Map;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 
 
 public class AdminMainController implements Initializable {
@@ -64,15 +73,33 @@ public class AdminMainController implements Initializable {
     private Button selectedButton = null;
     private static final UserDao userDao = new UserDao();
 
+    @FXML
+    private Label complaintsCountLabel;
+
+
+    ReclamationService reclamationService = new ReclamationService();
+
+    // Déclarez une instance de ScheduledExecutorService
+    private ScheduledExecutorService scheduler;
+
 
     public AdminMainController() throws SQLException {
         Connection connection = MyDataBaseConnection.getConnection();
-
     }
+    // Méthode pour initialiser adminMainController
 
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+
+
+        // Récupérer le nombre de réclamations depuis la base de données
+        int numberOfComplaints = reclamationService.getNumberOfComplaintsFromDatabase();
+
+        // Mettre à jour le nombre de réclamations affiché
+        complaintsCountLabel.setText(String.valueOf(numberOfComplaints));
+
+
         // Initialize the button to FXML file mapping
         buttonFXMLMap.put(Home, "Home.fxml");
         buttonFXMLMap.put(Users, "UserManagement1.fxml");
@@ -90,7 +117,18 @@ public class AdminMainController implements Initializable {
 
         // Set initial content (Home page)
         loadContent("Home.fxml");
+        // Planifiez la tâche de mise à jour toutes les 10 secondes
+        scheduler = Executors.newScheduledThreadPool(1);
+        scheduler.scheduleAtFixedRate(this::updateComplaintsCount, 0, 10, TimeUnit.SECONDS);
+
     }
+    public void updateComplaintsCount() {
+        Platform.runLater(() -> {
+            int numberOfComplaints = reclamationService.getNumberOfComplaintsFromDatabase();
+            complaintsCountLabel.setText(String.valueOf(numberOfComplaints));
+        });
+    }
+
 
     private void addButtonEventHandlers() {
         Home.setOnAction(this::handleButtonClick);
@@ -226,7 +264,6 @@ public class AdminMainController implements Initializable {
             }
         }
     }
-
 
 
 }

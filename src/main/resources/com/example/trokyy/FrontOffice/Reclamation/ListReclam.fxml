@@ -77,7 +77,7 @@
                         <Image url="@ajoutreclam.png" />
                      </image>
                   </ImageView>
-                  <ImageView fitHeight="35.0" fitWidth="34.0" layoutX="50.0" layoutY="10.0" onMouseClicked="#refreshtable" pickOnBounds="true" preserveRatio="true">
+                  <ImageView fitHeight="35.0" fitWidth="34.0" layoutX="50.0" layoutY="10.0" onMouseClicked="#refresh" pickOnBounds="true" preserveRatio="true">
                      <image>
                         <Image url="@Refreshreclam.png" />
                      </image>

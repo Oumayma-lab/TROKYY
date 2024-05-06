@@ -87,7 +87,7 @@ public class DisplayQuery {
     public void deleteResponse(int complaintId) {
         MyDataBaseConnection connection = new MyDataBaseConnection();
         String queryDelete = "DELETE FROM reponse WHERE reclam_reponse_id = ?";
-        String queryUpdateStatus = "UPDATE reclamation SET statut_reclamation = 'In progress: ' WHERE id = ?";
+        String queryUpdateStatus = "UPDATE reclamation SET statut_reclamation = 'In progress' WHERE id = ?";
 
         try (Connection conn = connection.getConnection();
              PreparedStatement statementDelete = conn.prepareStatement(queryDelete);

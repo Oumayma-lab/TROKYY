@@ -1,9 +1,11 @@
 package com.example.trokyy.controllers.Reclamation;
 
+import com.example.trokyy.controllers.Admin.Reponse.ApplicationViewComplaintsController;
 import com.example.trokyy.controllers.Admin.Reponse.ShowResponseController;
 import com.example.trokyy.models.Pdf;
 import com.example.trokyy.models.Reclamation;
 import com.example.trokyy.services.DisplayQuery;
+import com.example.trokyy.services.ReclamationService;
 import com.example.trokyy.tools.MyDataBaseConnection;
 
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon;
@@ -131,7 +133,7 @@ public class ListReclamController implements Initializable {
 
 
     // Méthode pour rafraîchir la table des réclamations
-    @FXML
+  /*  @FXML
     private void refreshtable() {
 
         try {
@@ -172,7 +174,7 @@ public class ListReclamController implements Initializable {
         }
 
     }
-
+*/
 
 
 
@@ -274,7 +276,7 @@ public class ListReclamController implements Initializable {
         Connection connection = new MyDataBaseConnection().getConnection();
 
         // Rafraîchir la table des réclamations
-        refreshtable();
+      //  refreshtable();
 
         // Configuration des colonnes de la table avec leurs propriétés de valeur
         IDCol.setCellValueFactory(new PropertyValueFactory<>("id"));
@@ -296,6 +298,8 @@ public class ListReclamController implements Initializable {
                         setGraphic(null);
                         setText(null);
                     } else {
+                        // Obtenir l'index de la ligne actuelle
+                        int index = getIndex();
 
                         // Récupérer la réclamation associée à cette ligne
                         Reclamation currentReclamation = getTableView().getItems().get(getIndex());
@@ -331,13 +335,14 @@ public class ListReclamController implements Initializable {
                         Duration duration = Duration.between(reclamationLocalDateTime, now);
 
                       // Vérifier si la durée est supérieure à 48 heures
-                        boolean isOver48Hours = duration.toHours() > 2;
+                        boolean isOver48Hours = duration.toHours() > 48;
 
 
 
                         // Action de suppression lors du clic sur l'icône de suppression
                         deleteIcon.setOnMouseClicked((MouseEvent event) -> {
                             if (!isOver48Hours) {
+
                                 // Afficher l'alerte de confirmation
                                 Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
                                 alert.setTitle("Confirmation");
@@ -346,19 +351,13 @@ public class ListReclamController implements Initializable {
 
                                 Optional<ButtonType> result = alert.showAndWait();
                                 if (result.isPresent() && result.get() == ButtonType.OK) {
-                                    try {
-                                        // Supprimer la réclamation uniquement si l'utilisateur clique sur "OK"
-                                        reclamation = getTableView().getItems().get(getIndex());
-                                        query = "DELETE FROM `reclamation` WHERE id  =" + reclamation.getId();
-                                        Connection connection = new MyDataBaseConnection().getConnection();
-                                        preparedStatement = connection.prepareStatement(query);
-                                        preparedStatement.execute();
+
+                                             ReclamationService reclamationService = new ReclamationService();
+                                            // Supprimer la réclamation uniquement si l'utilisateur clique sur "OK"
+                                            reclamation = getTableView().getItems().get(getIndex());
+                                            reclamationService.deleteReclamation(reclamation);
 
 
-
-                                    } catch (SQLException ex) {
-                                        Logger.getLogger(ListReclamController.class.getName()).log(Level.SEVERE, null, ex);
-                                    }
                                 }
                             }
                         });
@@ -392,7 +391,7 @@ public class ListReclamController implements Initializable {
                                             displayQuery = new DisplayQuery();
                                             List<Reclamation> complaints = displayQuery.getAllComplaints();
                                             reclamationtable.getItems().addAll(complaints);
-                                            refreshtable();
+                                            refresh();
 
                                         }
                                     } catch (IOException ex) {
@@ -437,6 +436,7 @@ public class ListReclamController implements Initializable {
 
         // Affectation de la liste des réclamations à la table
         reclamationtable.setItems(ReclamationList);
+        refresh();
     }
 
     @FXML
@@ -600,7 +600,7 @@ public class ListReclamController implements Initializable {
 
             complaintToShowResponse.setVu(true);
             markResponseVu(complaintToShowResponse.getId());
-            refreshtable();
+           // refreshtable();
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -728,6 +728,49 @@ public class ListReclamController implements Initializable {
             // Gère toute exception SQLException en la journalisant
             Logger.getLogger(ListReclamController.class.getName()).log(Level.SEVERE, null, ex);
         }
+    }
+
+
+    @FXML
+    void refresh() {
+
+        try {
+            // Efface la liste des réclamations actuellement affichées
+            ReclamationList.clear();
+
+            // Récupère une connexion à la base de données
+            Connection connection = new MyDataBaseConnection().getConnection();
+
+            // Définit la requête SQL pour sélectionner toutes les réclamations
+            String query = "SELECT * FROM reclamation";
+
+            // Prépare la requête SQL
+            PreparedStatement preparedStatement = connection.prepareStatement(query); // Utilisation de la connexion correcte
+
+            // Exécute la requête SQL et récupère le résultat dans un objet ResultSet
+            ResultSet resultSet = preparedStatement.executeQuery();
+
+            // Parcourt le résultat de la requête SQL pour chaque réclamation trouvée
+            while (resultSet.next()) {
+                // Ajoute une nouvelle réclamation à la liste des réclamations à afficher dans la table
+                ReclamationList.add(new Reclamation(
+                        resultSet.getInt("id"),
+                        resultSet.getDate("date_reclamation"),
+                        resultSet.getString("description_reclamation"),
+                        resultSet.getString("statut_reclamation"),
+                        resultSet.getString("type"),
+                        resultSet.getString("image_path")
+                ));
+            }
+
+            // Affecte la liste des réclamations à afficher à la table
+            reclamationtable.setItems(ReclamationList);
+
+        } catch (SQLException ex) {
+            // Gère toute exception SQLException en la journalisant
+            Logger.getLogger(ListReclamController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
     }
 
 }

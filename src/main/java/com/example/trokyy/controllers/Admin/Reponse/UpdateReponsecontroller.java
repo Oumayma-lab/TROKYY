@@ -3,8 +3,10 @@ package com.example.trokyy.controllers.Admin.Reponse;
 import com.example.trokyy.controllers.Admin.AdminMainController;
 import com.example.trokyy.models.Reponse;
 import com.example.trokyy.models.Utilisateur;
+import com.example.trokyy.services.DisplayQuery;
 import com.example.trokyy.services.ReponseService;
 import com.example.trokyy.services.UserDao;
+import com.example.trokyy.tools.MyDataBaseConnection;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -12,21 +14,35 @@ import javafx.fxml.Initializable;
 import javafx.geometry.Pos;
 import javafx.scene.Parent;
 import javafx.scene.control.*;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.VBox;
 import javafx.util.Duration;
 import org.controlsfx.control.Notifications;
 
 import java.io.IOException;
 import java.net.URL;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class UpdateReponsecontroller implements Initializable {
+    @FXML
+    private VBox imageContainer;
+    private int reclam_reponse_id;
+    private int complaintId;
 
+    @FXML
+    private Label complaintIdAndDescriptionLabel;
 
-
+    @FXML
+    private Label complaintIdLabel;
+    private DisplayQuery displayQuery;
     private boolean update;
     @FXML
     private Button btnUploadImage;
@@ -99,8 +115,102 @@ public class UpdateReponsecontroller implements Initializable {
         addButtonEventHandlers();
 
         // Set initial content (Home page)
-        loadContent("Home.fxml");
+       // loadContent("Home.fxml");
+
+
+
+        //--------------------------------------------//
+        displayQuery = new DisplayQuery();
+        // Initialize the UI with the complaint ID
+        complaintIdLabel.setText("Complaint ID: " + complaintId);
     }
+
+
+    public void setComplaintId(int complaintId) {
+
+        this.reclam_reponse_id =  complaintId;
+
+        this.complaintId = complaintId;
+        complaintIdLabel.setText("Complaint ID: " + complaintId);
+
+        // Récupérer les détails du complaint
+        String complaintDetails = getComplaintDetails(complaintId);
+
+
+
+        // Afficher le complaintId et les détails
+        complaintIdAndDescriptionLabel.setText(complaintDetails);
+
+
+    }
+    public String getComplaintDetailss(int complaintId) {
+        MyDataBaseConnection connection = new MyDataBaseConnection();
+
+        String details = null;
+        String query = "SELECT * FROM reclamation WHERE id = ?";
+
+        try (
+                Connection conn = MyDataBaseConnection.getConnection();
+
+                PreparedStatement statement = conn.prepareStatement(query)) {
+            statement.setInt(1, complaintId);
+            ResultSet resultSet = statement.executeQuery();
+
+            if (resultSet.next()) {
+                // Récupérer les détails de la réclamation à partir du ResultSet
+                String description = resultSet.getString("description_reclamation");
+                String statut = resultSet.getString("statut_reclamation");
+                String type = resultSet.getString("type");
+                String imagePath = resultSet.getString("image_path");
+                Date dateReclamation = resultSet.getDate("date_reclamation");
+
+                // Construire la chaîne de détails de la réclamation
+                StringBuilder sb = new StringBuilder();
+                sb.append("Description: ").append(description).append("\n");
+                sb.append("Statut: ").append(statut).append("\n");
+                sb.append("Type: ").append(type).append("\n");
+                sb.append("Date: ").append(dateReclamation).append("\n");
+                // sb.append("Image Path: ").append(imagePath).append("\n");
+
+                // Affecter la chaîne de détails
+                details = sb.toString();
+
+                // Charger et afficher l'image associée à la réclamation si le chemin de l'image n'est pas null
+                if (imagePath != null) {
+                    Image image = new Image(imagePath);
+                    ImageView imageView = new ImageView(image);
+                    imageView.setFitHeight(100); // Définir la hauteur souhaitée de l'image
+                    imageView.setPreserveRatio(true); // Préserver les proportions de l'image
+                    imageView.setSmooth(true); // Activer le lissage de l'image
+                    imageView.setCache(true); // Activer le cache de l'image pour améliorer les performances
+                    // Ajouter l'ImageView à votre interface utilisateur
+                    // Supposons que vous ayez un conteneur VBox nommé "imageContainer" dans votre interface utilisateur
+                    imageContainer.getChildren().add(imageView);
+                } else {
+                    System.out.println("imageContainer is null!");
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            // Handle the exception as needed
+        }
+
+        return details;
+    }
+
+    public String getComplaintDetails(int complaintId) {
+
+        return getComplaintDetailss(complaintId);
+    }
+
+    private ApplicationViewComplaintsController complaintsController;
+
+    // Méthode pour définir le contrôleur de la vue des réclamations
+    public void setComplaintsController(ApplicationViewComplaintsController complaintsController) {
+        this.complaintsController = complaintsController;
+    }
+
+
 
 
     @FXML
@@ -145,10 +255,8 @@ public class UpdateReponsecontroller implements Initializable {
 
 
             // Filtrage des mots interdits
-            String[] motsInterdits = {"mot1", "mot2", "mot3"}; // Ajoutez vos mots interdits ici
-            for (String motInterdit : motsInterdits) {
-                description = description.replaceAll("(?i)" + motInterdit, "***");
-            }
+            description = filterBadWords(description);
+
 
 
 
@@ -171,16 +279,30 @@ public class UpdateReponsecontroller implements Initializable {
             showNotification("Response Updated successfully");
             // Réinitialiser les champs après l'update
             clearFields();
-
+            // Rafraîchir le TableView dans le contrôleur de la vue des réclamations
+            complaintsController.refresh();
 
 
 
         }
+    private String filterBadWords(String description) {
+        String[] motsInterdits = {  "f r a u d",  "s p a m", "v i o l e n c e","h a t e", "t e r r o r i s m", "t e r r o r i s m",
+                "d a n g e r"};
+        for (String motInterdit : motsInterdits) {
+            // Échappez les caractères spéciaux pour s'assurer que la regex fonctionne correctement
+            motInterdit = motInterdit.replaceAll("([\\\\{}()\\[\\].+*?^$|])", "\\\\$1");
+            // Remplacez les espaces par des expressions régulières correspondant à n'importe quel espace
+            motInterdit = motInterdit.replaceAll(" ", "\\\\s*");
+            description = description.replaceAll("(?i)" + motInterdit, "***");
+        }
+        return description;
+    }
+
         public void showNotification(String message) {
             Notifications notifications = Notifications.create();
             notifications.text(message);
             notifications.title("Success Message");
-            notifications.hideAfter(Duration.seconds(30));
+            notifications.hideAfter(Duration.seconds(5));
             notifications.darkStyle();
             notifications.position(Pos.BOTTOM_CENTER);
             notifications.show();
