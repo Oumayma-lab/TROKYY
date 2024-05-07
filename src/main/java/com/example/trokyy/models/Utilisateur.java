@@ -22,7 +22,18 @@ public class Utilisateur {
     private List<String> roles = new ArrayList<>(Collections.singletonList("ROLE_USER"));
     //private String roles;
     private boolean isActive;
+    public static Utilisateur Current_User;
 
+
+
+
+    public static Utilisateur getCurrent_User() {
+        return Current_User;
+    }
+
+    public static void setCurrent_User(Utilisateur Current_User) {
+        Utilisateur.Current_User = Current_User;
+    }
 
     public Utilisateur(String nom, String email, LocalDateTime dateInscription, String adresse, int tel, boolean isActive) {
         this.nom = nom;

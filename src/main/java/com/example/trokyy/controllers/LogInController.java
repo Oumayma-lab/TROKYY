@@ -116,9 +116,15 @@ public class LogInController implements Initializable {
                     List<String> roles = new ArrayList<>();
                     for (String nestedRoles : user.getRoles()) {
                         roles.addAll(Collections.singleton(nestedRoles));
-                        String sessionId = generateSessionId();
-                        SessionManager.createSession(sessionId, user);
+                        SessionManager.getInstance(user.getId(), user.getNom(), user.getPrenom(),
+                                user.getEmail(), user.getPassword(), user.getUsername(),
+                                user.getDateInscription(), user.getPhotoProfil(), user.getAdresse(),
+                                user.getTelephone(), user.getRoles(), user.isActive());
                     }
+
+                    Utilisateur.setCurrent_User(user);
+
+
                     System.out.println("User roles: " + roles); // Debugging statement
                     if (roles.contains("ROLE_ADMIN")) {
                         openAdminHome();
