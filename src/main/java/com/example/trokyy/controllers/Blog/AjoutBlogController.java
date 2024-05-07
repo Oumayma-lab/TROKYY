@@ -105,7 +105,7 @@ public class AjoutBlogController implements Initializable {
         String description = descriptionTextArea.getText();
 
         // Liste des mots interdits
-        String[] motsInterdits = {"mot1", "mot2", "mot3"};
+        String[] motsInterdits = {"kill", "murder", "danger"};
 
         // Parcourir la liste des mots interdits et remplacer chaque occurrence dans la description
         for (String motInterdit : motsInterdits) {

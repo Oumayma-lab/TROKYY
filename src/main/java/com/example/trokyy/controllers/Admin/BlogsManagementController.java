@@ -1,88 +1,111 @@
 package com.example.trokyy.controllers.Admin;
 
 import com.example.trokyy.models.Blog;
-import com.example.trokyy.tools.MyDataBaseConnection;
-import javafx.fxml.FXML;
+import com.example.trokyy.services.BlogService;
 
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+
+import javafx.fxml.FXML;
+import javafx.fxml.Initializable;
+import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
-
-import javafx.scene.layout.AnchorPane;
-import javafx.scene.text.Text;
+import javafx.scene.control.cell.PropertyValueFactory;
 
 
-import java.sql.*;
+import java.io.File;
+import java.net.URL;
+
 import java.time.LocalDate;
+import java.util.ResourceBundle;
 
 
-public class BlogsManagementController {
-    private static Connection connection = new MyDataBaseConnection().getConnection();
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 
+public class BlogsManagementController implements Initializable {
     @FXML
-    private TableView<Blog> tableView;
-
-    @FXML
-    private TableColumn<Blog, Integer> idColumn;
-
-    @FXML
-    private TableColumn<Blog, Integer> userIdColumn;
+    private TableColumn<Blog, Void> actionsColumn;
 
     @FXML
     private TableColumn<Blog, String> contentColumn;
 
     @FXML
-    private TableColumn<Blog, String> titleColumn;
-
-    @FXML
     private TableColumn<Blog, LocalDate> dateColumn;
 
     @FXML
-    private TableColumn<Blog, String> imageColumn;
+    private TableColumn<Blog, Integer> idColumn;
+
+    @FXML
+    private TableColumn<Blog,  String> imageColumn;
 
     @FXML
     private TableColumn<Blog, Integer> likesColumn;
 
     @FXML
-    private TableColumn<Blog, String> statusColumn;
+    private TableView<Blog> tableView;
 
     @FXML
-    private TableColumn<Blog, String> actionsColumn;
+    private TableColumn<Blog, String> titleColumn;
 
     @FXML
-    private AnchorPane anchorPane;
+    private TableColumn<Blog, Integer> userIdColumn;
 
-    @FXML
-    private Text helloLabel;
-    public void initialize() {
-        populateTableView();
+    private final BlogService blogService = new BlogService();
+    private final ObservableList<Blog> blogsList = FXCollections.observableArrayList();
+
+    @Override
+    public void initialize(URL url, ResourceBundle resourceBundle) {
+        initializeColumns();
+        loadDataFromDatabase();
     }
+    private void initializeColumns() {
+        idColumn.setCellValueFactory(new PropertyValueFactory<>("id"));
+        userIdColumn.setCellValueFactory(new PropertyValueFactory<>("auteur_id"));
+        contentColumn.setCellValueFactory(new PropertyValueFactory<>("contenu"));
+        titleColumn.setCellValueFactory(new PropertyValueFactory<>("titre"));
+        dateColumn.setCellValueFactory(new PropertyValueFactory<>("date_publication"));
 
-    private void populateTableView() {
+        // Configuration de la colonne imageColumn pour afficher une image
+        imageColumn.setCellValueFactory(new PropertyValueFactory<>("image"));
+        imageColumn.setCellFactory(column -> new TableCell<Blog,  String>() {
+            private final ImageView imageView = new ImageView();
 
-        try (Statement statement = connection.createStatement();
-             ResultSet resultSet = statement.executeQuery("SELECT * FROM blog")) {
-            while (resultSet.next()) {
-                int id = resultSet.getInt("id");
-                int userId = resultSet.getInt("auteur_id");
-                String content = resultSet.getString("contenu");
-                String title = resultSet.getString("titre");
-                LocalDate date = resultSet.getDate("date_publication").toLocalDate();
-                String image = resultSet.getString("image");
-                int likes = resultSet.getInt("nombre_likes");
+            @Override
+                    protected void updateItem(String image, boolean empty) {
+                        super.updateItem(image, empty);
 
-                // Create a Blog object
-                Blog blog = new Blog(id, userId, content, title, date, image, likes);
-
-                // Add the Blog object to the TableView
-                tableView.getItems().add(blog);
+                        if (empty || image == null) {
+                            // Si la cellule est vide ou si l'image est null, affichez une image vide
+                            imageView.setImage(null);
+                            setGraphic(null);
+                        } else {
+                            // Afficher l'image dans la cellule
+                            // Charger l'image à partir du chemin spécifié et l'afficher dans la cellule
+                            Image imageV = new Image(new File(image).toURI().toString());
+                            imageView.setImage(imageV);
+                            imageView.setFitWidth(50); // Réglez la largeur de l'image
+                    imageView.setFitHeight(50); // Réglez la hauteur de l'image
+                    setGraphic(imageView);
+                }
             }
+        });
 
-            // Close resources
-            resultSet.close();
-            statement.close();
-            connection.close();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
+        likesColumn.setCellValueFactory(new PropertyValueFactory<>("nombre_likes"));
     }
+
+    private void loadDataFromDatabase() {
+        blogsList.setAll(blogService.getData());
+        tableView.setItems(blogsList);
     }
+
+    @FXML
+    void refresh() {
+        blogsList.clear();
+        loadDataFromDatabase();
+    }
+}
+//corrction backoffice
+//AI image
+//statistique

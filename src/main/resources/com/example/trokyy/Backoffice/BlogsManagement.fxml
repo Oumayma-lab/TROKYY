@@ -1,5 +1,4 @@
 <?xml version="1.0" encoding="UTF-8"?>
-
 <?import java.net.URL?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
@@ -41,14 +40,13 @@
                         <TableView fx:id="tableView" maxWidth="1158.0" prefHeight="509.0" prefWidth="1092.0" style="-fx-border-radius: 14 14 14 14;" styleClass="column-header-background" BorderPane.alignment="CENTER">
                             <columns>
                                 <TableColumn fx:id="idColumn" minWidth="37.60000532865524" prefWidth="50.0" style="-fx-alignment: center;" text="ID" />
-                                <TableColumn fx:id="userId" minWidth="15.0" prefWidth="57.0" style="-fx-alignment: center;" styleClass="column-header" text="User Id" />
-                                <TableColumn fx:id="content" prefWidth="157.0" style="-fx-alignment: center;" styleClass="column-header" text="Content" />
-                                <TableColumn fx:id="title" prefWidth="135.0" style="-fx-alignment: center;" styleClass="column-header" text="Title" />
-                                <TableColumn fx:id="date" prefWidth="140.0" style="-fx-alignment: center;" styleClass="column-header" text="Date" />
-                                <TableColumn fx:id="image" prefWidth="105.0" style="-fx-alignment: center;" styleClass="column-header" text="Image" />
-                                <TableColumn fx:id="likes" prefWidth="133.0" style="-fx-alignment: center;" styleClass="column-header" text="Likes" />
-                                <TableColumn fx:id="action" prefWidth="168.0" style="-fx-alignment: center;" styleClass="column-header" text="Status" />
-                        <TableColumn fx:id="actionColumn1" prefWidth="98.0" style="-fx-alignment: center;" styleClass="column-header" text="Actions" />
+                                <TableColumn fx:id="userIdColumn" minWidth="15.0" prefWidth="57.0" style="-fx-alignment: center;" styleClass="column-header" text="User Id" />
+                                <TableColumn fx:id="contentColumn" prefWidth="292.0" style="-fx-alignment: center;" styleClass="column-header" text="Content" />
+                                <TableColumn fx:id="titleColumn" prefWidth="119.0" style="-fx-alignment: center;" styleClass="column-header" text="Title" />
+                                <TableColumn fx:id="dateColumn" prefWidth="153.0" style="-fx-alignment: center;" styleClass="column-header" text="Date" />
+                                <TableColumn fx:id="imageColumn" prefWidth="180.0" style="-fx-alignment: center;" styleClass="column-header" text="Image" />
+                                <TableColumn fx:id="likesColumn" prefWidth="160.0" style="-fx-alignment: center;" styleClass="column-header" text="Likes" />
+                                <TableColumn fx:id="actionsColumn" prefWidth="143.0" style="-fx-alignment: center;" styleClass="column-header" text="Actions" />
                             </columns>
                         </TableView>
                     </center>

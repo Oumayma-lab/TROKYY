@@ -16,7 +16,7 @@ public class Blog {
     public Blog() {
     }
 
-    public Blog(int auteur_id, String contenu, String titre, LocalDate date_publication, String image) {
+    public Blog(int auteur_id, String contenu, String titre, LocalDate date_publication, String image ) {
         this.auteur_id = auteur_id;
         this.contenu = contenu;
         this.titre = titre;
@@ -30,7 +30,7 @@ public class Blog {
         this.image = image;
     }
 
-    public Blog(int id, int auteur_id, String contenu, String titre, LocalDate date_publication, String image, int nombre_likes) {
+    public Blog(int id, int auteur_id, String contenu, String titre, LocalDate date_publication, String image, int nombre_likes ) {
         this.id = id;
         this.auteur_id = auteur_id;
         this.contenu = contenu;
@@ -42,13 +42,14 @@ public class Blog {
 
     @Override
     public String toString() {
-        return "blog{" +
+        return "Blog{" +
                 "id=" + id +
                 ", auteur_id=" + auteur_id +
                 ", contenu='" + contenu + '\'' +
                 ", titre='" + titre + '\'' +
                 ", date_publication=" + date_publication +
                 ", image='" + image + '\'' +
+                ", nombre_likes=" + nombre_likes +
                 '}';
     }
 
@@ -107,6 +108,7 @@ public class Blog {
 
         return image;
     }
+
 
     public int getNombre_likes() {
         return nombre_likes;

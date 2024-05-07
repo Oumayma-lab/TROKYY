@@ -1,15 +1,11 @@
 package com.example.trokyy.controllers.Blog;
-
-
 import com.example.trokyy.models.Blog;
 import com.example.trokyy.models.Commentaire;
-
 import com.example.trokyy.services.BlogService;
 import com.example.trokyy.services.CommentaireService;
 import com.jfoenix.controls.JFXButton;
 import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
-
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -23,7 +19,6 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
-
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
@@ -32,8 +27,6 @@ import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 import java.util.ResourceBundle;
-
-
 public class ListBlogController implements Initializable {
 
     @FXML
@@ -299,161 +292,161 @@ public class ListBlogController implements Initializable {
                         likeCountLabel.setText(Integer.toString(likes));
                     }
                 });
-                }
             }
         }
+    }
 
-        // Method to handle edit comment action
-        private void handleEditComment(Commentaire commentaire) {
-            // Create a dialog for editing the comment
-            TextInputDialog dialog = new TextInputDialog(commentaire.getContenu());
-            dialog.setTitle("Edit Comment");
-            dialog.setHeaderText("Edit the selected comment:");
-            dialog.setContentText("Enter the updated comment:");
+    // Method to handle edit comment action
+    private void handleEditComment(Commentaire commentaire) {
+        // Create a dialog for editing the comment
+        TextInputDialog dialog = new TextInputDialog(commentaire.getContenu());
+        dialog.setTitle("Edit Comment");
+        dialog.setHeaderText("Edit the selected comment:");
+        dialog.setContentText("Enter the updated comment:");
 
-            // Show the dialog and wait for user input
-            Optional<String> result = dialog.showAndWait();
+        // Show the dialog and wait for user input
+        Optional<String> result = dialog.showAndWait();
 
-            // Update the comment if the user provided new input
-            result.ifPresent(updatedComment -> {
-                commentaire.setContenu(updatedComment);
-                // Update the comment in the database using the CommentaireService
-                commentaireService.updateCommentaire(commentaire);
+        // Update the comment if the user provided new input
+        result.ifPresent(updatedComment -> {
+            commentaire.setContenu(updatedComment);
+            // Update the comment in the database using the CommentaireService
+            commentaireService.updateCommentaire(commentaire);
+            // Refresh the list view or perform any other necessary action
+            refreshBlogListView(); // Assuming this method refreshes the blog list view
+        });
+        // Ajoutez du style personnalisé aux boutons "Edit"
+        editButton.setStyle("-fx-background-color: #4CAF50; -fx-text-fill: white; -fx-font-size: 14px;");
+    }
+
+    // Method to handle delete comment action
+    private void deleteComment(Commentaire commentaire) {
+        // Show a confirmation dialog before deleting the comment
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("Confirm Deletion");
+        alert.setHeaderText("Are you sure you want to delete this comment?");
+        alert.setContentText("This action cannot be undone.");
+
+        // Wait for user confirmation
+        alert.showAndWait().ifPresent(response -> {
+            if (response == ButtonType.OK) {
+                // Remove the comment from the database using the CommentaireService
+                commentaireService.deleteCommentaire(commentaire);
                 // Refresh the list view or perform any other necessary action
                 refreshBlogListView(); // Assuming this method refreshes the blog list view
-            });
-            // Ajoutez du style personnalisé aux boutons "Edit"
-            editButton.setStyle("-fx-background-color: #4CAF50; -fx-text-fill: white; -fx-font-size: 14px;");
-        }
-
-        // Method to handle delete comment action
-        private void deleteComment(Commentaire commentaire) {
-            // Show a confirmation dialog before deleting the comment
-            Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-            alert.setTitle("Confirm Deletion");
-            alert.setHeaderText("Are you sure you want to delete this comment?");
-            alert.setContentText("This action cannot be undone.");
-
-            // Wait for user confirmation
-            alert.showAndWait().ifPresent(response -> {
-                if (response == ButtonType.OK) {
-                    // Remove the comment from the database using the CommentaireService
-                    commentaireService.deleteCommentaire(commentaire);
-                    // Refresh the list view or perform any other necessary action
-                    refreshBlogListView(); // Assuming this method refreshes the blog list view
-                }
-            });
-            deleteButton.setStyle("-fx-background-color: #f44336; -fx-text-fill: white; -fx-font-size: 14px;");
-
-        }
-
-        @FXML
-        private void deleteBlog(Blog BlogToDelete) {
-            Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-            alert.setTitle("Confirm Deletion");
-            alert.setHeaderText("Are you sure you want to delete this blog?");
-            alert.setContentText("This action cannot be undone.");
-
-            alert.showAndWait().ifPresent(response -> {
-                if (response == ButtonType.OK) {
-
-                    BlogListView.getItems().remove(BlogToDelete);
-                    blogService.deleteBlog(BlogToDelete);
-
-                    refreshBlogListView();
-
-                }
-            });
-        }
-
-        private void refreshBlogListView() {
-            // Fetch the latest data from the database
-            List<Blog> blogs = blogService.getData();
-
-            BlogListView.getItems().clear();
-
-            BlogListView.getItems().addAll(blogs);
-        }
-
-        @FXML
-        private void handleEdit(Blog selectedBlog) {
-            if (selectedBlog != null) {
-                try {
-                    FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/trokyy/FrontOffice/Blog/EditBlog.fxml"));
-                    Parent root = loader.load();
-
-                    EditBlogController editController = loader.getController();
-                    editController.initData(selectedBlog);
-
-                    Stage stage = new Stage();
-                    stage.setTitle("Edit Complaint");
-                    stage.setScene(new Scene(root));
-
-                    stage.showAndWait();
-
-                    if (editController.isSaved()) {
-
-                    }
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
             }
-        }
+        });
+        deleteButton.setStyle("-fx-background-color: #f44336; -fx-text-fill: white; -fx-font-size: 14px;");
 
-        // Handle Like Action
-        private void handleLike(Blog selectedBlog) {
-            if (selectedBlog != null) {
-                // Increment the number of likes for the selected blog
-                selectedBlog.setNombre_likes(selectedBlog.getNombre_likes() + 1);
+    }
 
-                // Update the likes count in the database using the BlogService
-                blogService.updateLikes(selectedBlog);
+    @FXML
+    private void deleteBlog(Blog BlogToDelete) {
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("Confirm Deletion");
+        alert.setHeaderText("Are you sure you want to delete this blog?");
+        alert.setContentText("This action cannot be undone.");
 
-                // Refresh the blog list view to reflect the updated likes count
+        alert.showAndWait().ifPresent(response -> {
+            if (response == ButtonType.OK) {
+
+                BlogListView.getItems().remove(BlogToDelete);
+                blogService.deleteBlog(BlogToDelete);
+
                 refreshBlogListView();
 
+            }
+        });
+    }
 
+    private void refreshBlogListView() {
+        // Fetch the latest data from the database
+        List<Blog> blogs = blogService.getData();
 
-                // Afficher un message de confirmation
-                Alert alert = new Alert(Alert.AlertType.INFORMATION);
-                alert.setTitle("Like ");
-                alert.setHeaderText(null);
-                alert.setContentText("You liked this blog :)");
-                alert.showAndWait();
+        BlogListView.getItems().clear();
 
+        BlogListView.getItems().addAll(blogs);
+    }
+
+    @FXML
+    private void handleEdit(Blog selectedBlog) {
+        if (selectedBlog != null) {
+            try {
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/trokyy/FrontOffice/Blog/EditBlog.fxml"));
+                Parent root = loader.load();
+
+                EditBlogController editController = loader.getController();
+                editController.initData(selectedBlog);
+
+                Stage stage = new Stage();
+                stage.setTitle("Edit Complaint");
+                stage.setScene(new Scene(root));
+
+                stage.showAndWait();
+
+                if (editController.isSaved()) {
+
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
             }
         }
+    }
+
+    // Handle Like Action
+    private void handleLike(Blog selectedBlog) {
+        if (selectedBlog != null) {
+            // Increment the number of likes for the selected blog
+            selectedBlog.setNombre_likes(selectedBlog.getNombre_likes() + 1);
+
+            // Update the likes count in the database using the BlogService
+            blogService.updateLikes(selectedBlog);
+
+            // Refresh the blog list view to reflect the updated likes count
+            refreshBlogListView();
 
 
-        // Handle Comment Action
-        private void handleAddComment(Blog selectedBlog) {
-            // Créez un nouveau commentaire et définissez l'ID du blog correspondant
-            Commentaire newComment = new Commentaire();
-            newComment.setBlog_id(selectedBlog.getId());
 
-            // Créez une boîte de dialogue pour ajouter un commentaire
-            TextInputDialog dialog = new TextInputDialog();
-            dialog.setTitle("Add Comment");
-            dialog.setHeaderText("Add a comment to the selected blog");
-            dialog.setContentText("Enter your comment:");
+            // Afficher un message de confirmation
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setTitle("Like ");
+            alert.setHeaderText(null);
+            alert.setContentText("You liked this blog :)");
+            alert.showAndWait();
 
-            // Affichez la boîte de dialogue et attendez la réponse de l'utilisateur
-            Optional<String> result = dialog.showAndWait();
-
-            // Check if the user entered a comment and update the new comment
-            result.ifPresent(comment -> {
-                // Filter out bad words from the comment
-                String[] motsInterdits = {"mot1", "mot2", "mot3"};
-                for (String motInterdit : motsInterdits) {
-                    comment = comment.replaceAll("(?i)" + motInterdit, "****");
-                }
-                newComment.setContenu(comment);
-                // Add the new comment to the database using the comment service
-                commentaireService.addCommentaire(newComment);
-                // Refresh the comments list or any other necessary action
-            });
         }
-        }
+    }
+
+
+    // Handle Comment Action
+    private void handleAddComment(Blog selectedBlog) {
+        // Créez un nouveau commentaire et définissez l'ID du blog correspondant
+        Commentaire newComment = new Commentaire();
+        newComment.setBlog_id(selectedBlog.getId());
+
+        // Créez une boîte de dialogue pour ajouter un commentaire
+        TextInputDialog dialog = new TextInputDialog();
+        dialog.setTitle("Add Comment");
+        dialog.setHeaderText("Add a comment to the selected blog");
+        dialog.setContentText("Enter your comment:");
+
+        // Affichez la boîte de dialogue et attendez la réponse de l'utilisateur
+        Optional<String> result = dialog.showAndWait();
+
+        // Check if the user entered a comment and update the new comment
+        result.ifPresent(comment -> {
+            // Filter out bad words from the comment
+            String[] motsInterdits = {"kill", "murder", "danger"};
+            for (String motInterdit : motsInterdits) {
+                comment = comment.replaceAll("(?i)" + motInterdit, "****");
+            }
+            newComment.setContenu(comment);
+            // Add the new comment to the database using the comment service
+            commentaireService.addCommentaire(newComment);
+            // Refresh the comments list or any other necessary action
+        });
+    }
+}
 
 
 
