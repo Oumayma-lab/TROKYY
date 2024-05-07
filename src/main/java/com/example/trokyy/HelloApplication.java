@@ -38,7 +38,6 @@ public class HelloApplication extends Application {
     public void logoutCurrentUser() {
         // Invalidate the current session
         LogoutController logoutController = new LogoutController();
-        logoutController.logout(currentSessionId);
 
         // Load the login screen
         try {
