@@ -1,5 +1,7 @@
 package com.example.trokyy.controllers;
+import com.example.trokyy.controllers.User.CaptureImageDialogController;
 import javafx.collections.FXCollections;
+import com.example.trokyy.models.ImageCollector;
 import com.example.trokyy.services.UserDao;
 import com.example.trokyy.models.Utilisateur;
 import com.example.trokyy.tools.EmailService;
@@ -11,22 +13,25 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.geometry.Pos;
 import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
 import javafx.util.Duration;
+import org.bytedeco.opencv.opencv_core.Mat;
 import org.controlsfx.control.Notifications;
 import java.io.IOException;
 import java.net.URL;
 import java.sql.SQLException;
 import java.time.LocalDateTime;
-import java.util.Arrays;
-import java.util.List;
-import java.util.ResourceBundle;
-import java.util.Scanner;
+import java.util.*;
 import java.util.regex.Pattern;
 import javafx.animation.Interpolator;
 import javafx.animation.RotateTransition;
@@ -38,8 +43,6 @@ import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeBodyPart;
 import javax.mail.internet.MimeMessage;
 import javax.mail.internet.MimeMultipart;
-import java.util.Properties;
-
 
 
 public class SignUpController implements Initializable {
@@ -76,10 +79,20 @@ public class SignUpController implements Initializable {
     @FXML
     private Rectangle strengthIndicator;
 
+    @FXML
+    private Label suggestPasswordIcon;
+    private boolean passwordVisible = false;
+    @FXML
+    private ImageView imageView;
+
+    private ImageCollector imageCollector;
+
+    private int imagesTaken = 0;
+
+    private Stage captureImageStage;
 
     private static final double CRITERIA_WEIGHT = 0.25; // Each criteria contributes 25% to the progress
     private static final double MAX_WIDTH = 200; // Maximum width for the strength indicator
-
 
     private static final List<String> TUNISIAN_GOVERNORATES = Arrays.asList(
 
@@ -100,6 +113,12 @@ public class SignUpController implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+
+
+        imageCollector = new ImageCollector();
+
+
+
         address.textProperty().addListener((observable, oldValue, newValue) -> {
             if (updatingText) {
                 return;
@@ -269,11 +288,15 @@ public class SignUpController implements Initializable {
         LocalDateTime dateInscription = LocalDateTime.now();
         Utilisateur user = new Utilisateur(nom, prenom, email, mdp, phoneNumberValue, adresse) ; // Create user object
         try {
-            UserDao.createUser(user, LocalDateTime.now()); // Register user with hashed password
+
+
+                UserDao.createUser(user, LocalDateTime.now()); // Register user with hashed password
             System.out.println("User created successfully."); // Debug message
             showNotification("Registration Successful!", "Welcome " + prenom + ". Please log in using your credentials.");
             showLoginForm(null);
             EmailService.sendEmail(email);
+
+
         } catch (SQLException e) {
             e.printStackTrace();
             showAlert(Alert.AlertType.ERROR, "Error", "Failed to register user.");
@@ -357,12 +380,12 @@ public class SignUpController implements Initializable {
             validationResult.addMessage("Invalid phone number format.");
         }
 
-        if (!adresse.isEmpty()) {
-            if (!isValidTunisianAddress(adresse)) {
-                validationResult.addMessage("Please enter a valid Tunisian governorate.");
-            }
-        }
-        return validationResult;
+        //if (!adresse.isEmpty()) {
+        //   if (!isValidTunisianAddress(adresse)) {
+        //        validationResult.addMessage("Please enter a valid Tunisian governorate.");
+        //    }
+        // }
+         return validationResult;
     }
 
     private boolean isValidEmail(String email) {
@@ -381,6 +404,7 @@ public class SignUpController implements Initializable {
 
     public void handleAutoComplete(KeyEvent keyEvent) {
     }
+
 
     private static class ValidationResult {
         private final StringBuilder messageBuilder = new StringBuilder();
@@ -499,6 +523,82 @@ public class SignUpController implements Initializable {
     }
 
 
-
-
+    @FXML
+    private void togglePasswordVisibility() {
+        passwordVisible = !passwordVisible;
+        if (passwordVisible) {
+            password.setPromptText(password.getText());
+            password.setText("");
+            suggestPasswordIcon.setText("🔓");
+        } else {
+            password.setText(password.getPromptText());
+            password.setPromptText(null);
+            suggestPasswordIcon.setText("🔑");
+        }
     }
+    
+    @FXML
+    private void suggestPassword() {
+        String suggestedPassword = generateRandomPassword();
+        password.setText(suggestedPassword);
+        suggestPasswordIcon.setText("✅"); // Change icon to indicate suggested password
+        suggestPasswordIcon.setStyle("-fx-cursor: default;"); // Disable further clicks on the icon
+    }
+
+    private String generateRandomPassword() {
+        String upperCaseLetters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+        String lowerCaseLetters = upperCaseLetters.toLowerCase();
+        String numbers = "0123456789";
+        String symbols = "!@#$%^&*()-_+=";
+
+        String allCharacters = upperCaseLetters + lowerCaseLetters + numbers + symbols;
+
+        StringBuilder password = new StringBuilder();
+        Random random = new Random();
+        for (int i = 0; i < 10; i++) {
+            password.append(allCharacters.charAt(random.nextInt(allCharacters.length())));
+        }
+
+        return password.toString();
+    }
+
+
+
+
+    @FXML
+    private void captureImage() {
+        Image capturedImage = imageCollector.captureImage();
+        if (capturedImage != null) {
+            openCaptureImageDialog(capturedImage);
+        } else {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Error");
+            alert.setHeaderText(null);
+            alert.setContentText("Failed to capture image.");
+            alert.showAndWait();
+        }
+    }
+
+    @FXML
+    private void saveImage() {
+        imageCollector.saveImage();
+    }
+
+
+    private void openCaptureImageDialog(Image capturedImage) {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/trokyy/FrontOffice/User/captureImageDialog.fxml"));
+            Scene scene = new Scene(loader.load());
+            captureImageStage = new Stage();
+            captureImageStage.setTitle("Captured Image");
+            captureImageStage.setScene(scene);
+            captureImageStage.initModality(Modality.APPLICATION_MODAL);
+            CaptureImageDialogController controller = loader.getController();
+            controller.setImage(capturedImage);
+            captureImageStage.showAndWait();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+}

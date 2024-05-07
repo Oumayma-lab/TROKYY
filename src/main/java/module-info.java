@@ -23,6 +23,9 @@ module com.example.trokyy {
     requires twilio;
     requires org.bytedeco.opencv;
     requires java.activation;
+    //requires opencv;
+    requires javafx.swing;
+    requires webcam.capture;
 
 
     opens com.example.trokyy to javafx.fxml;

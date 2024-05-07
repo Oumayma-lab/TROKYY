@@ -19,9 +19,10 @@
       <children>
             <TextField fx:id="usernameField" layoutY="14.0" prefHeight="40.0" prefWidth="302.0" promptText="Username" style="-fx-background-color: #E8F0E6;   -fx-background-radius: 20px; -fx-font-family: 'Poppins';" />
             <PasswordField fx:id="passwordField" layoutY="69.0" prefHeight="40.0" prefWidth="302.0" promptText="Password" style="-fx-background-color: #E8F0E6; -fx-background-radius: 20px;   -fx-font-family: 'Poppins';" />
-            <Button fx:id="loginButton" layoutX="13.0" layoutY="192.0" mnemonicParsing="false" onAction="#loginUser" prefHeight="37.0" prefWidth="280.0" style="-fx-background-color: #006400;" styleClass="login-button" text="Login" textFill="WHITE">
+            <Button fx:id="loginButton" layoutX="13.0" layoutY="142.0" mnemonicParsing="false" onAction="#loginUser" prefHeight="37.0" prefWidth="280.0" style="-fx-background-color: #006400;" styleClass="login-button" text="Login" textFill="WHITE">
             </Button>
          <Button fx:id="GoogleButton" layoutX="13.0" layoutY="252.0" mnemonicParsing="false" onAction="#loginUser" prefHeight="37.0" prefWidth="280.0" styleClass="Google-button" text="Sign in with Google" textFill="DARKGREEN" />
+         <Button layoutX="13.0" layoutY="202.0" mnemonicParsing="false" onAction="#login" prefHeight="37.0" prefWidth="280.0" styleClass="Google-button" text="Face Id" textFill="DARKGREEN" />
       </children>
    </Pane>
 
@@ -34,9 +35,9 @@
 
       </Text>
 
-   <Text fill="#767e76" fontSmoothingType="LCD" layoutX="-5.0" layoutY="94.0"  strokeType="OUTSIDE" strokeWidth="0.0" text="Please sign in to your account" textAlignment="CENTER" wrappingWidth="359.199951171875" />
+   <Text fill="#767e76" fontSmoothingType="LCD" layoutX="-5.0" layoutY="94.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Please sign in to your account" textAlignment="CENTER" wrappingWidth="359.199951171875" />
    
-   <Pane layoutX="-5.0" layoutY="421.05078125">
+   <Pane layoutX="-5.0" layoutY="371.05078125">
       <children>
          <Text fill="#767e76" layoutY="20.0" onMouseClicked="#showSignUpForm" strokeType="OUTSIDE" strokeWidth="0.0" text="or " textAlignment="CENTER" wrappingWidth="359.199951171875" />
       </children>

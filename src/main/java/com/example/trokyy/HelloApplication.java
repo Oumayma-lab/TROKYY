@@ -30,13 +30,10 @@ public class HelloApplication extends Application {
         stage.setScene(scene);
         stage.show();
 
-        // Schedule session timeout check every minute
-        Timeline sessionTimeoutCheck = new Timeline(new KeyFrame(Duration.minutes(1), event -> {
-            SessionManager.checkExpiredSessions();
-        }));
-        sessionTimeoutCheck.setCycleCount(Timeline.INDEFINITE);
-        sessionTimeoutCheck.play();
     }
+
+
+
 
     public void logoutCurrentUser() {
         // Invalidate the current session

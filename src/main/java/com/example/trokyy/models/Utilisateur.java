@@ -142,6 +142,23 @@ public class Utilisateur {
 
     }
 
+
+    public Utilisateur(int id, String nom, String prenom, String email, String mdp, String username,
+                       LocalDateTime dateInscription, String photoProfil, String adresse, int tel, boolean isActive) {
+        this.id = id;
+        this.nom = nom;
+        this.prenom = prenom;
+        this.email = email;
+        this.mdp = mdp;
+        this.username = username;
+        this.dateInscription = dateInscription;
+        this.photoProfil = photoProfil;
+        this.adresse = adresse;
+        this.tel = tel;
+        this.isActive = isActive;
+    }
+
+
     public int getId() {
         return id;
     }

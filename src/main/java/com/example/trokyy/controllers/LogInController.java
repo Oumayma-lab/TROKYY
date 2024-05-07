@@ -2,15 +2,12 @@ package com.example.trokyy.controllers;
 
 import com.example.trokyy.services.UserDao;
 import com.example.trokyy.models.Utilisateur;
-import com.example.trokyy.tools.EmailService;
-import com.example.trokyy.tools.CameraHandler;
-import com.example.trokyy.tools.MyDataBaseConnection;
-
-import com.example.trokyy.tools.SessionManager;
+import com.example.trokyy.tools.*;
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon;
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView;
 import javafx.animation.RotateTransition;
 import javafx.fxml.FXML;
+import javafx.fxml.Initializable;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.control.Alert;
@@ -25,27 +22,35 @@ import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.transform.Rotate;
 import javafx.stage.Stage;
-
 import java.io.IOException;
+import java.net.URL;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import javafx.scene.text.Text;
+import org.bytedeco.opencv.opencv_face.FaceRecognizer;
 import org.controlsfx.control.Notifications;
-import javafx.animation.FadeTransition;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
-import javafx.scene.layout.Pane;
 import javafx.util.Duration;
-import org.controlsfx.glyphfont.FontAwesome;
-import org.controlsfx.glyphfont.Glyph;
+import javafx.scene.control.Alert;
+import org.bytedeco.opencv.opencv_core.Mat;
+import org.bytedeco.opencv.opencv_core.Rect;
+import org.bytedeco.opencv.opencv_core.RectVector;
+import org.bytedeco.opencv.opencv_core.Scalar;
+import org.bytedeco.opencv.opencv_core.Size;
+import org.bytedeco.opencv.global.opencv_imgproc;
+import org.bytedeco.opencv.opencv_objdetect.CascadeClassifier;
+import org.bytedeco.opencv.opencv_videoio.VideoCapture;
 
+import java.io.File;
+import java.io.FilenameFilter;
 import static com.example.trokyy.tools.EmailService.sendEmailWithAttachment;
 
 
-public class LogInController {
+public class LogInController implements Initializable {
+
+
 
     @FXML
     private TextField usernameField;
@@ -65,7 +70,11 @@ public class LogInController {
     private boolean isAccountLocked = false;
     private static final long LOCKOUT_DURATION = 5 * 60 * 1000; // 5 minutes in milliseconds
 
+    private static final String CASCADE_PATH = "haarcascades/haarcascade_frontalface_alt.xml";
+    private static final String DATASET_PATH = "dataset/";
 
+    private CascadeClassifier faceDetector;
+    private FaceRecognizer recognizer;
 
     public LogInController() {
         Connection connection = MyDataBaseConnection.getConnection();
@@ -107,7 +116,7 @@ public class LogInController {
                     List<String> roles = new ArrayList<>();
                     for (String nestedRoles : user.getRoles()) {
                         roles.addAll(Collections.singleton(nestedRoles));
-                        String sessionId = generateSessionId(); // Generate a unique session ID
+                        String sessionId = generateSessionId();
                         SessionManager.createSession(sessionId, user);
                     }
                     System.out.println("User roles: " + roles); // Debugging statement
@@ -288,6 +297,80 @@ public class LogInController {
     }
     @FXML
     public void showRegisterStage(MouseEvent mouseEvent) {
+    }
+
+
+
+
+
+
+    @FXML
+    private void initialize() {
+        loadCascadeClassifier();
+        loadRecognizer();
+    }
+
+    @FXML
+    private void login() {
+        VideoCapture capture = new VideoCapture(0);
+        capture.set(3, 640); // Setting frame width
+        capture.set(4, 480); // Setting frame height
+
+
+        Mat frame = new Mat();
+        capture.read(frame);
+
+        RectVector faces = new RectVector();
+        faceDetector.detectMultiScale(frame, faces);
+
+        if (faces.size() > 0) {
+            Rect face = faces.get(0);
+            Mat faceImage = new Mat(frame, face);
+
+            Mat grayFaceImage = new Mat();
+            opencv_imgproc.cvtColor(faceImage, grayFaceImage, opencv_imgproc.COLOR_BGR2GRAY);
+            opencv_imgproc.resize(grayFaceImage, grayFaceImage, new Size(100, 100));
+
+            int[] label = new int[1];
+            double[] confidence = new double[1];
+            recognizer.predict(grayFaceImage, label, confidence);
+
+            int predictedLabel = label[0];
+            double predictedConfidence = confidence[0];
+
+            if (predictedConfidence < 70) {
+                showAlert("Login Successful", "Welcome, User " + predictedLabel);
+            } else {
+                showAlert("Login Failed", "Unable to recognize the user.");
+            }
+        } else {
+            showAlert("Error", "No face detected.");
+        }
+
+        capture.release();
+    }
+
+    private void loadCascadeClassifier() {
+        faceDetector = new CascadeClassifier();
+        faceDetector.load(getAbsolutePath(CASCADE_PATH));
+        if (faceDetector.empty()) {
+            showAlert("Error", "Failed to load cascade classifier.");
+        }
+    }
+
+    private void loadRecognizer() {
+        recognizer = ModelTrainer.trainModel(getAbsolutePath(DATASET_PATH));
+    }
+
+    private String getAbsolutePath(String relativePath) {
+        File file = new File(relativePath);
+        return file.getAbsolutePath();
+    }
+
+
+    @Override
+    public void initialize(URL location, ResourceBundle resources) {
+
     }
 }
 
