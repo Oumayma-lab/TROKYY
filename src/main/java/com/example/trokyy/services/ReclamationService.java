@@ -254,7 +254,9 @@ public class ReclamationService implements IService<Reclamation> {
 
 
     @Override
-    public void addReclamation(Reclamation reclamation) {     // Obtention de la date actuelle
+    public void addReclamation(Reclamation reclamation) {
+
+        // Obtention de la date actuelle
         Timestamp dateActuelle = new Timestamp(System.currentTimeMillis());
 
 
@@ -270,7 +272,7 @@ public class ReclamationService implements IService<Reclamation> {
             statement.setString(3, "In progress"); // Statut par défaut
             statement.setString(4, reclamation.getType());
             statement.setString(5, reclamation.getImage_path());
-            statement.setInt(6, 3);
+            statement.setInt(6,3);
 
             int affectedRows = statement.executeUpdate();
             if (affectedRows == 0) {

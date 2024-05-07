@@ -201,6 +201,14 @@
       </dependency>
 
 
+
+      <!-- https://mvnrepository.com/artifact/com.microsoft.cognitiveservices.speech/client-jar-sdk -->
+      <dependency>
+          <groupId>com.microsoft.cognitiveservices.speech</groupId>
+          <artifactId>client-jar-sdk</artifactId>
+          <version>1.14.0</version>
+      </dependency>
+
   </dependencies>
 
     <build>

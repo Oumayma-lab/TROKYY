@@ -23,7 +23,7 @@
             <children>
                 <Pane prefHeight="130.0" prefWidth="373.0">
                     <children>
-                        <ImageView fitHeight="76.0" fitWidth="136.0" layoutX="115.0" layoutY="23.0" pickOnBounds="true" preserveRatio="true">
+                        <ImageView fitHeight="95.0" fitWidth="186.0" layoutX="64.0" layoutY="4.0" pickOnBounds="true" preserveRatio="true">
                             <image>
                                 <Image url="@logo.png" />
                             </image>
@@ -88,7 +88,7 @@
                 <Pane prefHeight="148.0" prefWidth="365.0" />
                 <Pane prefHeight="200.0" prefWidth="200.0">
                     <children>
-                        <ImageView fitHeight="150.0" fitWidth="200.0" layoutX="83.0" layoutY="36.0" pickOnBounds="true" preserveRatio="true">
+                        <ImageView fitHeight="150.0" fitWidth="200.0" layoutX="45.0" layoutY="33.0" pickOnBounds="true" preserveRatio="true">
                             <image>
                                 <Image url="@reclam-removebg-preview.png" />
                             </image>
@@ -131,7 +131,19 @@
                                 <Font name="Calibri Bold Italic" size="18.0" />
                             </font>
                         </Label>
-                        <HBox alignment="CENTER_LEFT" prefHeight="60.0" prefWidth="321.0">
+                  <JFXButton fx:id="sttButton2" onMouseClicked="#stt" prefHeight="28.0" prefWidth="35.0" text=".">
+                     <graphic>
+                        <ImageView fitHeight="30.0" fitWidth="42.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@microphone.png" />
+                           </image>
+                        </ImageView>
+                     </graphic>
+                     <VBox.margin>
+                        <Insets left="500.0" />
+                     </VBox.margin>
+                  </JFXButton>
+                        <HBox alignment="CENTER_LEFT" prefHeight="74.0" prefWidth="553.0">
                             <children>
                                 <Pane prefHeight="60.0" prefWidth="77.0">
                                     <children>
@@ -142,7 +154,7 @@
                                             </image></ImageView>
                                     </children>
                                 </Pane>
-                                <Button fx:id="btnUploadImage" mnemonicParsing="false" onAction="#uploadImage" text="upload photo" />
+                                <Button fx:id="btnUploadImage" mnemonicParsing="false" onAction="#uploadImage" prefHeight="25.0" prefWidth="117.0" text="upload photo" />
                                 <Label fx:id="lblImagePath" prefHeight="17.0" prefWidth="126.0" />
                             </children>
                             <VBox.margin>
@@ -175,30 +187,29 @@
                 </VBox>
             </children>
         </HBox>
-        <Pane layoutX="519.0" layoutY="14.0" prefHeight="60.0" prefWidth="1537.0">
+        <Pane layoutX="399.0" layoutY="14.0" prefHeight="60.0" prefWidth="1537.0">
             <children>
-                <HBox alignment="CENTER" layoutX="342.0" layoutY="16.0" maxHeight="-Infinity" prefHeight="35.0" prefWidth="318.0">
-                    <children>
-                        <TextField fx:id="keywordTextField" onAction="#handleSearch" prefHeight="35.0" prefWidth="263.0" promptText="Search" />
-                        <ImageView fitHeight="29.0" fitWidth="33.0" pickOnBounds="true" preserveRatio="true">
-                            <image>
-                                <Image url="@search.png" />
-                            </image>
-                        </ImageView>
-                    </children>
-                    <Button fx:id="sttButton" layoutX="650.0" layoutY="9.0" onMouseClicked="#stt" text="Start Speech Recognition" />
-                </HBox>
                 <JFXButton alignment="CENTER" contentDisplay="GRAPHIC_ONLY" layoutX="1291.0" layoutY="30.0" />
-                <ImageView fitHeight="36.0" fitWidth="67.0" layoutX="671.0" layoutY="16.0" pickOnBounds="true" preserveRatio="true">
-                    <image>
-                        <Image url="@setting.png" />
-                    </image>
-                </ImageView>
-                <ImageView fitHeight="36.0" fitWidth="67.0" layoutX="733.0" layoutY="16.0" pickOnBounds="true" preserveRatio="true">
-                    <image>
-                        <Image url="@profil.png" />
-                    </image>
-                </ImageView>
+            <HBox alignment="CENTER" layoutX="470.0" layoutY="13.0" maxHeight="-Infinity" prefHeight="35.0" prefWidth="318.0">
+               <children>
+                  <TextField fx:id="SearchBar" prefHeight="35.0" prefWidth="263.0" promptText="Search" />
+                  <ImageView fitHeight="29.0" fitWidth="33.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@search.png" />
+                     </image>
+                  </ImageView>
+               </children>
+            </HBox>
+            <ImageView fitHeight="36.0" fitWidth="67.0" layoutX="798.0" layoutY="13.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@setting.png" />
+               </image>
+            </ImageView>
+            <ImageView fitHeight="36.0" fitWidth="67.0" layoutX="844.0" layoutY="13.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@profil.png" />
+               </image>
+            </ImageView>
             </children>
         </Pane>
         <Label layoutX="424.0" layoutY="97.0" prefHeight="57.0" prefWidth="724.0" text="Welcome to our Complaints Management System!">
@@ -235,6 +246,14 @@
             </ImageView>
          </graphic>
       </JFXButton>
-      <Button fx:id="openChatButton" layoutX="1289.0" layoutY="531.0" onAction="#startConversation" prefHeight="25.0" prefWidth="52.0" text="chat" />
+      <JFXButton fx:id="openChatButton" layoutX="1296.0" layoutY="532.0" onAction="#startConversation" prefHeight="31.0" prefWidth="58.0" text=".">
+         <graphic>
+            <ImageView fitHeight="31.0" fitWidth="34.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@chat.png" />
+               </image>
+            </ImageView>
+         </graphic>
+      </JFXButton>
     </children>
 </AnchorPane>

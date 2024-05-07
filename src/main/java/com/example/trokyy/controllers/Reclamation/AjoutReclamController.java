@@ -1,11 +1,14 @@
 package com.example.trokyy.controllers.Reclamation;
 
 import com.example.trokyy.controllers.Admin.AdminMainController;
+import com.example.trokyy.controllers.LogInController;
 import com.example.trokyy.models.Captcha;
 import com.example.trokyy.models.Reclamation;
+import com.example.trokyy.models.Utilisateur;
 import com.example.trokyy.services.ReclamationService;
 
 import com.example.trokyy.tools.Chatbot;
+import com.example.trokyy.tools.SessionManager;
 import com.jfoenix.controls.JFXButton;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -46,6 +49,71 @@ import com.microsoft.cognitiveservices.speech.*;
 import javafx.scene.control.Button;
 
 public class AjoutReclamController implements Initializable {
+
+
+    @FXML
+    private JFXButton sttButton2;
+
+
+    @FXML
+    private Button sttButton;
+
+    @FXML
+    private Text Repreponse;
+    //@FXML
+    //private javafx.scene.control.Button Button;
+
+    @FXML
+    void stt(MouseEvent event) {
+        // Create a new Task for asynchronous speech recognition
+        Task<String> recognitionTask = new Task<String>() {
+            @Override
+            protected String call() throws Exception {
+                // Replace with your subscription key and region
+                SpeechConfig speechConfig = SpeechConfig.fromSubscription("9060f63ba0654e7b8533abfa8e407a6e", "westeurope");
+
+                try (SpeechRecognizer speechRecognizer = new SpeechRecognizer(speechConfig, AudioConfig.fromDefaultMicrophoneInput())) {
+                    System.out.println("Speak into your microphone."); // Inform user to speak
+
+                    Future<SpeechRecognitionResult> task = speechRecognizer.recognizeOnceAsync();
+                    SpeechRecognitionResult result = task.get();
+
+                    if (result.getReason() == ResultReason.Canceled) {
+                        System.out.println("Cancellation detected.");
+                        return null;
+                    } else if (result.getReason() == ResultReason.NoMatch) {
+                        System.out.println("No speech recognized.");
+                        return null;
+                    } else {
+                        String recognizedText = result.getText();
+                        //System.out.println("Recognized text: " + recognizedText);
+                        return recognizedText;
+                    }
+                }
+            }
+        };
+
+        // Start the recognition task and handle the result
+        recognitionTask.setOnSucceeded(event1 -> {
+            String transcribedText = recognitionTask.getValue();
+            if (transcribedText != null) {
+                // Update UI element (if desired)
+                descriptionTextArea.setText(transcribedText);
+            }
+        });
+
+        recognitionTask.setOnFailed(event1 -> {
+            Throwable exception = recognitionTask.getException();
+            System.err.println("Speech recognition failed: " + exception.getMessage());
+        });
+
+        new Thread(recognitionTask).start();
+    }
+
+    @FXML
+    private JFXButton openChatButton;
+
+
     @FXML
     private JFXButton btncaptcha;
     @FXML
@@ -78,8 +146,6 @@ public class AjoutReclamController implements Initializable {
     private Button chatbot;
 
 
-    @FXML
-    private Button openChatButton; // Button to open chat
 
     @FXML
     private void startConversation(ActionEvent event) {
@@ -113,9 +179,11 @@ public class AjoutReclamController implements Initializable {
     }
 
 
+
     @FXML
     public void AddReclamation(ActionEvent event)  {
         if (captchaController != null && captchaController.isCaptchaVerified()) {
+
         String description = descriptionTextArea.getText();
         String type = typeChoiceBox.getValue();
 
@@ -137,7 +205,11 @@ public class AjoutReclamController implements Initializable {
 
         // Si la description est unique, continuer avec l'ajout de la réclamation
         Reclamation reclamation = new Reclamation(description, type, image_path);
-        reclamationService.addReclamation(reclamation);
+
+
+            String sessionId = "votreSessionId"; // Remplacez "votreSessionId" par le vrai sessionId de l'utilisateur
+            reclamationService.addReclamation(reclamation);
+        //lazemni nhout getUtilisateur
         showNotification("Complaint Added successfully.");
         clearFields();
 
@@ -279,58 +351,4 @@ public class AjoutReclamController implements Initializable {
     private Captcha captchaController;
 
 
-
-
-
-
-
-
-    @FXML
-    private Text Repreponse;
-    @FXML
-    void stt(MouseEvent event){
-        // Create a new Task for asynchronous speech recognition
-        Task<String> recognitionTask = new Task<String>() {
-            @Override
-            protected String call() throws Exception {
-                // Replace with your subscription key and region
-                SpeechConfig speechConfig = SpeechConfig.fromSubscription("9060f63ba0654e7b8533abfa8e407a6e", "westeurope");
-
-                try (SpeechRecognizer speechRecognizer = new SpeechRecognizer(speechConfig, AudioConfig.fromDefaultMicrophoneInput())) {
-                    System.out.println("Speak into your microphone."); // Inform user to speak
-
-                    Future<SpeechRecognitionResult> task = speechRecognizer.recognizeOnceAsync();
-                    SpeechRecognitionResult result = task.get();
-
-                    if (result.getReason() == ResultReason.Canceled) {
-                        System.out.println("Cancellation detected.");
-                        return null;
-                    } else if (result.getReason() == ResultReason.NoMatch) {
-                        System.out.println("No speech recognized.");
-                        return null;
-                    } else {
-                        String recognizedText = result.getText();
-                        //System.out.println("Recognized text: " + recognizedText);
-                        return recognizedText;
-                    }
-                }
-            }
-        };
-
-        // Start the recognition task and handle the result
-        recognitionTask.setOnSucceeded(event1 -> {
-            String transcribedText = recognitionTask.getValue();
-            if (transcribedText != null) {
-                // Update UI element (if desired)
-                Repreponse.setText(transcribedText);
-            }
-        });
-
-        recognitionTask.setOnFailed(event1 -> {
-            Throwable exception = recognitionTask.getException();
-            System.err.println("Speech recognition failed: " + exception.getMessage());
-        });
-
-        new Thread(recognitionTask).start();
-    }
     }
