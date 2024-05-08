@@ -4,6 +4,7 @@ import com.example.trokyy.models.Commentaire;
 import com.example.trokyy.services.BlogService;
 import com.example.trokyy.services.CommentaireService;
 import com.jfoenix.controls.JFXButton;
+import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
 import javafx.fxml.FXML;
@@ -27,7 +28,13 @@ import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 import java.util.ResourceBundle;
+
+import static com.example.trokyy.controllers.Reclamation.ListReclamController.showAlert;
+
 public class ListBlogController implements Initializable {
+    private boolean userBanned = false;
+    private int badWordCount = 0;
+
 
     @FXML
     private ListView<Blog> BlogListView;
@@ -135,7 +142,9 @@ public class ListBlogController implements Initializable {
 
         // If the search text is empty, show all items
         if (newValue == null || newValue.isEmpty()) {
-            BlogListView.setItems((ObservableList<Blog>) blogService.getData());
+            List<Blog> blogs = blogService.getData();
+            ObservableList<Blog> observableBlogs = FXCollections.observableList(blogs);
+            BlogListView.setItems(observableBlogs);
         }
     }
     // Method to refresh the ListView with all blogs
@@ -143,26 +152,6 @@ public class ListBlogController implements Initializable {
         List<Blog> blogs = blogService.getData();
         BlogListView.getItems().clear(); // Clear existing items
         BlogListView.getItems().addAll(blogs); // Add all blogs to the ListView
-    }
-
-    public void handleBackClick(MouseEvent mouseEvent) {
-        try {
-            // Load the FXML file of the BlogsManagement page
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/trokyy/Backoffice/BlogsManagement.fxml"));
-            Parent blogsManagementRoot = loader.load();
-
-            // Create a new scene with the BlogsManagement root node
-            Scene blogsManagementScene = new Scene(blogsManagementRoot);
-
-            // Get the stage from the event source
-            Stage stage = (Stage) back.getScene().getWindow();
-
-            // Set the scene to the stage
-            stage.setScene(blogsManagementScene);
-            stage.show();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
     }
 
     private class  BlogtListCell extends ListCell<Blog> {
@@ -209,11 +198,13 @@ public class ListBlogController implements Initializable {
                     commentBox.getChildren().add(commentLabel);
 
                     Button editButton = new Button("Edit");
+                    editButton.setStyle("-fx-background-color: #4CAF50; -fx-text-fill: white; -fx-font-size: 14px;");
                     // Ensure commentaire is effectively final
                     final Commentaire finalCommentaire = commentaire;
                     editButton.setOnAction(event -> handleEditComment(finalCommentaire));
 
                     Button deleteButton = new Button("Delete");
+                    deleteButton.setStyle("-fx-background-color: #f44336; -fx-text-fill: white; -fx-font-size: 14px;");
                     deleteButton.setOnAction(event -> deleteComment(commentaire));
 
                     HBox buttonBox = new HBox(10);
@@ -253,9 +244,6 @@ public class ListBlogController implements Initializable {
                 deleteButton.getStyleClass().add("delete-button");
                 deleteButton.setOnAction(event -> deleteBlog(item));
 
-                // Ajoutez du style personnalisé aux boutons "Edit" et "Delete"
-                editButton.setStyle("-fx-background-color: #4CAF50; -fx-text-fill: white; -fx-font-size: 14px;");
-                deleteButton.setStyle("-fx-background-color: #f44336; -fx-text-fill: white; -fx-font-size: 14px;");
 
                 HBox buttonBox = new HBox(10);
                 buttonBox.setAlignment(Pos.CENTER_RIGHT);
@@ -264,8 +252,10 @@ public class ListBlogController implements Initializable {
 
 
                 // Like Icon
-                ImageView likeIcon = new ImageView(new Image("C:\\Users\\Lenovo\\Desktop\\TROKYY\\src\\main\\resources\\com\\example\\trokyy\\FrontOffice\\Blog\\thumb-up.png"));
-                likeIcon.setFitWidth(25);
+                String imageFilePath = "src\\main\\resources\\com\\example\\trokyy\\FrontOffice\\Blog\\thumb-up.png";
+                File file = new File(imageFilePath);
+                Image image = new Image(file.toURI().toString());
+                ImageView likeIcon = new ImageView(image);                likeIcon.setFitWidth(25);
                 likeIcon.setFitHeight(25);
                 likeIcon.setOnMouseClicked(event -> handleLike(item));
                 // Label to display the number of likes
@@ -276,7 +266,10 @@ public class ListBlogController implements Initializable {
                 likeBox.setAlignment(Pos.CENTER_LEFT);
                 likeBox.getChildren().addAll(likeIcon, likeCountLabel);
 // Comment Icon
-                ImageView commentIcon = new ImageView(new Image("C:\\Users\\Lenovo\\Desktop\\TROKYY\\src\\main\\resources\\com\\example\\trokyy\\FrontOffice\\Blog\\chat.png"));
+                String commentFilePath = "src\\main\\resources\\com\\example\\trokyy\\FrontOffice\\Blog\\chatchat.png";
+                File fileComment = new File(commentFilePath);
+                Image imageComment = new Image(fileComment.toURI().toString());
+                ImageView commentIcon = new ImageView(imageComment);
                 commentIcon.setFitWidth(25);
                 commentIcon.setFitHeight(25);
                 commentIcon.setOnMouseClicked(event -> handleAddComment(item));
@@ -316,7 +309,7 @@ public class ListBlogController implements Initializable {
             refreshBlogListView(); // Assuming this method refreshes the blog list view
         });
         // Ajoutez du style personnalisé aux boutons "Edit"
-        editButton.setStyle("-fx-background-color: #4CAF50; -fx-text-fill: white; -fx-font-size: 14px;");
+        //editButton.setStyle("-fx-background-color: #4CAF50; -fx-text-fill: white; -fx-font-size: 14px;");
     }
 
     // Method to handle delete comment action
@@ -336,37 +329,35 @@ public class ListBlogController implements Initializable {
                 refreshBlogListView(); // Assuming this method refreshes the blog list view
             }
         });
-        deleteButton.setStyle("-fx-background-color: #f44336; -fx-text-fill: white; -fx-font-size: 14px;");
+//        deleteButton.setStyle("-fx-background-color: #f44336; -fx-text-fill: white; -fx-font-size: 14px;");
 
     }
 
-    @FXML
-    private void deleteBlog(Blog BlogToDelete) {
-        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-        alert.setTitle("Confirm Deletion");
-        alert.setHeaderText("Are you sure you want to delete this blog?");
-        alert.setContentText("This action cannot be undone.");
 
-        alert.showAndWait().ifPresent(response -> {
-            if (response == ButtonType.OK) {
-
-                BlogListView.getItems().remove(BlogToDelete);
-                blogService.deleteBlog(BlogToDelete);
-
-                refreshBlogListView();
-
-            }
-        });
-    }
 
     private void refreshBlogListView() {
         // Fetch the latest data from the database
         List<Blog> blogs = blogService.getData();
 
         BlogListView.getItems().clear();
-
         BlogListView.getItems().addAll(blogs);
     }
+
+    @FXML
+    private void deleteBlog(Blog blogToDelete) {
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("Confirm Deletion");
+        alert.setHeaderText("Are you sure you want to delete this blog?");
+        alert.setContentText("This action cannot be undone.");
+        alert.showAndWait().ifPresent(response -> {
+            if (response == ButtonType.OK) {
+                BlogListView.getItems().remove(blogToDelete);
+                blogService.deleteBlog(blogToDelete);
+                refreshList(); // Refresh the list after deletion
+            }
+        });
+    }
+
 
     @FXML
     private void handleEdit(Blog selectedBlog) {
@@ -394,58 +385,206 @@ public class ListBlogController implements Initializable {
     }
 
     // Handle Like Action
+    @FXML
     private void handleLike(Blog selectedBlog) {
         if (selectedBlog != null) {
             // Increment the number of likes for the selected blog
             selectedBlog.setNombre_likes(selectedBlog.getNombre_likes() + 1);
-
             // Update the likes count in the database using the BlogService
             blogService.updateLikes(selectedBlog);
-
             // Refresh the blog list view to reflect the updated likes count
-            refreshBlogListView();
-
-
-
-            // Afficher un message de confirmation
+            refreshList();
+            // Show a confirmation message
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
-            alert.setTitle("Like ");
+            alert.setTitle("Like");
             alert.setHeaderText(null);
             alert.setContentText("You liked this blog :)");
             alert.showAndWait();
-
         }
     }
 
 
+//    // Handle Comment Action
+//    private void handleAddComment(Blog selectedBlog) {
+//        // Check if the user is banned
+//        if (userBanned) {
+//            // Redirect the user to Main.fxml
+//            redirectToMainPage();
+//            return;
+//        }
+//        // Créez un nouveau commentaire et définissez l'ID du blog correspondant
+//        Commentaire newComment = new Commentaire();
+//        newComment.setBlog_id(selectedBlog.getId());
+//
+//        // Créez une boîte de dialogue pour ajouter un commentaire
+//        TextInputDialog dialog = new TextInputDialog();
+//        dialog.setTitle("Add Comment");
+//        dialog.setHeaderText("Add a comment to the selected blog");
+//        dialog.setContentText("Enter your comment:");
+//
+//        // Affichez la boîte de dialogue et attendez la réponse de l'utilisateur
+//        Optional<String> result = dialog.showAndWait();
+//
+//        // Check if the user entered a comment and update the new comment
+//        result.ifPresent(comment -> {
+//            // Filter out bad words from the comment
+//            String[] motsInterdits = {"kill", "murder", "danger"};
+//            for (String motInterdit : motsInterdits) {
+//                comment = comment.replaceAll("(?i)" + motInterdit, "****");
+//            }
+//            newComment.setContenu(comment);
+//            // Add the new comment to the database using the comment service
+//            commentaireService.addCommentaire(newComment);
+//            // Refresh the comments list or any other necessary action
+//            refreshList();
+//
+//
+//        // Check for bad words
+//        if (containsBadWord(comment)) {
+//            // Increment the bad word count
+//            badWordCount++;
+//
+//            // Check if the bad word count reaches 3
+//            if (badWordCount >= 3) {
+//                // Ban the user
+//                userBanned = true;
+//
+//                // Redirect the user to Main.fxml
+//                redirectToMainPage();
+//            }
+//        }});
+//    }
+//
+//    private boolean containsBadWord(String comment) {
+//        // Check if the comment contains any bad words
+//        // You can implement this method based on your requirements
+//        return false;
+//    }
+//
+//    private void redirectToMainPage() {
+//        try {
+//            // Load Main.fxml
+//            FXMLLoader loader = new FXMLLoader(getClass().getResource("FrontOffice/User/LogIn.fxml"));
+//            Parent root = loader.load();
+//
+//            // Get the current stage
+//            Stage stage = (Stage) blogbtn.getScene().getWindow();
+//
+//            // Set the new scene
+//            Scene scene = new Scene(root);
+//            stage.setScene(scene);
+//            stage.show();
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
+//
+//    }
+
     // Handle Comment Action
     private void handleAddComment(Blog selectedBlog) {
-        // Créez un nouveau commentaire et définissez l'ID du blog correspondant
+        // Check if the user is banned
+        if (userBanned) {
+            // Redirect the user to Main.fxml
+            redirectToMainPage();
+            return;
+        }
+
+        // Create a new comment and set the blog ID
         Commentaire newComment = new Commentaire();
         newComment.setBlog_id(selectedBlog.getId());
 
-        // Créez une boîte de dialogue pour ajouter un commentaire
+        // Create a dialog for adding a comment
         TextInputDialog dialog = new TextInputDialog();
         dialog.setTitle("Add Comment");
         dialog.setHeaderText("Add a comment to the selected blog");
         dialog.setContentText("Enter your comment:");
 
-        // Affichez la boîte de dialogue et attendez la réponse de l'utilisateur
+        // Show the dialog and wait for user input
         Optional<String> result = dialog.showAndWait();
 
-        // Check if the user entered a comment and update the new comment
+        // Check if the user entered a comment
         result.ifPresent(comment -> {
             // Filter out bad words from the comment
             String[] motsInterdits = {"kill", "murder", "danger"};
             for (String motInterdit : motsInterdits) {
                 comment = comment.replaceAll("(?i)" + motInterdit, "****");
             }
-            newComment.setContenu(comment);
-            // Add the new comment to the database using the comment service
-            commentaireService.addCommentaire(newComment);
-            // Refresh the comments list or any other necessary action
+
+            // Check for bad words
+            if (containsBadWord(comment)) {
+                // Increment the bad word count
+                badWordCount++;
+
+                // Check if the bad word count reaches 3
+                if (badWordCount >= 3) {
+                    // Ban the user
+                    userBanned = true;
+
+                    // Redirect the user to Main.fxml
+                    redirectToMainPage();
+                } else {
+                    // Reset the bad word count if the user is not banned
+                    badWordCount = 0;
+                }
+
+                // Inform the user about the bad word
+                showAlert("Your comment contains inappropriate language. Please refrain from using offensive words.");
+            } else {
+                // Add the new comment to the database using the comment service
+                newComment.setContenu(comment);
+                commentaireService.addCommentaire(newComment);
+                // Refresh the comments list or any other necessary action
+                refreshList();
+            }
         });
     }
+
+    // Method to check if a comment contains bad words
+    private boolean containsBadWord(String comment) {
+        // Define a list of bad words
+        String[] badWords = {"kill", "murder", "danger"};
+
+        // Convert the comment to lowercase for case-insensitive matching
+        String lowercaseComment = comment.toLowerCase();
+
+        // Check if the comment contains any bad word
+        for (String badWord : badWords) {
+            if (lowercaseComment.contains(badWord)) {
+                return true; // Found a bad word
+            }
+        }
+        return false;
+    }
+
+    // Method to redirect the user to the main page
+    private void redirectToMainPage() {
+        try {
+            // Load Main.fxml
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("FrontOffice/User/LogIn.fxml"));
+            Parent root = loader.load();
+
+            // Get the current stage
+            Stage stage = (Stage) blogbtn.getScene().getWindow();
+
+            // Set the new scene
+            Scene scene = new Scene(root);
+            stage.setScene(scene);
+            stage.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    // Method to display an alert message
+    private void showAlert(String message) {
+        Alert alert = new Alert(Alert.AlertType.WARNING);
+        alert.setTitle("Warning");
+        alert.setHeaderText(null);
+        alert.setContentText(message);
+        alert.showAndWait();
+    }
+
+
 }
 
 

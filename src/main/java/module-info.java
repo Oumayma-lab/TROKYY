@@ -15,6 +15,7 @@ module com.example.trokyy {
     requires com.jfoenix;
     requires java.desktop;
     requires java.mail;
+    requires unirest.java;
 
     opens com.example.trokyy to javafx.fxml;
     exports com.example.trokyy;

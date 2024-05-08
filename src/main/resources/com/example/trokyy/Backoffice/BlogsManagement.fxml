@@ -1,7 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
+
 <?import java.net.URL?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.cell.PropertyValueFactory?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
@@ -22,7 +25,15 @@
                 <HBox layoutX="3.0" layoutY="153.0" prefHeight="570.0" prefWidth="1296.0" style="-fx-background-color: #dee8fa;" />
                 <VBox layoutX="2.0" layoutY="14.0">
                     <children>
-                        <HBox prefHeight="15.0" prefWidth="1304.0" />
+                        <HBox prefHeight="15.0" prefWidth="1304.0">
+                     <children>
+                         <TextField fx:id="keywordTextField1" prefHeight="35.0" prefWidth="263.0" promptText="Search" />
+                        <ImageView fitHeight="29.0" fitWidth="33.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../FrontOffice/Blog/search.png" />
+                           </image>
+                        </ImageView>
+                     </children></HBox>
                         <HBox prefHeight="146.0" prefWidth="1294.0">
                             <children>
                                 <ImageView fitHeight="200.0" fitWidth="1302.0">
@@ -46,7 +57,14 @@
                                 <TableColumn fx:id="dateColumn" prefWidth="153.0" style="-fx-alignment: center;" styleClass="column-header" text="Date" />
                                 <TableColumn fx:id="imageColumn" prefWidth="180.0" style="-fx-alignment: center;" styleClass="column-header" text="Image" />
                                 <TableColumn fx:id="likesColumn" prefWidth="160.0" style="-fx-alignment: center;" styleClass="column-header" text="Likes" />
-                                <TableColumn fx:id="actionsColumn" prefWidth="143.0" style="-fx-alignment: center;" styleClass="column-header" text="Actions" />
+                                <TableColumn fx:id="actionsColumn" prefWidth="143.0" style="-fx-alignment: center;" styleClass="column-header" text="Actions">
+                                    <cellValueFactory>
+                                        <PropertyValueFactory property="dummyProperty" />
+                                    </cellValueFactory>
+<!--                                    <cellFactory>-->
+<!--                                        <MyTableCellFactory/>-->
+<!--                                    </cellFactory>-->
+                                </TableColumn>
                             </columns>
                         </TableView>
                     </center>
@@ -67,6 +85,7 @@
                                         </Text>
                                     </children>
                                 </VBox>
+                        <HBox alignment="CENTER" maxHeight="-Infinity" prefHeight="35.0" prefWidth="318.0" />
                             </children></HBox>
                     </top>
                     <right>

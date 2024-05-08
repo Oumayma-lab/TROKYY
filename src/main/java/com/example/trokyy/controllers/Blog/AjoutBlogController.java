@@ -12,6 +12,7 @@ import javafx.scene.control.Control;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
+import java.util.List;
 import java.util.ResourceBundle;
 import javafx.fxml.FXML;
 import javafx.geometry.Pos;
@@ -128,6 +129,12 @@ public class AjoutBlogController implements Initializable {
             return; // Quitter la méthode prématurément si la description ou le titre est vide
         }
 
+        // Check if the blog already exists
+        if (blogAlreadyExists(title, description)) {
+            // Show an alert indicating that the blog already exists
+            showAlert("A blog with the same title or description already exists.");
+            return; // Exit the method if the blog already exists
+        }
         // Si les champs sont remplis, ajouter un nouveau blog
         Blog blog = new Blog(title, description, image);
         blogService.addBlog(blog); // Appeler la méthode pour ajouter le blog
@@ -137,10 +144,18 @@ public class AjoutBlogController implements Initializable {
 
         // Réinitialiser les champs après l'ajout
         clearFields();
-
-
     }
-
+    // Method to check if a blog with the same title and description already exists
+    private boolean blogAlreadyExists(String title, String description) {
+        List<Blog> blogs = blogService.getData();
+        for (Blog blog : blogs) {
+            // Check if the title and description match
+            if (blog.getTitre().equals(title) && blog.getContenu().equals(description)) {
+                return true; // Return true if a matching blog is found
+            }
+        }
+        return false; // Return false if no matching blog is found
+    }
     @FXML
     void clearFields() {
         descriptionTextArea.clear();

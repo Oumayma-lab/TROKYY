@@ -192,7 +192,7 @@
                     </children>
                 </HBox>
                 <JFXButton alignment="CENTER" contentDisplay="GRAPHIC_ONLY" layoutX="1291.0" layoutY="30.0" text="Button" />
-                <ImageView fx:id="back" fitHeight="36.0" fitWidth="67.0" layoutX="671.0" layoutY="16.0" onMouseClicked="#handleBackClick" pickOnBounds="true" preserveRatio="true">
+                <ImageView fx:id="back" fitHeight="36.0" fitWidth="67.0" layoutX="671.0" layoutY="16.0"  pickOnBounds="true" preserveRatio="true">
                     <image>
                         <Image url="@setting.png" />
                     </image>
@@ -204,21 +204,21 @@
                 </ImageView>
             </children>
         </Pane>
-      <Pane layoutX="416.0" layoutY="125.0" prefHeight="606.0" prefWidth="903.0">
-         <children>
-            <ListView fx:id="BlogListView" prefHeight="532.0" prefWidth="903.0" styleClass="blog-list-view" />
-            <Button layoutX="732.0" layoutY="545.0" mnemonicParsing="false" onAction="#GoToAddBlog" prefHeight="38.0" prefWidth="164.0" styleClass="inner_panel" stylesheets="@../Reclamation/AjoutReclam.css" text="Add blog" textFill="WHITE">
-               <font>
-                  <Font name="Calibri Bold" size="18.0" />
-               </font>
-            </Button>
-         </children>
-      </Pane>
-      <Label layoutX="416.0" layoutY="62.0" prefHeight="57.0" prefWidth="903.0" text="&quot;Stay informed and inspired with our collection of articles on sustainability and community at Troky!&quot;">
-         <font>
-            <Font name="Calibri Bold" size="20.0" />
-         </font>
-      </Label>
+        <Pane layoutX="416.0" layoutY="125.0" prefHeight="606.0" prefWidth="903.0">
+            <children>
+                <ListView fx:id="BlogListView" prefHeight="532.0" prefWidth="903.0" styleClass="blog-list-view" />
+                <Button layoutX="732.0" layoutY="545.0" mnemonicParsing="false" onAction="#GoToAddBlog" prefHeight="38.0" prefWidth="164.0" styleClass="inner_panel" stylesheets="@../Reclamation/AjoutReclam.css" text="Add blog" textFill="WHITE">
+                    <font>
+                        <Font name="Calibri Bold" size="18.0" />
+                    </font>
+                </Button>
+            </children>
+        </Pane>
+        <Label layoutX="416.0" layoutY="62.0" prefHeight="57.0" prefWidth="903.0" text="&quot;Stay informed and inspired with our collection of articles on sustainability and community at Troky!&quot;">
+            <font>
+                <Font name="Calibri Bold" size="20.0" />
+            </font>
+        </Label>
 
 
 
