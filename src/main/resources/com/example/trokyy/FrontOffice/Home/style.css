@@ -1,0 +1,137 @@
+/* style.css */
+
+.Button {
+    -fx-border-color: transparent;
+    -fx-background-color: white;
+    -fx-border-radius: 2px;
+}
+
+.list-cell {
+    -fx-background-color: #f9f9f9; /* Background color for each cell */
+    -fx-padding: 15px; /* Padding around each cell */
+    -fx-border-color: #eeeeee; /* Border color */
+    -fx-border-width: 0 0 1 0; /* Border width (bottom border only) */
+    -fx-background-radius: 5px; /* Rounded corners */
+}
+
+.list-cell:hover {
+    -fx-background-color: #f0f0f0; /* Background color on hover */
+}
+
+.list-view {
+    -fx-background-color: #ffffff; /* Background color for the entire ListView */
+}
+
+/* ScrollBar style */
+.list-view .scroll-bar {
+    -fx-background-color: transparent; /* Transparent background */
+}
+
+.list-view .scroll-bar:vertical {
+    -fx-padding: 0; /* Remove padding */
+}
+
+.list-view .scroll-bar .thumb {
+    -fx-background-color: #bbbbbb; /* Thumb color */
+    -fx-background-radius: 10px; /* Rounded corners */
+}
+
+.list-view .scroll-bar .thumb:hover {
+    -fx-background-color: #999999; /* Thumb color on hover */
+}
+
+.list-view .scroll-bar .track {
+    -fx-background-color: transparent; /* Transparent track */
+}
+
+.list-view .scroll-bar .increment-button,
+.list-view .scroll-bar .decrement-button {
+    -fx-padding: 5px; /* Adjust padding */
+}
+
+.list-view .scroll-bar .increment-arrow,
+.list-view .scroll-bar .decrement-arrow {
+    -fx-background-color: #bbbbbb; /* Arrow color */
+}
+
+.list-view .scroll-bar .increment-arrow:hover,
+.list-view .scroll-bar .decrement-arrow:hover {
+    -fx-background-color: #999999; /* Arrow color on hover */
+}
+
+.complaint-card {
+    -fx-background-color: #f0f0f0; /* Card background color */
+    -fx-padding: 10px;
+    -fx-spacing: 5px;
+    -fx-border-width: 1px;
+    -fx-border-color: #ccc;
+}
+
+.status-label {
+    -fx-font-size: 14px;
+    -fx-text-fill: #fff;
+    -fx-background-color: #4CAF50; /* Status label background color */
+    -fx-padding: 5px 10px;
+    -fx-border-radius: 10px;
+    -fx-background-radius: 10px;
+}
+
+.status-circle {
+    -fx-fill: #4CAF50; /* Status circle color */
+}
+
+.delete-button {
+    -fx-background-color: #dc3545; /* Delete button background color (red) */
+    -fx-text-fill: #fff;
+    -fx-font-weight: bold;
+    -fx-padding: 5px 10px;
+    -fx-border-radius: 5px;
+    -fx-margin-left: 10px; /* Add margin to the left of delete button */
+}
+
+.edit-button {
+    -fx-background-color: #007bff; /* Edit button background color (blue) */
+    -fx-text-fill: #fff;
+    -fx-font-weight: bold;
+    -fx-padding: 5px 10px;
+    -fx-border-radius: 5px;
+    -fx-margin-left: 10px; /* Add margin to the left of edit button */
+}
+
+.your-dialog-pane-style {
+    -fx-background-color: #f0f0f0; /* Background color */
+}
+
+.your-header-label-style {
+    -fx-font-size: 18px; /* Font size */
+    -fx-font-weight: bold; /* Font weight */
+}
+
+.your-content-label-style {
+    -fx-font-size: 14px; /* Font size */
+}
+
+.tab-header {
+    -fx-background-color: #6A5ACD; /* Tab header background color */
+}
+
+.status-label {
+    -fx-text-fill: black;
+  }
+
+.resolved {
+
+    -fx-padding: 2px 4px;
+    -fx-border-radius: 5px; /* Coins arrondis */
+    -fx-border-width: 1px; /* Épaisseur de la bordure */
+    -fx-border-color: #4CAF50; /* Couleur de la bordure par défaut */
+
+}
+
+.pending {
+    -fx-background-color: #FFC107; /* Jaune pour les réclamations en attente */
+}
+
+.unresolved {
+    -fx-background-color: #F44336; /* Rouge pour les réclamations non résolues */
+}

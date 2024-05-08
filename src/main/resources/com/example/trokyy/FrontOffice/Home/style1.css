@@ -1,0 +1,91 @@
+.side  {
+      -fx-background-color:#353A56;
+      /* -fx-border-color:#2207bb;*/
+      -fx-border-width: 2px 2px 2px 2px;
+
+      -rx-border-radius:50px;
+      -fx-background-radius: 50px;
+      -Ex-border-style: solid;}
+.inner_pane  {
+      -fx-background-color: #748CF1;
+      -fx-border-width: 2px;
+      -fx-border-radius: 20px;
+      -fx-background-radius: 20px;
+      -fx-border-style: solid;
+      -fx-border-color: #748CF1;
+}
+
+.most_inner_pane  {
+      -fx-background-color: #6780E2; /* Changed color */
+      -fx-border-width: 2px;
+      -fx-border-radius: 20px;
+      -fx-background-radius: 20px;
+}
+.btn_workbench {
+      -fx-background-color: #141313;
+      -fx-border-width: 2px;
+      -fx-border-radius: 20px;
+      -fx-background-radius: 20px; /* Added background radius */
+      -fx-border-style: solid;
+      -fx-border-color: #141313;
+}
+.btn_workbench1
+{
+      -fx-background-color:#353A56;
+      -fx-border-width: 2px;
+      -fx-border-radius: 20px;
+      -fx-background-radius: 20px; /* Added background radius */
+}
+.root  {
+      -fx-background-color:#EAEEF4 ;
+}
+.btn  {
+      -fx-background-color:#EAEEF4 ;
+
+}
+.pane_1  {
+      -fx-background-color: #748CF1;
+      -fx-border-width: 2px;
+      -fx-border-radius: 30px;
+      -fx-background-radius: 30px;
+
+      -fx-border-style: solid;
+      -fx-border-color: #748CF1;
+}
+.progress  {
+      -fx-background-color: #748CF1;
+
+
+      -fx-border-width: 2px 2px 2px 2px;
+      -fx-border-radius: 20px;
+      -fx-background-radius: 20px;
+
+}
+.pane_11 {
+      -fx-background-color: #ffffff;
+      -fx-border-width: 2px 2px 2px 2px;
+      -fx-border-radius: 16px;
+      -fx-background-radius: 16px;  /* This property is not defined in standard CSS */
+      -fx-border-style: solid;
+      -fx-border-color: #ffffff;
+}
+.pane_lll {
+      -fx-background-color: #FD9999;
+      -fx-border-width: 2px 2px 2px 2px;
+      -fx-border-radius: 16px;
+      -fx-background-radius: 16px;  /* This property is not defined in standard CSS */
+      -fx-border-style: solid;
+      -fx-border-color: #FD9999;
+}
+.pane_lll1 {
+      -fx-background-color: #353A56;
+      -fx-border-width: 2px 2px 2px 2px;
+      -fx-border-radius: 16px;
+      -fx-background-radius: 16px;  /* This property is not defined in standard CSS */
+      -fx-border-style: solid;
+      -fx-border-color: #353A56;
+}
+/* CSS Style for TableView Header */
+.table-header .column-header {
+      -fx-background-color: #1e7b5f;
+}

@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<Pane fx:id="Card" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="300.0" prefWidth="224.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.trokyy.controllers.Event.EventCardController">
+   <children>
+      <VBox alignment="CENTER" prefHeight="300.0" prefWidth="224.0" spacing="5.0">
+         <children>
+            <Label fx:id="titre" alignment="CENTER" prefHeight="56.0" prefWidth="175.0" text="Title ">
+               <font>
+                  <Font name="System Bold" size="14.0" />
+               </font>
+            </Label>
+            <Separator prefWidth="200.0" />
+            <Label fx:id="type" alignment="CENTER" prefHeight="17.0" prefWidth="175.0" text="Type">
+               <font>
+                  <Font size="14.0" />
+               </font>
+            </Label>
+            <Separator prefWidth="200.0" />
+            <Label fx:id="datedebut" alignment="CENTER" prefHeight="17.0" prefWidth="175.0" text="Start Date ">
+               <font>
+                  <Font size="14.0" />
+               </font>
+            </Label>
+            <Label fx:id="datefin" alignment="CENTER" prefHeight="17.0" prefWidth="175.0" text="End Date ">
+               <font>
+                  <Font size="14.0" />
+               </font>
+            </Label>
+            <Separator prefWidth="200.0" />
+            <Label fx:id="desc" alignment="CENTER" prefHeight="73.0" prefWidth="197.0" text="Description ">
+               <font>
+                  <Font size="14.0" />
+               </font>
+            </Label>
+            <Separator prefWidth="200.0" />
+            <Label fx:id="lieu" alignment="CENTER" prefHeight="17.0" prefWidth="175.0" text="location ">
+               <font>
+                  <Font size="14.0" />
+               </font>
+            </Label>
+            <Separator prefWidth="200.0" />
+            <Label fx:id="lien" alignment="CENTER" prefHeight="17.0" prefWidth="175.0" text="Link ">
+               <font>
+                  <Font size="14.0" />
+               </font>
+            </Label>
+            <ImageView fx:id="qrView" fitHeight="63.0" fitWidth="77.0" pickOnBounds="true" preserveRatio="true" />
+            <Separator prefWidth="200.0" />
+            <HBox alignment="CENTER" prefHeight="43.0" prefWidth="143.0" spacing="30.0">
+               <children>
+                  <Button mnemonicParsing="false" onAction="#ModEvent" style="-fx-background-color: #1e7b5f; -fx-border-color: #1e7b5f;" text="Edit" textFill="WHITE">
+                     <font>
+                        <Font name="Calibri Bold Italic" size="12.0" />
+                     </font>
+                     <HBox.margin>
+                        <Insets bottom="80.0" />
+                     </HBox.margin>
+                  </Button>
+                  <Button mnemonicParsing="false" onAction="#suppEvent" prefHeight="27.0" prefWidth="86.0" style="-fx-background-color: #f9bf29; -fx-border-color: #f9bf29;" text="Supprimer" textFill="WHITE">
+                     <font>
+                        <Font name="Calibri Bold Italic" size="12.0" />
+                     </font>
+                     <HBox.margin>
+                        <Insets bottom="80.0" />
+                     </HBox.margin>
+                  </Button>
+               </children>
+            </HBox>
+            <Separator prefWidth="200.0" />
+         </children>
+      </VBox>
+   </children>
+</Pane>
